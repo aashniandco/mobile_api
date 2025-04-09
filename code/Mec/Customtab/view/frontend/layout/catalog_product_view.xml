@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<body>
+	<referenceBlock name="product.info.details">
+		<block class="Magento\Catalog\Block\Product\View" name="comp.tab" template="Mec_Customtab::comp_tab.phtml" group="detailed_info" >
+			<arguments>
+			   <argument translate="true" name="title" xsi:type="string">Composition &amp; Care</argument>
+                           <argument name="sort_order" xsi:type="string">20</argument>
+			</arguments>
+                </block>
+                <block class="Magento\Catalog\Block\Product\View" name="measurement.tab" template="Mec_Customtab::measurement_tab.phtml" group="detailed_info" >
+			<arguments>
+				<argument translate="true" name="title" xsi:type="string">Measurements</argument>
+                                <argument name="sort_order" xsi:type="string">30</argument>
+			</arguments>
+		</block>
+        </referenceBlock>
+       <!--<referenceBlock name="content">
+                <container name="product.info.common.data" htmlTag="div" htmlClass="product-info-common"  as="common_data" label="Product View Common Info">
+                <block class="Magento\Catalog\Block\Product\View" name="common.data" template="Mec_Customtab::common_data.phtml">
+                        <arguments>
+                                <argument translate="true" name="title" xsi:type="string">Common</argument>
+                                <argument name="sort_order" xsi:type="string">10</argument>
+                        </arguments>
+                </block>
+                </container>
+	</referenceBlock>-->         
+</body>
+</page>

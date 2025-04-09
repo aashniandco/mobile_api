@@ -1,0 +1,12 @@
+<?php
+ // $block Bss\GuestToCustomer\Block\Adminhtml\System\Config\Form
+// @codingStandardsIgnoreFile
+?>
+<button class="scalable" type="button" id="<?= $block->getHtmlId() ?>" data-mage-init='{"Bss_GuestToCustomer/js/import":{
+    "url": "<?= /* @escapeNotVerified */ $block->getAjaxUrl() ?>",
+    "elementId": "<?= $block->getHtmlId() ?>",
+    "successText": "<?= /* @escapeNotVerified */ __('Successful!') ?>",
+    "failedText": "<?= /* @escapeNotVerified */ __('Import failed! Import again?') ?>",
+    "fieldMapping": "<?= /* @escapeNotVerified */ $block->getFieldMapping() ?>"}, "validation": {}}'>
+    <span><span><span id="<?= $block->getHtmlId() ?>_result"><?= $block->escapeHtml($block->getButtonLabel()) ?></span></span></span>
+</button>

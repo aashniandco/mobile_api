@@ -1,0 +1,239 @@
+<home>
+	<section>
+		<name><![CDATA[block26]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[8,4]]></block_cols>
+		<tablet_cols><![CDATA[["12","12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12","12"]]]></mobile_cols>
+		<block_class><![CDATA[["margin-bottom30","banner-custom2"]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[30]]></padding_top>
+		<padding_bottom><![CDATA[]]></padding_bottom>
+		<block_position><![CDATA[1]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block27]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[["12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12"]]]></mobile_cols>
+		<block_class><![CDATA[[""]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[27]]></padding_top>
+		<padding_bottom><![CDATA[20]]></padding_bottom>
+		<block_position><![CDATA[2]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block28]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[["12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12"]]]></mobile_cols>
+		<block_class><![CDATA[[""]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[]]></padding_top>
+		<padding_bottom><![CDATA[]]></padding_bottom>
+		<block_position><![CDATA[3]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block29]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[["12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12"]]]></mobile_cols>
+		<block_class><![CDATA[[""]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[67]]></padding_top>
+		<padding_bottom><![CDATA[20]]></padding_bottom>
+		<block_position><![CDATA[4]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block30]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[]]></tablet_cols>
+		<mobile_cols><![CDATA[]]></mobile_cols>
+		<block_class><![CDATA[]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[]]></background_repeat>
+		<background_cover><![CDATA[]]></background_cover>
+		<parallax><![CDATA[]]></parallax>
+		<fullwidth><![CDATA[]]></fullwidth>
+		<padding_top><![CDATA[]]></padding_top>
+		<padding_bottom><![CDATA[]]></padding_bottom>
+		<block_position><![CDATA[5]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block31]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[4,4,4]]></block_cols>
+		<tablet_cols><![CDATA[["6","6","12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12","12","12"]]]></mobile_cols>
+		<block_class><![CDATA[["margin-bottom30","margin-bottom30","margin-bottom30"]]]></block_class>
+		<class><![CDATA[title-v5]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[68]]></padding_top>
+		<padding_bottom><![CDATA[22]]></padding_bottom>
+		<block_position><![CDATA[6]]></block_position>
+	</section>
+	<block>
+		<block_name><![CDATA[block27-0]]></block_name>
+		<type><![CDATA[attribute_products]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"Featured Product","additional_content":"<a href=\"#\">Browse All<span class=\"fa fa-angle-double-right\" aria-hidden=\"true\">\u00a0<\/span><\/a>","animation":"","animation_delay":"","attribute":"featured","limit":"6","perrow":"4","numbercol":"1","percol":"","template":"grid.phtml","ratio":"4","use_slider":"1","number_row":"1","navigation":"1","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","autoplay":0,"stop_auto":0,"pagination":0,"use_tabs":0,"loadmore":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[title-v4]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Products\Attributes" mgs_panel_title="Featured Product" mgs_panel_note="&lt;a href=&#34;#&#34;&gt;Browse All&lt;span class=&#34;fa fa-angle-double-right&#34; aria-hidden=&#34;true&#34;&gt; &lt;/span&gt;&lt;/a&gt;" limit="6" ratio="4" category_ids="" attribute="featured" use_slider="1" loadmore="0" template="products/attribute/grid.phtml" perrow="4" autoplay="0" stop_auto="0" navigation="1" pagination="0" number_row="1"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block29-0]]></block_name>
+		<type><![CDATA[new_products]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"Latest Products","additional_content":"<a href=\"#\">Browse All<span class=\"fa fa-angle-double-right\" aria-hidden=\"true\">\u00a0<\/span><\/a>","animation":"","animation_delay":"","limit":"8","perrow":"5","numbercol":"1","percol":"","template":"grid.phtml","ratio":"4","use_slider":"1","number_row":"1","navigation":"1","category_id":["32"],"text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","autoplay":0,"stop_auto":0,"pagination":0,"use_tabs":0,"loadmore":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[title-v4]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Products\NewProducts" mgs_panel_title="Latest Products" mgs_panel_note="&lt;a href=&#34;#&#34;&gt;Browse All&lt;span class=&#34;fa fa-angle-double-right&#34; aria-hidden=&#34;true&#34;&gt; &lt;/span&gt;&lt;/a&gt;" limit="8" ratio="4" category_ids="32" use_slider="1" loadmore="0" template="products/new/grid.phtml" perrow="5" autoplay="0" stop_auto="0" navigation="1" pagination="0" number_row="1"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block30-0]]></block_name>
+		<type><![CDATA[testimonial]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"What's Client Say?","additional_content":"","animation":"","animation_delay":"","limit":"3","perrow":"1","template":"boxed_border","show_avatar":"1","use_slider":"1","pagination":"1","autoplay":0,"stop_auto":0,"navigation":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[{{block class="MGS\Testimonial\Block\Testimonial" mgs_panel_title="What&#39;s Client Say?" mgs_panel_note="" testimonials_count="3" perrow="1" show_avatar="1" use_slider="1" template_mode="boxed_border" template="grid.phtml" autoplay="0" stop_auto="0" navigation="0" pagination="1"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block31-0]]></block_name>
+		<type><![CDATA[new_products]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"New In","additional_content":"","animation":"","animation_delay":"","limit":"3","perrow":"1","numbercol":"1","percol":"3","template":"list.phtml","ratio":"4","number_row":"1","category_id":["45"],"text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","use_slider":0,"autoplay":0,"stop_auto":0,"navigation":0,"pagination":0,"use_tabs":0,"loadmore":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Products\NewProducts" mgs_panel_title="New In" mgs_panel_note="" limit="3" ratio="4" category_ids="45" use_slider="0" loadmore="0" template="products/new/list.phtml" numbercol="1" percol="3"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block31-1]]></block_name>
+		<type><![CDATA[attribute_products]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"Special","additional_content":"","animation":"","animation_delay":"","attribute":"special","limit":"3","perrow":"1","numbercol":"1","percol":"3","template":"list.phtml","ratio":"4","number_row":"1","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","use_slider":0,"autoplay":0,"stop_auto":0,"navigation":0,"pagination":0,"use_tabs":0,"loadmore":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Products\Attributes" mgs_panel_title="Special" mgs_panel_note="" limit="3" ratio="4" category_ids="" attribute="special" use_slider="0" loadmore="0" template="products/attribute/list.phtml" numbercol="1" percol="3"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block31-2]]></block_name>
+		<type><![CDATA[rate]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"Most View","additional_content":"","animation":"","animation_delay":"","limit":"3","perrow":"1","numbercol":"1","percol":"3","template":"list.phtml","ratio":"4","number_row":"1","category_id":["28"],"text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","use_slider":0,"autoplay":0,"stop_auto":0,"navigation":0,"pagination":0,"use_tabs":0,"loadmore":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Products\Rate" mgs_panel_title="Most View" mgs_panel_note="" limit="3" ratio="4" category_ids="28" use_slider="0" loadmore="0" template="products/rate/list.phtml" numbercol="1" percol="3"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block26-0]]></block_name>
+		<type><![CDATA[owl_banner]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":"","links":["","","","","","","","","",""],"images":["home_2_slider_1.jpg","home_2_slider_2.jpg","home_2_slider_3.jpg"],"effect":"1","autoplay":"1","speed":"5000","navigation":"1","pagination":"1","loop":"1","fullscreen":0,"stop_auto":0,"rtl":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Widget\OwlCarousel" images="home_2_slider_1.jpg,home_2_slider_2.jpg,home_2_slider_3.jpg" links=",,,,,,,,," fullscreen="0" autoplay="1" stop_auto="0" navigation="1" pagination="1" loop="1" rtl="0" speed="5000" effect="1" template="widget/owl_slider.phtml"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block26-1]]></block_name>
+		<type><![CDATA[promo_banner]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":"","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","banner_id":"ethan_banner_jackets_for_women_h3"}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[col-sm-6 col-xs-12 margin-bottom30]]></class>
+		<block_content><![CDATA[{{widget type="MGS\Promobanners\Block\Widget\Banner" banner_id="ethan_banner_jackets_for_women_h3" template="banner.phtml"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block26-1]]></block_name>
+		<type><![CDATA[promo_banner]]></type>
+		<position><![CDATA[2]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":"","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","banner_id":"ethan_banner_season_on_sale_h3"}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[col-sm-6 col-xs-12 margin-bottom30]]></class>
+		<block_content><![CDATA[{{widget type="MGS\Promobanners\Block\Widget\Banner" banner_id="ethan_banner_season_on_sale_h3" template="banner.phtml"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block28-0]]></block_name>
+		<type><![CDATA[deals]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"Deal Of The Day","additional_content":"","animation":"","animation_delay":"","limit":"1","perrow":"1","template":"one_item.phtml","ratio":"1","number_row":"1","category_id":["29"],"text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","use_slider":0,"autoplay":0,"stop_auto":0,"navigation":0,"pagination":0,"use_tabs":0,"loadmore":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Products\Deals" mgs_panel_title="Deal Of The Day" mgs_panel_note="" limit="1" perrow="1" ratio="1" category_ids="29" use_slider="0" loadmore="0" template="products/deals/one_item.phtml"}}]]></block_content>
+	</block>
+	<promo_banner>
+		<item>
+			<title><![CDATA[Ethan Banner Jackets For Women_Home3]]></title>
+			<filename><![CDATA[/h/o/home_3_banner_1.jpg]]></filename>
+			<url><![CDATA[#]]></url>
+			<button><![CDATA[]]></button>
+			<text_align><![CDATA[top-left]]></text_align>
+			<content><![CDATA[<div class="padding-left5 padding-top5">
+<h6>Jackets For Women</h6>
+<em>New Trend 2017</em>
+</div>]]></content>
+			<effect><![CDATA[zoom]]></effect>
+			<custom_class><![CDATA[]]></custom_class>
+			<status><![CDATA[1]]></status>
+			<identifier><![CDATA[ethan_banner_jackets_for_women_h3]]></identifier>
+		</item>
+		<item>
+			<title><![CDATA[Ethan Banner Season On Sale Home3]]></title>
+			<filename><![CDATA[/h/o/home_3_banner_2.jpg]]></filename>
+			<url><![CDATA[]]></url>
+			<button><![CDATA[]]></button>
+			<text_align><![CDATA[top-left]]></text_align>
+			<content><![CDATA[<div class="padding-left5 padding-top5">
+<h6>Season On Sale</h6>
+<em>Women's Fashion</em>
+</div>]]></content>
+			<effect><![CDATA[zoom]]></effect>
+			<custom_class><![CDATA[]]></custom_class>
+			<status><![CDATA[1]]></status>
+			<identifier><![CDATA[ethan_banner_season_on_sale_h3]]></identifier>
+		</item>
+	</promo_banner>
+	<theme_setting>
+		<general>
+			<footer>footer_3</footer>
+			<header>header_2</header>
+		</general>
+	</theme_setting>
+
+</home>

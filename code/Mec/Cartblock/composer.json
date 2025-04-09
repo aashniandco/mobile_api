@@ -1,0 +1,22 @@
+{
+    "name": "mec/module-cartblock",
+    "description": "This extension is to show block in cart page",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Mage2Gen",
+            "email": "info@mage2gen.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Mec\\Cartblock\\": ""
+        }
+    }
+}

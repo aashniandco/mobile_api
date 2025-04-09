@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../app/code/Magento/Webapi/etc/webapi.xsd">
+	<route method="POST" url="/V1/app_forgot_password/">
+        <service class="Fermion\NativeApp\Api\ForgotPasswordInterface" method="getForgotPasswordLink"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route method="POST" url="/V1/app_forgot_pass_validate_token/">
+        <service class="Fermion\NativeApp\Api\ForgotPassTokenValidationInterface" method="validateTokenForgotPassword"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route method="POST" url="/V1/app_customer_signup/">
+        <service class="Fermion\NativeApp\Api\CustomerSignupInterface" method="registerCustomer"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route method="POST" url="/V1/app_customer_reset_password/">
+        <service class="Fermion\NativeApp\Api\ResetPasswordInterface" method="resetCustomerPassword"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route method="POST" url="/V1/app_customer_signin/">
+        <service class="Fermion\NativeApp\Api\CustomerSigninInterface" method="signinCustomer"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route method="POST" url="/V1/app_edit_customer_details/">
+        <service class="Fermion\NativeApp\Api\EditCustomerDetailsInterface" method="editCustomerDetails"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route method="POST" url="/V1/app_google_signin/">
+        <service class="Fermion\NativeApp\Api\GoogleSigninInterface" method="signInWithGoogle"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route method="POST" url="/V1/app_facebook_signin/">
+        <service class="Fermion\NativeApp\Api\FacebookSigninInterface" method="signInWithFacebook"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route method="POST" url="/V1/app_apple_signin/">
+        <service class="Fermion\NativeApp\Api\AppleSigninInterface" method="signInWithApple"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route method="POST" url="/V1/app_fetch_customer_details/">
+        <service class="Fermion\NativeApp\Api\FetchUserDetailsInterface" method="fetchDetails"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route method="POST" url="/V1/app_getmegamenu/">
+        <service class="Fermion\NativeApp\Api\GetMegamenuInterface" method="getMegamenu"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+</routes>

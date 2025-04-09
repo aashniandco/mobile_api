@@ -1,0 +1,12 @@
+<?php $megaMenu = $this->getMegamenuItems(); ?>
+<?php if (count($megaMenu) > 0): ?>
+    <ul id="vertical-menu-<?php echo $this->getMenuId() ?>" class="vertical-menu nav nav-pills nav-main">
+        <?php if (count($megaMenu) > 0): ?>
+            <?php foreach ($megaMenu as $item): ?>
+                <li class="<?php echo $this->getClass($item) ?>">
+                    <?php echo $this->getMenuHtml($item) ?>
+                </li>
+            <?php endforeach ?>
+        <?php endif ?>
+    </ul>
+<?php endif ?>

@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+	<table name="mec_purchaseorder_purchase_order" resource="default" engine="innodb" comment="mec_purchaseorder_purchase_order Table">
+		<column xsi:type="smallint" name="purchase_order_id" padding="6" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="purchase_order_id"/>
+		</constraint>
+		<column name="po_number" nullable="true" xsi:type="text" comment="po_number"/>
+		<column name="order_id" nullable="true" xsi:type="int" comment="order_id" identity="false"/>
+		<column name="gst_number" nullable="true" xsi:type="varchar" comment="gst_number" length="255"/>
+		<column name="vendor" nullable="true" xsi:type="varchar" comment="vendor" length="255"/>
+		<column name="merchandiser_details" nullable="true" xsi:type="text" comment="merchandiser_details"/>
+		<column name="ship_to" nullable="true" xsi:type="varchar" comment="ship_to" length="255"/>
+		<column name="serial_no" nullable="true" xsi:type="text" comment="serial_no"/>
+		<column name="order_increment_id" nullable="true" xsi:type="varchar" comment="order_increment_id" length="255"/>
+		<column name="sku" nullable="true" xsi:type="varchar" comment="sku" length="255"/>
+		<column name="vendor_code" nullable="true" xsi:type="varchar" comment="vendor_code" length="255"/>
+		<column name="description" nullable="true" xsi:type="text" comment="description"/>
+	</table>
+</schema>

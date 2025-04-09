@@ -1,0 +1,129 @@
+<?php 
+//die("mithi2");
+$themeHelper = $this->helper('MGS\Mpanel\Helper\Data'); ?>
+<?php if($themeHelper->getStoreConfig('mpanel/newsletter_popup/enable_newsletter')): ?>
+	<?php  ?>
+	<?php 
+		$ObjectManagerMap = \Magento\Framework\App\ObjectManager::getInstance();
+		$storeManager = $ObjectManagerMap->get('Magento\Store\Model\StoreManagerInterface');
+		$currentStore = $storeManager->getStore();
+		$mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+		if($themeHelper->getStoreConfig('mpanel/newsletter_popup/html_newsletter')){
+			$html = $themeHelper->getStoreConfig('mpanel/newsletter_popup/html_newsletter');
+		}else{
+			$html = "<h3>Join Our Newsletter</h3><p>Sign up for our newsletter and get the latest glad tidings from we.</p>";
+		}
+		$image = "";
+		if($themeHelper->getStoreConfig('mpanel/newsletter_popup/newsletter_background')) {
+			$image = $mediaUrl.'bg_newsletter/'.$themeHelper->getStoreConfig('mpanel/newsletter_popup/newsletter_background')."?v=0.4";
+		}
+		// if($themeHelper->getStoreConfig('mpanel/newsletter_popup/newsletter_background')) {
+		// 	$image = $mediaUrl.'bg_newsletter/default/Pop-up.jpg';
+		// }
+		if($themeHelper->getStoreConfig('mpanel/newsletter_popup/popup_width')) {
+			$width = $themeHelper->getStoreConfig('mpanel/newsletter_popup/popup_width') . 'px';
+		}else{
+			$width = '800px';
+		}
+		if($themeHelper->getStoreConfig('mpanel/newsletter_popup/popup_height')) {
+			$height = $themeHelper->getStoreConfig('mpanel/newsletter_popup/popup_height') . 'px';
+		}else{
+			$height = '450px';
+		}
+		$newsletterForm = $this->getLayout()->createBlock("Magento\Newsletter\Block\Subscribe")->setTemplate("Magento_Newsletter::subscribe_popup.phtml")->toHtml();
+	?>
+<!-- <input type="hidden" name="cookie-consent-popup" id="cookie-consent-popup" value=""> -->
+	<div class="black-bg" id="newsletter-plot-cookies" style="display: none;">
+<!-- <div class="black-bg" id="newsletter-plot-cookies"> -->
+            <div class="accept-popup-slot">
+                <div class="accept-request">
+                    <div class="request-plot">
+                        <div class="content">
+                            <p class="paragraph">This website requires cookies to provide all of its features. For more information on the data contained in the cookies, please see our<a class="policy-link" href="/privacy.html"> Privacy Policy Page</a>. To accept cookies from this site, please click the 'Accept' button below.</p>
+                            <div class="btn-block">
+                                <a href="javascript:void(0)" class="reject-all" id="submit">Reject</a>
+                                <a href="javascript:void(0)" class="accept-all" id="submit">Accept</a>
+                                <!-- <a href="" class="accept-all" onclick="flag()">Accept All</a> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>          
+        </div>
+	
+	<div style="display:none">
+		<div class="newsletter_popup" id="newsletter-popup" style="width: <?php echo $width; ?>; height: <?php echo $height; ?>; <?php if($image): ?>background-image: url('<?php echo $image ?>');<?php else: ?>background-color: #fff;<?php endif ?>">
+			<button class="action-close" data-role="closeBtn" type="button">
+                <span>Close</span>
+            </button>
+			<div class="block-popup-subscribe">
+				<div class="block-popup-top" style="<?php if ($image==''){echo 'width:100%';}?>">
+					<div class="newsletter-popup-content">
+						<?php echo $html; ?>
+					</div>
+					<div class="newsletter-popup-form">
+						<?php echo $newsletterForm; ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+			require(
+			[
+				'jquery',
+				'Magento_Ui/js/modal/modal'
+			],
+			function( $, modal ) {
+				$(window).load(function () {
+					if($(window).width() > 991) {
+						if(getCookie('newsletterpopup')!='nevershow'){
+							if ($('#newsletter-popup').length) {
+								var options = {
+									type: 'popup',
+									modalClass: 'modal_newsletter_popup',
+									responsive: true,
+									innerScroll: true,
+									title: '',
+									buttons: []
+								};
+
+								var newsletterPopup = modal(options, $('#newsletter-popup'));
+
+								//$('#newsletter-popup').trigger('openModal');
+								 setTimeout(function(){  $('#newsletter-popup').trigger('openModal'); }, 60000);
+							}
+						}
+					}
+				});
+			});
+			function getCookie(cname) {
+				console.log('get coookie from mout');
+				var name = cname + "=";
+				var ca = document.cookie.split(';');
+				for(var i=0; i<ca.length; i++) {
+					var c = ca[i];
+					while (c.charAt(0)==' ') c = c.substring(1);
+					if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+				}
+				return "";
+			} 
+
+			function dontShowPopup(el){
+				require(
+				[
+					'jquery'
+				],
+				function( $ ) {
+					if($('#'+el).prop('checked')) {
+						var d = new Date();
+						d.setTime(d.getTime() + (24*60*60*1000*365));
+						var expires = "expires="+d.toUTCString();
+						document.cookie = 'newsletterpopup' + "=" + 'nevershow' + "; " + expires;
+					} else {
+						document.cookie = 'newsletterpopup' + "= ''; -1";
+					}
+				});
+			}
+	</script>
+<?php endif ?>

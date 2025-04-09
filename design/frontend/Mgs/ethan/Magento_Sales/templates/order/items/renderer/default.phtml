@@ -1,0 +1,239 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var  $block \Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer */
+$_item = $block->getItem();
+
+$Trackingno="";
+$TrackingURL="";
+$Tracking = $_item->getTracking();
+if($Tracking != ''){
+    $Trackstr=explode(',',$Tracking);
+    $Trackingno=$Trackstr[0];
+    $TrackingURL=$Trackstr[1];
+}
+
+$proddate = "";
+$Qcdate="";
+$Shipdate="";
+$Ccdate="";
+$Deliverdate="";
+
+$StatusDate = $_item->getStatusdate();
+if(!empty($StatusDate)){
+    $str=explode(',',$StatusDate);
+    $proddate=$str[0];
+    $Qcdate=$str[1];
+    $Shipdate=$str[2];
+    $Ccdate=$str[3];
+    $Deliverdate=$str[4];
+}
+
+$ac1=""; $ac2=""; $ac3=""; $ac4=""; $ac5=""; $ac6=""; $CurrStatus='';$Status='';
+$Status = $_item->getItemstatus();
+
+if($Status==1){ $ac1="active"; $CurrStatus="In Production";}
+if($Status==2){ $ac2="active"; $CurrStatus="Quality Control";}
+if($Status==3){ $ac3="active"; $CurrStatus="Shipped";}
+if($Status==4){ $ac4="active"; $CurrStatus="Custom Clearance";}
+if($Status==5){ $ac5="active"; $CurrStatus="Delivered";}
+if($Status==6){ $ac6="";       $CurrStatus="Cancelled";}
+
+
+if($CurrStatus==''||$CurrStatus== NULL){$CurrStatus="In Pending";}
+
+$productId = $_item->getProductId(); //this is child product id
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();    
+    $product = $objectManager->create('Magento\ConfigurableProduct\Model\Product\Type\Configurable')->getParentIdsByChild($productId);
+     if(isset($product[0])){
+         //this is parent product id..
+         $parentId = $product[0];
+    }else{
+         $parentId = $productId; 
+    }
+$_product = $objectManager->create('Magento\Catalog\Model\Product')->load($parentId);
+$imageHelper  = $objectManager->get('\Magento\Catalog\Helper\Image');
+   
+    if ($_item->getproduct_type() == 'mageworx_giftcards') {
+        $product_item=$_item->getProductOptions();
+        $storeManager = \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Store\Model\StoreManagerInterface::class);
+        $mediaUrl = $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+        $imageBaseUrl = $mediaUrl . 'catalog/product';
+        $images = isset($product_item['info_buyRequest']['image_url']) ? $product_item['info_buyRequest']['image_url'] : '';
+        $imageUrl = $imageBaseUrl.$images;
+    }else{
+        $imageUrl = $imageHelper->init($_product, 'product_page_image_small')->setImageFile($_product->getImage())->resize(100, 150)->getUrl();
+    }
+       
+?>
+<tr id="order-item-row-<?= (int) $_item->getId() ?>">
+    <td class="col image">       
+        <img src="<?php echo $imageUrl; ?>" alt="No Image" width="100px" />
+    </td>
+    <td class="col name" data-th="<?= $block->escapeHtmlAttr(__('Product Name')) ?>">
+        <strong class="product name product-item-name"><?= $block->escapeHtml($_item->getName()) ?></strong>
+        <?php if ($_options = $block->getItemOptions()) : ?>
+            <dl class="item-options">
+            <?php foreach ($_options as $_option) : ?>
+                <dt><?= $block->escapeHtml($_option['label']) ?></dt>
+                <?php if (!$block->getPrintStatus()) : ?>
+                    <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                    <dd<?= (isset($_formatedOptionValue['full_view']) ? ' class="tooltip wrapper"' : '') ?>>
+                        <?= $block->escapeHtml($_formatedOptionValue['value'], ['a', 'img']) ?>
+                        <?php if (isset($_formatedOptionValue['full_view'])) : ?>
+                            <div class="tooltip content">
+                                <dl class="item options">
+                                    <dt><?= $block->escapeHtml($_option['label']) ?></dt>
+                                    <dd><?= $block->escapeHtml($_formatedOptionValue['full_view']) ?></dd>
+                                </dl>
+                            </div>
+                        <?php endif; ?>
+                    </dd>
+                <?php else : ?>
+                    <dd><?= $block->escapeHtml((isset($_option['print_value']) ? $_option['print_value'] : $_option['value'])) ?></dd>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            </dl>
+        <?php endif; ?>
+        <?php $addtInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+        <?php if ($addtInfoBlock) : ?>
+            <?= $addtInfoBlock->setItem($_item)->toHtml() ?>
+        <?php endif; ?>
+        <?= $block->escapeHtml($_item->getDescription()) ?>
+    </td>
+    <td class="col sku" data-th="<?= $block->escapeHtmlAttr(__('SKU')) ?>"><?= /* @noEscape */ $block->prepareSku($block->getSku()) ?></td>
+    <td class="col price" data-th="<?= $block->escapeHtmlAttr(__('Price')) ?>">
+        <?= $block->getItemPriceHtml() ?>
+    </td>
+    <td class="col qty" data-th="<?= $block->escapeHtmlAttr(__('Qty')) ?>">
+        <ul class="items-qty">
+        <?php if ($block->getItem()->getQtyOrdered() > 0) : ?>
+            <li class="item">
+                <span class="title"><?= $block->escapeHtml(__('Ordered')) ?></span>
+                <span class="content"><?= (float) $block->getItem()->getQtyOrdered() ?></span>
+            </li>
+        <?php endif; ?>
+        <?php if ($block->getItem()->getQtyShipped() > 0) : ?>
+            <li class="item">
+                <span class="title"><?= $block->escapeHtml(__('Shipped')) ?></span>
+                <span class="content"><?= (float) $block->getItem()->getQtyShipped() ?></span>
+            </li>
+        <?php endif; ?>
+        <?php if ($block->getItem()->getQtyCanceled() > 0) : ?>
+            <li class="item">
+                <span class="title"><?= $block->escapeHtml(__('Canceled')) ?></span>
+                <span class="content"><?= (float) $block->getItem()->getQtyCanceled() ?></span>
+            </li>
+        <?php endif; ?>
+        <?php if ($block->getItem()->getQtyRefunded() > 0) : ?>
+            <li class="item">
+                <span class="title"><?= $block->escapeHtml(__('Refunded')) ?></span>
+                <span class="content"><?= (float) $block->getItem()->getQtyRefunded() ?></span>
+            </li>
+        <?php endif; ?>
+        </ul>
+    </td>
+    <td class="col subtotal" data-th="<?= $block->escapeHtmlAttr(__('Subtotal')) ?>">
+        <?= $block->getItemRowTotalHtml() ?>
+    </td>
+    <td class="col status"><?php echo $CurrStatus;?></td>
+</tr>
+<tr>
+    <td colspan="7" style="border:none;">
+        <div class="row">
+        <div style="padding:0px;" class="col-sm-12">
+            <ul class="order_processing">
+                <li class="<?php echo $ac1; ?>">
+                    <img class="box_arrows" src="<?php echo $this->getUrl('pub/media/order_page/').'arrow.png'; ?>">
+                    <div class="list_step first"> 
+                    <img style="width:40%" src="<?php echo $this->getUrl('pub/media/order_page/').'inproduction.png'; ?>">
+                    <p>In Production</p>
+                    </div>
+                    <?php if(!empty($proddate)){ ?>
+                    <div class="list_step1"><?php echo $proddate; ?></div>
+                    <?php } ?>
+                </li>
+                <li class="<?php echo $ac2; ?>">
+                    <img class="box_arrows" src="<?php echo $this->getUrl('pub/media/order_page/').'arrow.png'; ?>">
+                    <div class="list_step">
+                    <img style="width:40%" src="<?php echo $this->getUrl('pub/media/order_page/').'quality_control.png'; ?>">
+                    <p>Quality Control</p>
+                    </div>
+                    <?php if(!empty($Qcdate)){ ?>
+                    <div class="list_step1">Expected Date<br><?php echo $Qcdate; ?></div>
+                    <?php } ?>
+                </li>  
+                <li class="<?php echo $ac3; ?>"> 
+                    <img class="box_arrows" src="<?php echo $this->getUrl('pub/media/order_page/').'arrow.png'; ?>">
+                    <div class="list_step">
+                    <img style="width:40%" src="<?php echo $this->getUrl('pub/media/order_page/').'shipped.png'; ?>">
+                    <p>Shipped</p>
+                    </div>
+                    <?php if(!empty($Shipdate)){ ?> 
+                    <div class="list_step1">Expected Date<br><?php echo $Shipdate; ?></div>
+                    <?php } ?>
+                </li>  
+                <li class="<?php echo $ac4; ?>"> 
+                    <img class="box_arrows" src="<?php echo $this->getUrl('pub/media/order_page/').'arrow.png'; ?>">
+                    <div class="list_step">
+                    <img style="width:40%" src="<?php echo $this->getUrl('pub/media/order_page/').'custom_clearance.png'; ?>">
+                    <p>Custom Clearance</p>
+                    </div>
+                    <?php if(!empty($Ccdate)){ ?>
+                    <div class="list_step1">Expected Date<br><?php echo $Ccdate; ?></div>
+                    <?php } ?>
+                </li>
+                <li class="<?php echo $ac5; ?>">
+                    <div class="list_step last">
+                    <img style="width:40%" src="<?php echo $this->getUrl('pub/media/order_page/').'delivered.png'; ?>">
+                    <p>Delivered  </p>
+                    </div>
+                    <?php if(!empty($Deliverdate)){ ?>
+                    <div class="list_step1">Expected Date<br><?php echo $Deliverdate; ?></div>
+                    <?php } ?>
+                </li>
+            </ul>
+        </div>
+
+        <?php if(($Status==3 || $Status==4 || $Status==5) &&  $TrackingURL!=''){ ?>
+        <div class="tracking col-sm-12" style="text-align:right;">
+             <p><strong><?php echo $Trackingno; ?></strong> <a href="<?php echo $TrackingURL;?>" target="_blank">Click Here to Track </a></p>
+        </div>
+        <?php } ?>
+
+        </div>
+    </td>
+</tr>
+<style>
+@media screen and (min-device-width:501px) and (max-device-width: 750px) { 
+.order_processing li .list_step{font-size: 12px !important; }
+.order_processing li .list_step1{font-size: 11px !important;}
+}
+@media only screen and (max-width:500px) {
+.order_processing li{ float:left; width:49.5% !important; position:relative; display:block; padding:0px; margin:0px; list-style:none;
+}
+}
+#my-orders-table tr td:nth-child(6) {white-space: nowrap; width: 13%;}
+#my-orders-table tr td:nth-child(5) {white-space: nowrap;}
+#my-orders-table tr td:nth-child(4) {white-space: nowrap;}
+#my-orders-table tr td:nth-child(3) {white-space: nowrap;}
+.order_processing{position: relative; top: -11px; padding:0px; margin:0px; list-style:none; }
+.order_processing li{ float:left; width:20%; position:relative; display:block;
+padding:0px; margin:0px; list-style:none;
+}
+.order_processing .first{ border-left:1px #ccc solid !important;}
+.order_processing .last{ border-right:1px #ccc solid !important; }
+.order_processing li .list_step{min-height:100px;text-align: center;  margin:0px; border:1px #ccc solid; padding:10px; font-size:14px; color:#000;
+border-right:0px; border-left:0px; 
+}
+.order_processing li .list_step img{fill: url(#pattern); }
+.order_processing .active .list_step{ border-color:#379e43 !important; background:#def2e1;}
+.trackno{display:none;}
+.order_processing .active .trackingno{display:block !important;}
+.order_processing li .list_step1{min-height:62px;text-align: center;  margin:0px; border:1px #ccc solid; padding:10px; font-size:14px; color:#000;}
+.tracking{display::block !important;} 
+.box_arrows{ position:absolute;  right: -20px; top: 25%; width:12%; z-index: 1;}        
+</style>    

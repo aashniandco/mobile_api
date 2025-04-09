@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi/etc/webapi.xsd">
+    <route url="/V1/solr/products" method="GET">
+        <service class="Aashni\MobileApi\Api\SolrInterface" method="getSolrData"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+
+   <!-- Route to Fetch Data for a Specific Designer -->
+    <route url="/V1/solr/designer" method="GET">
+        <service class="Aashni\MobileApi\Api\SolrInterface" method="getDesignerData"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+        <parameters>
+            <parameter name="designer_name" type="string" in="query" required="true"/>
+        </parameters>
+    </route>
+
+
+  <!-- Route to Fetch Data for a NewInWomensclothe -->
+   <route url="/V1/solr/newin" method="GET">
+        <service class="Aashni\MobileApi\Api\SolrInterface" method="getNewInData"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+
+      <!-- Route to Fetch Data for a NewInAccessories -->
+   <route url="/V1/solr/new-in-accessories" method="GET">
+        <service class="Aashni\MobileApi\Api\SolrInterface" method="getNewInAccessories"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+</routes>

@@ -1,0 +1,147 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Checkout\Block\Cart\Sidebar */
+?>
+<div data-block="minicart" class="minicart-wrapper">
+    <a class="action showcart" href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
+       data-bind="scope: 'minicart_content'">
+        <span class="text"><?php /* @escapeNotVerified */ echo __('Cart'); ?></span>
+        <span class="counter qty empty"
+              data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
+            <span class="counter-number"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
+            <span class="counter-label">
+            <!-- ko if: getCartParam('summary_count') -->
+                <!-- ko text: getCartParam('summary_count') --><!-- /ko -->
+                <!-- ko i18n: 'items' --><!-- /ko -->
+            <!-- /ko -->
+            </span>
+        </span>
+    </a>
+    <?php if ($block->getIsNeedToDisplaySideBar()): ?>
+        <div class="block block-minicart empty"
+             data-role="dropdownDialog"
+             data-mage-init='{"dropdownDialog":{
+                "appendTo":"[data-block=minicart]",
+                "triggerTarget":".showcart",
+                "timeout": "2000",
+                "closeOnMouseLeave": false,
+                "closeOnEscape": true,
+                "triggerClass":"active",
+                "parentClass":"active",
+                "buttons":[]}}'>
+            <div id="minicart-content-wrapper" data-bind="scope: 'minicart_content'">
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            </div>
+
+            <style type="text/css">
+                .minicart-wrapper .block-minicart{
+                    padding: 15px 0px 0px 0;
+                }
+                .minicart-items-wrapper {
+                    margin: 0 0px 0 0;
+                }
+                .product-item {
+                    padding: 12px;
+                    text-align: center;
+                }
+                .header.header7 .login-custom-link a{
+                    margin: 2px 0px 0px 5px;
+                }
+                .minicart-items .product-item .product-item-details{
+                    padding-right: 0px;
+                    width: calc(100% - 85px);
+                    padding-left: 0;
+                }
+
+                .minicart-items .product-item .product-item-details .product-item-name{
+                    width: 100%;
+                    float: left;
+                }
+
+                #mini-cart .product-item-details .product-item-name a {
+                    font-size: 15px;
+                    color: #000;
+                    width: 100%;
+                    float: left;
+                    text-align: left;
+                    margin: 2px 0 0 0px;
+                }
+
+                .minicart-items .product-item .product-item-details .product.options{
+                    /*width: 100%;*/
+                    float: left;
+                    text-align: left;
+                }
+                .minicart-items .product-item .product-item-details .product-item-pricing {
+                    margin-top: 0px;
+                    float: left;
+                    width: 100%;
+                }
+                .minicart-items .product-item .product-item-details .product-item-pricing .price-container {
+                    text-align: left;
+                    float: left;
+                    margin-right: 0px;
+                    width: 100%;
+                }
+                .minicart-items .product-item .details-qty.qty {
+                    margin-top: 5px;
+                    float: left;
+                }
+
+                .minicart-items .product-item .product.actions {
+                    position: absolute;
+                    right: 4px;
+                    top: 29%;
+                }
+
+                .minicart-wrapper .block-content>.actions>.subtotal {
+                    margin-top: 12px;
+                    display: table;
+                    width: 100%;
+                    padding: 15px;
+                    border-top: 1px solid #ebebeb;
+                }
+
+                .minicart-wrapper .block-content>.actions>.subtotal>span.label{
+                    border-top: 0;
+                    padding-top: 0;
+                    padding-bottom: 0;
+                    font-size: 16px;    
+                }
+                .minicart-wrapper .block-content>.actions>.subtotal>.amount.price-container{
+                    border-top: 0;
+                    padding-top: 0;
+                    padding-bottom: 0;
+                    text-align: right;
+                    font-size: 16px;    
+                }
+                .minicart-wrapper .block-content>.actions .action{
+                    margin-bottom: 0px;
+                }
+
+            </style>
+            <?php echo $block->getChildHtml('minicart.addons'); ?>
+        </div>
+    <?php endif ?>
+    <script>
+        window.checkout = <?php /* @escapeNotVerified */ echo \Zend_Json::encode($block->getConfig()); ?>;
+    </script>
+    <script type="text/x-magento-init">
+    {
+        "[data-block='minicart']": {
+            "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */ echo $block->getJsLayout();?>
+        },
+        "*": {
+            "Magento_Ui/js/block-loader": "<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>"
+        }
+    }
+    </script>
+</div>
+
+

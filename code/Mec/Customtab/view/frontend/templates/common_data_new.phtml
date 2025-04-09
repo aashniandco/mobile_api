@@ -1,0 +1,289 @@
+<?php $product = $block->getProduct(); ?>
+<?php $componentdata = $product->getData('components'); ?>
+<?php $noOfComponents = $product->getData('no_of_components') ?>
+<?php  
+$helper = $this->helper('Mec\Customtab\Helper\Data');
+$sold_out_flag = 0 ; 
+$response_array = $helper->getSolrProductTag($product->getData('entity_id'));
+if(isset($response_array['response']['docs'][0]['prod_availability_label']) && $response_array['response']['docs'][0]['prod_availability_label']=='Out of stock') 
+{
+ $sold_out_flag = 1 ; 
+}
+
+$whatsapp_number = $helper->getWhatsappNumber(); 
+$telephone_number = $helper->getTelephoneNumber(); 
+$customer_care_email = $helper->getCustomerCareEmail(); 
+?>
+<div class="custom-product-tab">
+    <?php if($sold_out_flag) { echo '<b><font size="4">SOLD OUT</font></b>' ; } ?>
+    <div class="nav nav-tabs" role="tablist">
+        <div class="pdp-accordion" role="presentation"><a href="#custom-details" aria-controls="custom-details" role="tab" data-toggle="tab"><span>Details</span><i class="fa fa-plus"></i></a>
+            <div class="tab-content">
+                <div class="tab-pane" id="custom-details">
+                    <?php echo $product->getData('description'); ?>
+                    <?php if(!empty($noOfComponents)): ?>
+                        <div style="margin-top:10px">
+                            <span class = "pdp-tab-title" >No. of Components :</span>
+                            <span class = "pdp-tab-content"> <?= $noOfComponents; ?></span>
+                        </div>
+                    <?php endif;?>
+                    <?php if(!empty($componentdata)): ?>
+                        <div style="margin-top:10px">
+                            <span class = "pdp-tab-title" >Components :</span>
+                            <span class = "pdp-tab-content"> <?= $componentdata ?></span>
+                        </div>
+                    <?php endif;?>
+                </div>
+            </div>
+        </div>
+        <?php if(!$product->getHideprice()){?>
+            <div class="pdp-accordion" role="presentation"><a href="#custom-composition" aria-controls="custom-composition" role="tab" data-toggle="tab"><span>Composition & Care</span><i class="fa fa-plus"></i></a>
+                <div class="tab-content">
+                    <div class="tab-pane" id="custom-composition">
+                        <div>
+                            <span class = "pdp-tab-title" >Composition :</span>
+                            <span class = "pdp-tab-content"> <?php echo $product->getData('composition'); ?></span>
+                        </div>
+                        <div style="margin-top:10px">
+                            <span class = "pdp-tab-title" >Care :</span>
+                            <span class = "pdp-tab-content"> <?php echo $product->getData('care'); ?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pdp-accordion" role="presentation"><a href="#custom-delivery-and-disclaimer" aria-controls="custom-measurments" role="tab" data-toggle="tab"><span>Disclaimer</span><i class="fa fa-plus"></i></a>
+                <div class="tab-content">
+                    <div class="tab-pane" id="custom-delivery-and-disclaimer">
+                        <div>
+                            <div class = "pdp-tab-title" >Disclaimer :</div>
+                            <div class = "pdp-tab-content" > <?php echo $product->getData('disclaimer'); ?></div>
+                        </div>
+                        <!-- <div style="margin-top:10px">
+                            <span class = "pdp-tab-title" >Delivery :</span>
+                            <span class = "pdp-tab-content delivery-text"> <?php //echo $product->getData('delivery'); ?></span>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        <?php }?>
+    </div>
+</div>
+
+<style>
+.white-popup {
+  position: relative;
+  background: #FFF;
+  padding: 20px;
+  width: auto;
+  max-width: 500px;
+  margin: 20px auto;
+}
+#manufacturer .data{margin-bottom:5px;font-size:13px}
+#manufacturer {color:#000}
+#manufacturer label{font-size:15px; color:#000;margin:0px !important;font-weight:600}
+
+.custom-product-tab .nav.nav-tabs {
+    display: flex;
+    flex-direction: column;
+}
+
+.pdp-accordion .tab-content .tab-pane .pdp-tab-title{
+    text-transform: initial !important;
+    font-weight: 600;
+}
+
+.pdp-accordion.active .tab-content .tab-pane.active{
+    display: block;
+}
+
+.pdp-accordion .tab-content .tab-pane.active{
+    display: none;
+}
+
+.product-info-common .custom-product-tab .nav-tabs > div.active > a, .product-info-common .custom-product-tab .nav-tabs div a {
+    border-top: 1px solid #ddd !important;
+    padding: 7px 15px 7px 0;
+}
+
+.product-info-common .custom-product-tab .nav-tabs > div.active > a:hover, .product-info-common .custom-product-tab .nav-tabs div a:hover{
+    background-color: #eee;
+    border-color: #eee #eee #ddd;
+    border-bottom-color: transparent;
+}
+
+.product-info-common .custom-product-tab .nav-tabs > div > a{
+    display: flex;
+    transition: all 0.2s linear;
+    cursor: pointer;
+    justify-content: space-between;
+    align-items: center;
+    color: #000;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-family: Roboto;
+}
+
+.product-info-common .custom-product-tab .nav-tabs > div.active .tab-content{
+    padding: 0 0 10px 0;
+}
+
+.product-info-common .tab-content{
+    margin-top: 0 !important;
+}
+
+.custom-manufact-info-tab{
+    margin-top: 10px;
+}
+/*--------new--------*/
+.customer-support-container {
+    margin: 20px 0;
+    text-align: left;
+}
+
+.support-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.support-options {
+    display: flex;
+    justify-content: left;
+    gap: 20px;
+}
+
+.support-option {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 108px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: background-color 0.3s;
+}
+
+.support-option:hover {
+    background-color: #e0e0e0;
+}
+
+.support-option a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.support-option i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #000000;
+}
+
+.support-option span {
+    text-decoration: underline;
+    font-size: 1rem;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .customer-support-container {
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .support-options {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .support-option {
+        width: auto;
+    }
+}
+
+</style>
+
+<div class="custom-manufact-info-tab">
+    <a class="mnf_info" id="mnf" href="#" style="color:#000"  onclick="openManufacturer()">View manufacturer’s information</a>
+</div>
+<div id="manufacturer" class="white-popup mfp-hide">
+    <h4>More Information</h4>
+    <div class="data">
+        <label>Product Code:</label><?php echo $product->getData('sku'); ?>
+    </div>
+    <div class="data">
+        <label>Manufactured/Packed By:</label> Aashni Ecommerce Private Limited
+    </div>
+    <div class="data">Manufactured/Assembled in INDIA</div>
+</div>
+<div class="customer-support-container">
+    <p class="support-title">Customer Support</p>
+    <div class="support-options">
+        <div class="support-option">
+            <a href="https://api.whatsapp.com/send?phone=<?php echo $whatsapp_number; ?>&amp;text=Hello! I want to shop on Aashni, and have a question I'd like to ask - <?php echo $product->getData('sku'); ?>" target="_blank" rel="noreferrer">
+                <i class="fa fa-whatsapp"></i>
+                <span>Chat With Us</span>
+            </a>
+        </div>
+        <div class="support-option">
+            <a href="tel:+<?php echo $telephone_number; ?>" target="_blank" rel="noreferrer">
+                <i class="fa fa-phone"></i>
+                <span><?php echo $telephone_number; ?></span>
+            </a>
+        </div>
+        <div class="support-option">
+            <a href="mailto:<?php echo $customer_care_email; ?>" target="_blank" rel="noreferrer">
+                <i class="fa fa-envelope"></i>
+                <span>Mail us</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function ($) {
+        openManufacturer = function (){
+            $.magnificPopup.open({
+                items: {
+                    src: '#manufacturer',
+                     type: 'inline',
+                },
+
+                removalDelay: 300,
+                mainClass: 'mfp-fade',
+                closeOnBgClick: true,
+                preloader: true,
+                tLoading: ''
+            });
+        }
+
+        $('.product-info-common .custom-product-tab .nav-tabs > div').on('click', function(){
+            if($(this).hasClass('active')){
+                $(this).removeClass('active');
+                $(this).find('.tab-pane').removeClass('active');
+                $(this).find('a > i').removeClass('fa-minus').addClass('fa-plus')
+            }
+            else{
+                // var all = $('.product-info-common .custom-product-tab .nav-tabs .pdp-accordion');
+                // all.removeClass('active');
+                // all.find('.tab-pane').removeClass('active');
+                // all.find('a > i').removeClass('fa-minus').addClass('fa-plus');
+                // console.log('adding class');
+                $(this).addClass('active');
+                $(this).find('.tab-pane').addClass('active');
+                $(this).find('a > i').removeClass('fa-plus').addClass('fa-minus');
+            }
+        })
+    });
+</script>

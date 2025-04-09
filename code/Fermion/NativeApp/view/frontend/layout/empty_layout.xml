@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Remove header and footer -->
+        <referenceBlock name="header.panel" remove="true" />
+        <referenceBlock name="header.container" remove="true" />
+        <referenceBlock name="footer" remove="true" />
+        <referenceBlock name="main.content" remove="true" />
+        <referenceBlock name="page.wrapper" remove="true" />
+    </body>
+</page>

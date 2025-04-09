@@ -1,0 +1,5 @@
+<?php $themeHelper = $this->helper('MGS\Mpanel\Helper\Data'); ?>
+
+<?php if($themeHelper->getStoreConfig('mpanel/share_config/enabel_share')): ?>
+	<?php echo $themeHelper->getStoreConfig('mpanel/share_config/script_share'); ?>
+<?php endif ?>

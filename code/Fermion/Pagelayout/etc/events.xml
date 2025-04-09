@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_action_postdispatch">
+        <observer name="customercookie" instance="Fermion\Pagelayout\Observer\CustomerCookie" />
+    </event>
+    <event name="catalog_product_import_bunch_save_after">
+        <observer name="productsaveadminactionlog" instance="Fermion\Pagelayout\Observer\ProductSaveAdminAction" />
+    </event>
+</config>

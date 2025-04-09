@@ -1,0 +1,18 @@
+<?php $helper = $this->helper('MGS\Mpanel\Helper\Data') ?>
+<?php $canUsePanel = $helper->acceptToUsePanel() ?>
+<?php $block = $this->getBlock() ?>
+<div class="footer-container text-center">
+	<div class="container">
+		<div>
+			<!-- Static block: footer_block_social -->
+			<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_social')->setCanUsePanel($canUsePanel)->toHtml() ?>
+		</div>
+		<div class="bottom_link">
+			<!-- Static block: footer_block_bottom_link -->
+			<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_bottom_link')->setCanUsePanel($canUsePanel)->toHtml() ?>
+		</div>
+		<div>
+			<address><?php /* @escapeNotVerified */ echo $block->getCopyright() ?></address>
+		</div>
+	</div>
+</div>

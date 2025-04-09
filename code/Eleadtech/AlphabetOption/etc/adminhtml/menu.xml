@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+    <menu>
+        <add id="Eleadtech_AlphabetOption::parent" title="Alphabet Option" module="Eleadtech_AlphabetOption" sortOrder="100" resource="Eleadtech_AlphabetOption::parent" parent="Eleadtech_Bcore::backend"/>
+		<add id="Eleadtech_AlphabetOption::aboption" title="Alphabet Option" module="Eleadtech_AlphabetOption" sortOrder="20" parent="Eleadtech_AlphabetOption::parent" action="alphabetoption/aboption" resource="Eleadtech_AlphabetOption::aboption"/>
+        <add id="Eleadtech_AlphabetOption::configuration" title="Settings" module="Eleadtech_AlphabetOption" sortOrder="22" parent="Eleadtech_AlphabetOption::aboption" action="adminhtml/system_config/edit/section/alphabetoption" resource="Eleadtech_AlphabetOption::configuration"/>
+    </menu>
+</config>

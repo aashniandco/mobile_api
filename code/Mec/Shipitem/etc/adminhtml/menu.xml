@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+    <menu>
+        <add id="Mec_Shipitem::parent" title="Shipitem" module="Mec_Shipitem" sortOrder="100" resource="Mec_Shipitem::parent"/>
+        <add id="Mec_Shipitem::index" title="Shipitem Index" module="Mec_Shipitem" sortOrder="10" action="shipitem/index" resource="Mec_Shipitem::index" parent="Mec_Shipitem::parent"/>
+		
+    </menu>
+</config>

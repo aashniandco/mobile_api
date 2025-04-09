@@ -1,0 +1,16 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
+ * @package Amasty_Checkout
+ */
+?>
+<?php
+/** @var \Magento\Checkout\Block\Onepage $block */
+/** @var \Amasty\Checkout\Helper\Onepage $helper */
+/** @var \Amasty\Checkout\Model\Optimization\BundleService $bundleService */
+$helper = $block->getData('amcheckout_helper');
+$bundleService = $block->getData('bundleService');
+$design = $helper->isModernCheckoutDesign() ? 'modern' : 'classic';
+$layout = $helper->getDesignLayout();
+?>

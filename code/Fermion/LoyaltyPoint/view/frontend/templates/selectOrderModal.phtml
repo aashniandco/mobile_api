@@ -1,0 +1,82 @@
+<style>
+    .select-order-innercircle-modal .modal-inner-wrap{
+        max-width: 60% !important;
+    }
+    #modal-content-select-order{
+        margin: 20px 20px 0 20px;
+    }
+    .select-order-table-container .select-order-table th, .select-order-table-container .select-order-table td{
+        color: black;
+        border: 1px solid;
+        padding: 3px 10px;
+    }
+    .select-order-innercircle-modal .select-order-table{
+        width: 100%;
+    }
+    .select-instruct-order{
+        text-align: center;
+        color: black;
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    .select-order-innercircle-modal .action-close{
+        top: 35px;
+        right: 5px;
+    }
+    .select-order-innercircle-modal .modal-footer button{
+        position: relative;
+        top: -60px;
+        right: 5px;
+        padding: 3px 10px;
+        color: white;
+        background-color: black;
+    }
+    .select-order-innercircle-modal .modal-content{
+        overflow-y: visible;
+        height: 100%;
+    }
+    .select-order-btn-body{
+        margin-top: 20px;
+    }
+    .pages.list-inline{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .pages.list-inline .page-number{
+        width: 40px;
+        text-align: center;
+    }
+    .pages.list-inline ul{
+        margin-right: 10px;
+    }
+
+    .pages.list-inline ul li{
+        display: inline-flex;
+    }
+
+    .selected-orders-list .view-selected-orders{
+        margin-right: 20px;
+    }
+
+    .selected-orders-list .view-selected-orders a{
+        padding: 0 5px;
+        border: 1px solid;
+        margin-left: 3px;
+    }
+
+    .selected-orders-list .view-selected-orders a:hover{
+        cursor: pointer;
+        background-color: #8e8e8e;
+        color: white;
+    }
+</style>
+<?php $resp = $block->getOrderData(); ?>
+<div id="modal-content-select-order" style="display: none;">
+    <div class="select-instruct-order">Select any two Orders</div>
+    <div class="selected-orders-list"></div>
+    <div class="order-data-paginate">
+        <?php echo $resp['orderHtml']; ?>
+        <?php echo $resp['pagination']; ?>
+    </div>
+</div>

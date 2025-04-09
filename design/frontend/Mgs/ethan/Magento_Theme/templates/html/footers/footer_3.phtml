@@ -1,0 +1,45 @@
+<?php $helper = $this->helper('MGS\Mpanel\Helper\Data') ?>
+<?php $canUsePanel = $helper->acceptToUsePanel() ?>
+<?php $block = $this->getBlock() ?>
+<div class="footer-container">
+	<div class="top-footer">
+		<div class="container">
+			<!-- Static block: footer_service_block -->
+			<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_service_block')->setCanUsePanel(	$canUsePanel)->toHtml() ?>
+		</div>
+	</div>
+	<div class="middle-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<!-- Static block: footer_about_us -->
+					<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_about_us')->setCanUsePanel($canUsePanel)->toHtml() ?>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<!-- Static block: footer_block_latest_new -->
+					<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_latest_new')->setCanUsePanel($canUsePanel)->toHtml() ?>
+				</div>
+				<div class="clearfix visible-sm"></div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<!-- Static block: footer_block_product_tag -->
+					<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_product_tag')->setCanUsePanel($canUsePanel)->toHtml() ?>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<!-- Static block: footer_block_newsletter -->
+					<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_newsletter')->setCanUsePanel($canUsePanel)->toHtml() ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bottom-footer">
+		<div class="container">
+			<div class="text-center">
+				<!-- Static block: footer_block_bottom_payment -->
+				<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_bottom_payment')->setCanUsePanel($canUsePanel)->toHtml() ?>
+				<!-- Static block: footer_block_bottom_link -->
+				<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_bottom_link')->setCanUsePanel($canUsePanel)->toHtml() ?>
+				<address><?php /* @escapeNotVerified */ echo $block->getCopyright() ?></address>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<body>
+		<referenceContainer name="cart.bottom">
+				<block class="Mec\Cartblock\Block\Cartblock" name="cartblock" as="cartblock" before="-" template="Mec_Cartblock::cartblock.phtml"/>
+		</referenceContainer>
+	</body>
+</page>

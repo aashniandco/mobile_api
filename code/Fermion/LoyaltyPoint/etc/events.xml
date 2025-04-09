@@ -1,0 +1,8 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="customer_register_success">
+        <observer name="LoyaltyPoint_generate_coupon_code_loyalty_points" instance="Fermion\LoyaltyPoint\Observer\GenerateCouponCodeAndLoyaltyPoints" />
+    </event>
+    <event name="sales_order_place_after">
+        <observer name="delete_coupon_after_use" instance="Fermion\LoyaltyPoint\Observer\CheckAndDeleteLoyaltyCoupon" />
+    </event>
+</config>

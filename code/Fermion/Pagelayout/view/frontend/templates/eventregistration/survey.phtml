@@ -1,0 +1,179 @@
+<div class="exhibtion-wrap">
+    <div class="exhibtion-bgcover">
+        <div class="form-container">
+            <form id="eventRegistrationForm">
+                <div class="login-box">
+                    <div class="form-plot">
+                        <div class="head">
+                            <div class="title">Survey Form</div>
+                        </div>
+                        <div class="block">
+                            <div class="form-input error">
+                                <div class="input">
+                                    <input type="hidden" name="is_event_survey_registration" id="is_event_survey_registration" value="1">
+                                    <input type="hidden" name="is_Ajax" id="is_Ajax" value="1">
+                                    <input type="text" name="firstname" id="firstname" placeholder="First Name" value="">
+                                </div>
+                            </div>
+
+                            <div class="form-input error">
+                                <div class="input">
+                                    <input type="text" name="lastname" id="lastname" placeholder="Last Name" value="">
+                                </div>
+                            </div>
+
+                            <div class="form-input error">
+                                <div class="select-country">
+                                    <select name="country" id="country" title="Country" class="input-text required-entry">
+                                        <?php foreach ($block->getCountryOptions() as $country): ?>
+                                            <option data-dialcode="<?php echo $country['dial_code']; ?>" value="<?php echo $country['dial_code']; ?>"><?php echo $country['name'].' ('.$country['dial_code'].')'; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="select-state">
+                                    <div class="input">
+                                        <input type="text" id="phone" name="phone" placeholder="Mobile" value="">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-input error">
+                                <div class="select-country full-width">
+                                    <select name="sourceOfInfo" id="sourceOfInfo" title="sourceOfInfo" class="input-text required-entry">
+                                        <option value="">Select Source Of Info</option>
+                                        <option value="whatsapp">Whatsapp</option>
+                                        <option value="email">Email</option>
+                                        <option value="socialMedia">Social media</option>
+                                        <option value="friendOrFamily">Friend/family</option>
+                                    </select>
+                                </div>
+                            </div> 
+
+                            <div class="form-input error">
+                                <div class="input">
+                                    <input type="text" id="user_email" name="user_email" placeholder="Email" value="">
+                                </div>
+                            </div>
+
+                            <div class="form-input error">
+                                <div class="input">
+                                    <input type="text" name="city" id="city" placeholder="City" value="" required="required">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-input error form-in-plot">
+                                    <div class="input">
+                                        <input type="number" name="ticket_qty" id="ticket_qty" placeholder="Head Count" value="" required="required">
+                                    </div>
+                                </div>
+
+                                <div class="form-input error">
+                                    <div class="input">
+                                        <input type="number" name="groupCount" id="groupCount" placeholder="Group Count" value="" required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="submit-btn">
+                                <button class="submit-button">Submit <img src="https://orders.aashniandco.com/pub/media/wysiwyg/event_form/check-button.png"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- successMessage div -->
+<div id="successMessage" class="popup-message">
+         <p>Success! Your action was completed.</p>
+</div>
+<!-- successMessage div -->
+
+<script>
+            require([
+            'jquery'
+        ], function(jQuery){
+            (function($) {
+                $('#eventRegistrationForm').on('submit', function(event) {
+                event.preventDefault();
+
+                $('#eventRegistrationForm :input').prop('disabled', true);
+
+                $.ajax({
+                    url: '/pagelayout/eventregistration/surveyajax',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        is_event_survey_registration: $('#is_event_survey_registration').val(),
+                        is_Ajax: $('#is_Ajax').val(),
+                        firstname: $('#firstname').val(),
+                        lastname: $('#lastname').val(),
+                        user_email: $('#user_email').val(),
+                        ticket_qty: $('#ticket_qty').val(),
+                        amount: $('#amount').val(),
+                        country: $('#country').val(),
+                        phone: $('#phone').val(),
+                        sourceOfInfo: $('#sourceOfInfo').val(),
+                        city: $('#city').val(),
+                        groupCount: $('#groupCount').val(),
+                    },
+                    success: function(response) {
+                        if (response && response.fields && response.url) {
+                            let form = $('<form>', {
+                                action: response.url,
+                                method: 'POST'
+                            });
+
+                            $.each(response.fields, function(key, value) {
+                                $('<input>').attr({
+                                    type: 'hidden',
+                                    name: key,
+                                    value: value
+                                }).appendTo(form);
+                            });
+                            form.appendTo('body').submit();
+                        }
+                        showSuccessMessage();
+                        clearFormInputs();
+                        $('#eventRegistrationForm :input').prop('disabled', false);
+                        // Option 2: Refresh the page after 3 seconds
+                        // setTimeout(function() {
+                        //     window.location.reload();
+                        // }, 3000); // Refresh after 3 seconds
+                    },
+                    error: function() {
+                        alert('Something went wrong. Please try again.');
+                        $('#eventRegistrationForm :input').prop('disabled', false);
+                    }
+                });
+            });
+
+
+             function showSuccessMessage() {
+                var message = document.getElementById("successMessage");
+                message.style.display = "block";
+                setTimeout(function() {
+                   message.style.display = "none";
+                }, 3000);  // Message will disappear after 3 seconds
+             }
+             // Clear form inputs function
+            function clearFormInputs() {
+                // Clear text, email, and number inputs
+                $('#eventRegistrationForm').find('input[type=text], input[type=email], input[type=number]').val('');
+
+                // Clear select inputs and set them to the first option
+                $('#eventRegistrationForm').find('select').each(function() {
+                    // Get the first option's value
+                    var firstOptionValue = $(this).find('option:first').val();
+                    
+                    // Set the select value to the first option
+                    $(this).val(firstOptionValue);
+                });
+            }
+            })(jQuery);
+        });
+    </script>

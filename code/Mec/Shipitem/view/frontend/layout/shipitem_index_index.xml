@@ -1,0 +1,30 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+
+	<head>
+        <title>Titlename</title>
+        <!--
+		demo
+		<css src="Mec_Shipitem::css/css.css"/>
+		<script src="Mec_Shipitem::js/js.js"/>
+		<css src="jquery/fileUploader/css/jquery.fileupload-ui.css"/>
+		<script src="path/file.js" defer="defer"/>
+		<link src="http://url.com" src_type="url"/>
+		<remove src="path/remove/file.css"/>
+
+		-->
+    </head>
+
+    <body>
+
+
+        <referenceContainer name="sidebar.main">
+            <block class="Mec\Shipitem\Block\Index\Sidebar" name="shipitem_index_sidebar" before="-" template="Mec_Shipitem::shipitem_index_sidebar.phtml"/>
+        </referenceContainer>
+
+        <referenceContainer name="content">
+            <block class="Mec\Shipitem\Block\Index\Index" name="shipitem_index_index" template="Mec_Shipitem::shipitem_index_index.phtml"/>
+        </referenceContainer>
+
+
+    </body>
+</page>

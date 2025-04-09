@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <!-- Managing totals information -->
+    <route url="/V1/carts/:cartId/totals-information" method="POST">
+        <service class="Magento\Checkout\Api\TotalsInformationManagementInterface" method="calculate"/>
+        <resources>
+            <resource ref="Magento_Cart::manage"/>
+        </resources>
+    </route>
+
+    <!-- Managing guest totals information -->
+    <route url="/V1/guest-carts/:cartId/totals-information" method="POST">
+        <service class="Magento\Checkout\Api\GuestTotalsInformationManagementInterface" method="calculate"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+
+    <!--Get Gift Cards matching the specified criteria-->
+    <route url="/V1/mw-giftcards" method="GET">
+        <service class="MageWorx\GiftCards\Api\GiftCardsRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="MageWorx_GiftCards::mageworx_giftcards_giftcards"/>
+        </resources>
+    </route>
+
+    <!--Create Gift Card with the specified code-->
+    <route url="/V1/mw-giftcards" method="POST">
+        <service class="MageWorx\GiftCards\Api\GiftCardsRepositoryInterface" method="createWithSpecifiedCode"/>
+        <resources>
+            <resource ref="MageWorx_GiftCards::mageworx_giftcards_giftcards"/>
+        </resources>
+    </route>
+
+    <!--Send an email with a Gift Card -->
+    <route url="/V1/mw-giftcards/send-email" method="POST">
+        <service class="MageWorx\GiftCards\Api\GiftCardManagementInterface" method="sendEmailWithGiftCard"/>
+        <resources>
+            <resource ref="MageWorx_GiftCards::mageworx_giftcards_giftcards"/>
+        </resources>
+    </route>
+
+    <!--Get Gift Card by Card Code-->
+    <route url="/V1/mw-giftcards/:giftCardCode" method="GET">
+        <service class="MageWorx\GiftCards\Api\GiftCardsRepositoryInterface" method="getByCode"/>
+        <resources>
+            <resource ref="MageWorx_GiftCards::mageworx_giftcards_giftcards"/>
+        </resources>
+    </route>
+
+    <!--Update Gift Card-->
+    <route url="/V1/mw-giftcards" method="PUT">
+        <service class="MageWorx\GiftCards\Api\GiftCardsRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="MageWorx_GiftCards::mageworx_giftcards_giftcards"/>
+        </resources>
+    </route>
+
+    <!--Delete Gift Card by Card Code-->
+    <route url="/V1/mw-giftcards/:giftCardCode" method="DELETE">
+        <service class="MageWorx\GiftCards\Api\GiftCardsRepositoryInterface" method="deleteByCode"/>
+        <resources>
+            <resource ref="MageWorx_GiftCards::mageworx_giftcards_giftcards"/>
+        </resources>
+    </route>
+
+    <!--Get Gift Card balance by Card Code-->
+    <route url="/V1/mw-giftcards/:giftCardCode/balance" method="GET">
+        <service class="MageWorx\GiftCards\Api\GiftCardsRepositoryInterface" method="getBalanceByCode"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!--Get Gift Card status label by Card Code-->
+    <route url="/V1/mw-giftcards/:giftCardCode/status" method="GET">
+        <service class="MageWorx\GiftCards\Api\GiftCardsRepositoryInterface" method="getStatusByCode"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!--Get Gift Card expire date by Card Code-->
+    <route url="/V1/mw-giftcards/:giftCardCode/expireDate" method="GET">
+        <service class="MageWorx\GiftCards\Api\GiftCardsRepositoryInterface" method="getExpireDateByCode"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!--Add Gift Card to Cart-->
+    <route url="/V1/carts/:cartId/mw-giftcards/:giftCardCode" method="PUT">
+        <service class="MageWorx\GiftCards\Api\GiftCardManagementInterface" method="applyToCart"/>
+        <resources>
+            <resource ref="MageWorx_GiftCards::mageworx_giftcards_giftcards"/>
+        </resources>
+    </route>
+
+    <!--Add Gift Card to Cart for Customer-->
+    <route url="/V1/carts/mine/mw-giftcards/:giftCardCode" method="PUT">
+        <service class="MageWorx\GiftCards\Api\GiftCardManagementInterface" method="applyToCart"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+
+    <!--Add Gift Card to Cart for Guest-->
+    <route url="/V1/carts/guest-carts/:cartId/mw-giftcards/:giftCardCode" method="PUT">
+        <service class="MageWorx\GiftCards\Api\GuestGiftCardManagementInterface" method="applyToCart"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!--Remove Gift Card from Cart-->
+    <route url="/V1/carts/:cartId/mw-giftcards/:giftCardCode" method="DELETE">
+        <service class="MageWorx\GiftCards\Api\GiftCardManagementInterface" method="removeFromCart"/>
+        <resources>
+            <resource ref="MageWorx_GiftCards::mageworx_giftcards_giftcards"/>
+        </resources>
+    </route>
+
+    <!--Remove Gift Card from Cart for Customer-->
+    <route url="/V1/carts/mine/mw-giftcards/:giftCardCode" method="DELETE">
+        <service class="MageWorx\GiftCards\Api\GiftCardManagementInterface" method="removeFromCart"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+
+    <!--Remove Gift Card from Cart for Guest-->
+    <route url="/V1/carts/guest-carts/:cartId/mw-giftcards/:giftCardCode" method="DELETE">
+        <service class="MageWorx\GiftCards\Api\GuestGiftCardManagementInterface" method="removeFromCart"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>

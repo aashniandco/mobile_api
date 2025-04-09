@@ -1,0 +1,191 @@
+<?php
+$searchString = $this->getRequest()->getParam('q');
+?>
+
+<div class="search_section-content">
+    <div class="search_plot">
+        <div class="head">
+            <div class="title">You searched for "<?= $searchString; ?>"</div>
+            <div class="title-detail">Unfortunately there are no results matching your request.</div>
+        </div>
+
+        <div class="product-section">
+            <div class="product-slot">
+                <a href="/womens-clothing.html">
+                    <div class="image-plot"><img src="https://imgs-aashniandco.gumlet.io/pub/media/catalog/product/cache/9306e52ccddca80c1fb471fb66a6193f/b/u/buy-powder-pink-crystal-embroidered-lehenga-set-by-dolly-j-dolsep24d213-_1_.jpg"></div>
+                    <div class="content">
+                        <div class="title">Women</div>
+                        <div class="shop-only">Shop for women</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-slot">
+                <a href="/men.html">
+                    <div class="image-plot"><img src="https://imgs-aashniandco.gumlet.io/pub/media/catalog/product/cache/9306e52ccddca80c1fb471fb66a6193f/d/i/diyjun24d519-_1_.jpg"></div>
+                    <div class="content">
+                        <div class="title">Men</div>
+                        <div class="shop-only">Shop for men</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-slot">
+                <a href="/kids-wear.html">
+                    <div class="image-plot"><img src="https://imgs-aashniandco.gumlet.io/pub/media/catalog/product/cache/9306e52ccddca80c1fb471fb66a6193f/b/u/buy-crimson-red-gota-work-printed-lehenga-set-by-mulyo-kids-mlksep24d101-_1_.jpg"></div>
+                    <div class="content">
+                        <div class="title">Kids</div>
+                        <div class="shop-only">Shop for kids</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-slot">
+                <a href="/jewelry.html">
+                    <div class="image-plot"><img src="https://imgs-aashniandco.gumlet.io/pub/media/catalog/product/cache/9306e52ccddca80c1fb471fb66a6193f/b/u/buy-multicolour-kundan-polki-jhumka-necklace-set-by-jaipri-japjan24d1021-_1_.jpg"></div>
+                    <div class="content">
+                        <div class="title">Jewellery</div>
+                        <div class="shop-only">Shop jewellery</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-slot">
+                <a href="/accessories.html">
+                    <div class="image-plot"><img src="https://imgs-aashniandco.gumlet.io/pub/media/catalog/product/cache/9306e52ccddca80c1fb471fb66a6193f/b/u/buy-multicolour-floral-pearl-and-bead-handbag-by-vaidaan-vaiaug24d2011-_1_.jpg"></div>
+                    <div class="content">
+                        <div class="title">Accessories</div>
+                        <div class="shop-only">Shop accessories</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .search_section-content {
+        width: 100%;
+        float: left;
+        margin-top: 30px;
+    }
+
+    .search_section-content .search_plot {
+        width: 100%;
+        float: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center
+    }
+
+    .search_section-content .search_plot .head {
+        width: 100%;
+        float: left
+    }
+
+    .search_section-content .search_plot .head .title {
+        width: 100%;
+        float: left;
+        font-size: 18px;
+        color: #000;
+        text-align: center;
+        margin-bottom: 20px
+    }
+
+    .search_section-content .search_plot .head .title-detail {
+        width: 100%;
+        float: left;
+        font-size: 14px;
+        color: #000;
+        text-align: center
+    }
+
+    .search_section-content .search_plot .product-section {
+        max-width: 100%;
+        float: left;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 100px
+    }
+
+    @media(min-width: 1268px) {
+        .search_section-content .search_plot .product-section {
+            max-width: 60%
+        }
+    }
+
+    @media(min-width: 1024px) {
+        .search_section-content .search_plot .product-section {
+            max-width: 80%
+        }
+    }
+
+    @media(min-width: 768px) {
+        .search_section-content .search_plot .product-section {
+            max-width: 90%
+        }
+    }
+
+    @media(max-width: 541px) {
+        .search_section-content .search_plot .product-section {
+            display: block;
+            max-width: 90%
+        }
+    }
+
+    .search_section-content .search_plot .product-section .product-slot {
+        width: calc((100% - 30px)/3);
+        float: left;
+        margin-right: 60px
+    }
+
+    .search_section-content .search_plot .product-section .product-slot:last-child {
+        margin-right: 0
+    }
+
+    @media(max-width: 541px) {
+        .search_section-content .search_plot .product-section .product-slot {
+            width: 100%;
+            margin-right: 0;
+            margin-bottom: 15px
+        }
+    }
+
+    .search_section-content .search_plot .product-section .product-slot .image-plot {
+        width: 100%;
+        float: left
+    }
+
+    .search_section-content .search_plot .product-section .product-slot .image-plot img {
+        width: 100%
+    }
+
+    .search_section-content .search_plot .product-section .product-slot .content {
+        width: 100%;
+        float: left;
+        margin-top: 15px
+    }
+
+    .search_section-content .search_plot .product-section .product-slot .content .title {
+        width: 100%;
+        float: left;
+        font-size: 14px;
+        color: #000;
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 18px;
+        font-weight: 600;
+        font-family: sans-serif;
+    }
+
+    .search_section-content .search_plot .product-section .product-slot .content .shop-only {
+        width: 100%;
+        float: left;
+        font-size: 14px;
+        color: #000;
+        text-align: center;
+        text-decoration: underline;
+    }
+</style>

@@ -1,0 +1,62 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block Magento\Catalog\Block\Product\View */
+?>
+<?php
+$required = '';
+if ($block->hasRequiredOptions()) {
+    $required = ' data-hasrequired="' . $block->escapeHtmlAttr(__('* Required Fields')) . '"';
+}
+?>
+<?php
+$_product = $block->getProduct();
+if(!$_product->getHideprice()): ?>
+<div class="row">
+<div class="product-options-wrapper col-xs-6 col-md-5" id="product-options-wrapper"<?= /* @noEscape */ $required ?>>
+    <div class="fieldset" tabindex="0">
+        <?= $block->getChildHtml('', true) ?>
+    </div>
+</div>
+<div class="col-xs-6 col-md-6">
+    <a class="size_chart_magento col-md-6 size_chart" id="size_chart" href="#" onclick="openSizeChart()">Size Chart</a>
+<?php
+    $product_id = $block->getProduct()->getId();
+    $data_url = 'mgs_quickview/catalog_product/view/id/'.$product_id;
+    $sizeUrlMagento = $block->getUrl($data_url);
+?>
+</div>
+</div>
+<script type="text/javascript">
+    var sizeUrl = "<?php echo $sizeUrlMagento; ?>";
+    require([
+        'jquery'
+    ], function ($) {
+        openSizeChart = function (){
+            //alert('hello');
+            $.magnificPopup.open({
+                items: {
+                    src: sizeUrl
+                },
+                type: 'iframe',
+                removalDelay: 300,
+                mainClass: 'mfp-fade',
+                closeOnBgClick: true,
+                preloader: true,
+                tLoading: ''
+            });
+      }
+    });
+</script>
+<?php endif; ?>
+<style>
+.mgs_quickview-catalog_product-view .size_chart {
+    display: none !important;
+}
+.ajaxcart-catalog_product-view .size_chart {
+    display: none !important;
+}
+</style>

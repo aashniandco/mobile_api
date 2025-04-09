@@ -1,0 +1,13 @@
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<!-- ko foreach: { data: Object.keys($col.getOrderUsedData($row())), as: 'pid' } -->
+<a class="action-menu-item"
+   attr="target: $col.getTarget(), href: $col.getHref($row(), pid)"
+   text="$col.getLabel($row(), pid)"
+></a>
+<br>
+<!-- /ko -->

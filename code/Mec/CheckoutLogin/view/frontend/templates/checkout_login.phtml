@@ -1,0 +1,97 @@
+
+<?php
+/* Custom Login */
+?>
+<script>
+
+         
+        function goToForgetPassword(){
+          var forgetPasswordUrl = "<?php echo $this->getUrl().'customer/account/forgotpassword'?>"; 
+          window.location.href = forgetPasswordUrl;
+        }
+       
+        function hideFields(){
+           var x = document.getElementById("hide_me");
+           x.style.display = "none";
+             
+        }
+
+
+	require(['jquery','mage/validation'], function($){
+        var dataForm = $('#custom_login_checkout');
+	dataForm.mage('validation', {});
+	$('#forget-password-link').click( function() { //can be replaced with any event
+	alert('form is validated'); //form is valid
+		alert('forget-pasword');
+	});
+
+
+        foo = function (){ 
+            var dataForm = $('#custom_login_checkout');
+            var data = $('#custom_login_checkout').serialize().split("&");
+            var obj={};
+            for(var key in data)
+            {
+              console.log(data[key]);
+              obj[data[key].split("=")[0]] = data[key].split("=")[1];
+            }
+            
+            console.log('value start');
+            console.log(obj);
+            console.log('value end');
+
+            var user_name = document.getElementById('checkout-login-email').value;
+            var password  = document.getElementById('checkout-login-password').value;
+
+           var obj_next = {
+                  'username':user_name,
+                  'password':password
+           };
+            var customurl = "<?php echo $this->getUrl().'customer/ajax/login'?>";
+            $.ajax({
+                url: customurl,
+                type: 'POST',
+                contentType: "application/json",
+                data: JSON.stringify(obj_next),
+            complete: function(response) {
+                  console.log(response);
+                  var result = response.responseJSON;
+                  var msg = result.message; // works
+                  var errors = result.errors;
+                  if(errors = 'true'){
+                     if(document.getElementById('checkout-login-msg')){
+                     document.getElementById('checkout-login-msg').innerHTML = msg;
+                     }
+                     //location.reload(); 
+                  }else{
+                     if(document.getElementById('checkout-login-msg')){
+                     document.getElementById('checkout-login-msg').innerHTML = msg;
+                     }
+                     //location.reload();
+                  }
+                  //console.log(response);
+                 if(errors = 'false'){
+                 setTimeout(function () {
+                   //alert('Reloading Page');
+                   location.reload(true);
+                 }, 2000);
+                 }
+
+                },
+             error: function (xhr, status, errorThrown) {
+                    alert('Something went wrong');
+                    console.log('Error happens. Try again.');
+                }
+            });         
+
+        }
+
+	});
+
+</script>
+<!--<button type="submt" onclick="foo()" class="action action-login btn btn-primary secondary">
+                            <span >Login Test</span>
+</button>-->
+
+
+

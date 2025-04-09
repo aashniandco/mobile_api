@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="mageworx_giftcards_card" resource="default" engine="innodb" comment="mageworx_giftcards_card">
+    <column xsi:type="int" name="card_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+    <column xsi:type="varchar" name="card_code" nullable="true" length="255" comment="Gift Card Code"/>
+    <column xsi:type="int" name="customer_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Gift Card Customer Id"/>
+    <column xsi:type="int" name="order_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Gift Card Order Id"/>
+    <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Gift Card Product Id"/>
+    <column xsi:type="varchar" name="card_currency" nullable="true" length="3" comment="Gift Card Currency"/>
+    <column xsi:type="decimal" name="card_amount" scale="4" precision="12" unsigned="false" nullable="true" comment="Gift Card Amount"/>
+    <column xsi:type="decimal" name="card_balance" scale="4" precision="12" unsigned="false" nullable="true" comment="Gift Card Current Balance"/>
+    <column xsi:type="smallint" name="card_status" padding="5" unsigned="true" nullable="true" identity="false" default="0" comment="Gift Card Status"/>
+    <column xsi:type="smallint" name="card_type" padding="5" unsigned="true" nullable="true" identity="false" default="0" comment="Gift Card Type"/>
+    <column xsi:type="varchar" name="mail_from" nullable="true" length="255" comment="Gift Card Mail Sender"/>
+    <column xsi:type="varchar" name="mail_to" nullable="true" length="255" comment="Gift Card Owner"/>
+    <column xsi:type="varchar" name="mail_to_email" nullable="true" length="255" comment="Gift Card Owner Email"/>
+    <column xsi:type="text" name="mail_message" nullable="true" comment="Gift Card Email Message"/>
+    <column xsi:type="varchar" name="offline_country" nullable="true" length="255" comment="Offline Gift Card Country"/>
+    <column xsi:type="varchar" name="offline_state" nullable="true" length="255" comment="Offline Gift Card State"/>
+    <column xsi:type="varchar" name="offline_city" nullable="true" length="255" comment="Offline Gift Card City"/>
+    <column xsi:type="varchar" name="offline_street" nullable="true" length="255" comment="Offline Gift Card Street"/>
+    <column xsi:type="varchar" name="offline_zip" nullable="true" length="255" comment="Offline Gift Card ZIP"/>
+    <column xsi:type="varchar" name="offline_phone" nullable="true" length="255" comment="Offline Gift Card Phone"/>
+    <column xsi:type="date" name="mail_delivery_date" comment="Gift Card Mail Delivery Date"/>
+    <column xsi:type="timestamp" name="created_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+    <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+    <column xsi:type="varchar" name="storeview_ids" nullable="true" length="255" comment="Store views to allow using the gift card code on" disabled="true"/>
+    <column xsi:type="int" name="lifetime_days" padding="5" unsigned="false" nullable="true" identity="false" comment="Card lifetime in days" disabled="true"/>
+    <column xsi:type="boolean" name="ignore_default_lifetime" nullable="true" comment="Ignore default card lifetime" disabled="true"/>
+    <column xsi:type="text" name="mageworx_gc_customer_groups" nullable="true" comment="Available for Customer Groups" disabled="true"/>
+    <column xsi:type="date" name="expire_date" comment="Expire Date"/>
+    <column xsi:type="boolean" name="expired_email_send" nullable="true" comment="Is Expired Email Send"/>
+    <column xsi:type="boolean" name="expiration_alert_email_send" nullable="true" comment="Is Expiration Alert Email Send"/>
+    <column xsi:type="boolean" name="delivery_status" nullable="false" comment="Delivery Status"/>
+    <column xsi:type="smallint" name="store_id_for_email" padding="5" unsigned="true" nullable="true" identity="false" comment="Send From Store Id"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="card_id"/>
+    </constraint>
+    <constraint xsi:type="unique" referenceId="MAGEWORX_GIFTCARDS_CARD_CARD_CODE">
+      <column name="card_code"/>
+    </constraint>
+    <constraint xsi:type="foreign" referenceId="MAGEWORX_GIFTCARDS_CARD_STORE_ID_FOR_EMAIL_STORE_STORE_ID" table="mageworx_giftcards_card" column="store_id_for_email" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+  </table>
+  <table name="mageworx_giftcard_order" resource="default" engine="innodb" comment="mageworx_giftcard_order">
+    <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+    <column xsi:type="int" name="giftcard_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Used Gift Card Id"/>
+    <column xsi:type="int" name="order_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Order Id for used Gift Card"/>
+    <column xsi:type="decimal" name="discounted" scale="4" precision="12" unsigned="false" nullable="true" comment="Gift Card Used Amount"/>
+    <column xsi:type="timestamp" name="created_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+    <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+    <column xsi:type="varchar" name="giftcard_code" nullable="true" length="255" comment="Used Gift Card Code"/>
+    <column xsi:type="varchar" name="order_increment_id" nullable="true" length="50" comment="Order Increment Id"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="entity_id"/>
+    </constraint>
+  </table>
+  <table name="quote" resource="default">
+    <column xsi:type="varchar" name="mageworx_giftcards_description" nullable="true" length="255" comment="MageWorx Gift Card Description"/>
+    <column xsi:type="decimal" name="mageworx_giftcards_amount" scale="4" precision="12" unsigned="false" nullable="true" comment="MageWorx Gift Card Discount Amount"/>
+    <column xsi:type="decimal" name="base_mageworx_giftcards_amount" scale="4" precision="12" unsigned="false" nullable="true" comment="MageWorx Gift Card Base Discount Amount"/>
+  </table>
+  <table name="sales_order" resource="default">
+    <column xsi:type="varchar" name="mageworx_giftcards_description" nullable="true" length="255" comment="MageWorx Gift Card Description"/>
+    <column xsi:type="decimal" name="mageworx_giftcards_amount" scale="4" precision="12" unsigned="false" nullable="true" comment="MageWorx Gift Card Discount Amount"/>
+    <column xsi:type="decimal" name="base_mageworx_giftcards_amount" scale="4" precision="12" unsigned="false" nullable="true" comment="MageWorx Gift Card Base Discount Amount"/>
+  </table>
+  <table name="mageworx_giftcards_store" resource="default" engine="innodb" comment="MageWorx Giftcards To Stores Relations">
+    <column xsi:type="int" name="card_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Card ID"/>
+    <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false" identity="false" comment="Store ID"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="card_id"/>
+      <column name="store_id"/>
+    </constraint>
+    <constraint xsi:type="foreign" referenceId="MAGEWORX_GIFTCARDS_STORE_CARD_ID_MAGEWORX_GIFTCARDS_CARD_CARD_ID" table="mageworx_giftcards_store" column="card_id" referenceTable="mageworx_giftcards_card" referenceColumn="card_id" onDelete="CASCADE"/>
+    <constraint xsi:type="foreign" referenceId="MAGEWORX_GIFTCARDS_STORE_STORE_ID_STORE_STORE_ID" table="mageworx_giftcards_store" column="store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+  </table>
+  <table name="mageworx_giftcards_customer_group" resource="default" engine="innodb" comment="MageWorx Giftcards To Customer Groups Relations">
+    <column xsi:type="int" name="card_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Card Id"/>
+    <column xsi:type="int" name="customer_group_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Customer Group Id"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="card_id"/>
+      <column name="customer_group_id"/>
+    </constraint>
+    <constraint xsi:type="foreign" referenceId="MAGEWORX_GIFTCARDS_CSTR_GROUP_CARD_ID_MAGEWORX_GIFTCARDS_CARD_ID" table="mageworx_giftcards_customer_group" column="card_id" referenceTable="mageworx_giftcards_card" referenceColumn="card_id" onDelete="CASCADE"/>
+    <constraint xsi:type="foreign" referenceId="FK_E1D2D9789C434CFDAF03B343B5EE1779" table="mageworx_giftcards_customer_group" column="customer_group_id" referenceTable="customer_group" referenceColumn="customer_group_id" onDelete="CASCADE"/>
+    <index referenceId="MAGEWORX_GIFTCARDS_CUSTOMER_GROUP_CUSTOMER_GROUP_ID" indexType="btree">
+      <column name="customer_group_id"/>
+    </index>
+  </table>
+  <table name="sales_invoice" resource="default">
+    <column xsi:type="decimal" name="mageworx_giftcards_amount" scale="4" precision="12" unsigned="false" nullable="true" comment="MageWorx Gift Card Amount"/>
+    <column xsi:type="decimal" name="base_mageworx_giftcards_amount" scale="4" precision="12" unsigned="false" nullable="true" comment="Base MageWorx Gift Card Amount"/>
+    <column xsi:type="varchar" name="mageworx_giftcards_description" nullable="true" length="255" comment="MageWorx Gift Card Description"/>
+  </table>
+  <table name="sales_creditmemo" resource="default">
+    <column xsi:type="decimal" name="mageworx_giftcards_amount" scale="4" precision="12" unsigned="false" nullable="true" comment="MageWorx Gift Card Amount"/>
+    <column xsi:type="decimal" name="base_mageworx_giftcards_amount" scale="4" precision="12" unsigned="false" nullable="true" comment="Base MageWorx Gift Card Amount"/>
+    <column xsi:type="varchar" name="mageworx_giftcards_description" nullable="true" length="255" comment="MageWorx Gift Card Description"/>
+  </table>
+</schema>

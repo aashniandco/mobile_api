@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+		<referenceBlock name="head.additional">
+            <block class="Magento\Framework\View\Element\Template" name="script.sharethis" template="MGS_Mpanel::sharethis/sharethis_script.phtml" ifconfig="mpanel/share_config/share_product_detail"/>
+        </referenceBlock>
+		
+		<!--<block class="Magento\Theme\Block\Html\Title" name="mgs.product.title" template="Magento_Theme::html/title.phtml"/>-->
+		<referenceBlock name="product.info.extrahint" remove="true"/>
+		<referenceBlock name="product.info.sku" remove="true"/>
+		<!--<move element="mgs.product.title" destination="product.info.main" before="-" />-->
+		
+		<container name="product.info.sku.brand" htmlTag="div" htmlClass="product-sub-infomation" after="product.info.review">
+			<block class="Magento\Catalog\Block\Product\View\Description" name="mgs.product.info.sku" template="product/view/attribute.phtml">
+				<arguments>
+					<argument name="at_call" xsi:type="string">getSku</argument>
+					<argument name="at_code" xsi:type="string">sku</argument>
+					<argument name="css_class" xsi:type="string">sku</argument>
+					<argument name="at_label" xsi:type="string">default</argument>
+					<argument name="add_attribute" xsi:type="string">itemprop="sku"</argument>
+				</arguments>
+			</block>
+		</container>
+                
+      
+		<move element="product.info.overview" destination="product.info.main" before="product.info.price" />
+		<move element="brand.product.related" destination="content" before="content.aside" />
+		<move element="catalog.product.related" destination="product.info.main" before="content.aside" />
+		<move element="product.info.sku.brand" destination="product.info.main" after="product.info.price" />
+		<move element="product.info.details" destination="product.info.main" after="product.info.price" />
+		
+		<move element="product.brand.name" destination="product.info.sku.brand" after="-" />
+		<referenceBlock name="breadcrumbs" template="Magento_Theme::html/breadcrumbs.phtml" />
+		<block class="Magento\Catalog\Block\Breadcrumbs" />
+                <referenceBlock name="product.info.main">
+                <container name="product.info.common.data" htmlTag="div" htmlClass="product-info-common" as="common_data" label="Product View Common Info">
+                <block class="Magento\Catalog\Block\Product\View" name="common.data" template="Mec_Customtab::common_data_new.phtml">
+                        <arguments>
+                                <argument translate="true" name="title" xsi:type="string">Common</argument>
+                                <argument name="sort_order" xsi:type="string">10</argument>
+                        </arguments>
+                </block>
+                </container>
+                <!--<container name="product.info.size.chart" htmlTag="div" htmlClass="product-size-chart" after="product.info.price"  as="size_chart_data" label="ChaRT">
+                <block class="Magento\Catalog\Block\Product\View" name="size.chart.data" template="Mec_Customtab::size_chart.phtml">
+                        <arguments>
+                                <argument translate="true" name="title" xsi:type="string">Size Chart</argument>
+                                <argument name="sort_order" xsi:type="string">10</argument>
+                        </arguments>
+                </block>
+                </container>-->
+                <container name="product.info.name" htmlTag="div" htmlClass="product-info-name" before="-"  as="product_name" label="Product Name">
+                <block class="Magento\Catalog\Block\Product\View" name="product.name" template="Mec_Customtab::product_name.phtml">
+                        <arguments>
+                                <argument translate="true" name="title" xsi:type="string">Name</argument>
+                                <argument name="sort_order" xsi:type="string">10</argument>
+                        </arguments>
+                </block>
+                </container>
+                </referenceBlock>
+	</body>
+</page>

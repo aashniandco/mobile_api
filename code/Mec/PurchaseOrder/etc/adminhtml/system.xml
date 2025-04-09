@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+		<tab id="purchaseorder" translate="label" sortOrder="999">
+			<label>purchaseorder</label>
+		</tab>
+		<section id="gst" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+			<label>gst</label>
+			<tab>purchaseorder</tab>
+			<resource>Mec_PurchaseOrder::config_mec_purchaseorder</resource>
+			<group id="options" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+				<label>options</label>
+				<field id="gst" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+					<label>gst</label>
+					<comment/>
+				</field>
+			</group>
+		</section>
+	</system>
+</config>

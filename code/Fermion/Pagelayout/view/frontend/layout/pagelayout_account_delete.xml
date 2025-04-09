@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <head>
+        <title>Delete Account</title>
+    </head>
+       <referenceContainer name="content">
+        <block class="Fermion\Pagelayout\Block\Account\Delete"
+               name="custom.account" as="custom.account" template="Fermion_Pagelayout::account/accountDelete.phtml" cacheable="false"/>
+       </referenceContainer>
+</page>

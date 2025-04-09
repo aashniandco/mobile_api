@@ -1,0 +1,67 @@
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<div class="payment-option _collapsible opc-payment-additional mageworx-giftcards"
+     data-bind="mageInit: {'collapsible':{'openedState': '_active'}}">
+    <div class="payment-option-title field choice" data-role="title">
+        <span class="action action-toggle" id="block-mageworx-giftcards-heading" role="heading" aria-level="2">
+            <!-- ko i18n: 'Gift Cards'--><!-- /ko -->
+        </span>
+    </div>
+    <div class="payment-option-content" data-role="content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <form class="form form-mageworx-giftcards" id="mageworx-giftcards-form" data-bind="blockLoader: isLoading">
+            <div class="payment-option-inner">
+                <!-- ko if: giftCardInfo.isChecked-->
+                <!-- ko if: giftCardInfo.isValid-->
+                <div id="giftcard-info">
+                    <dl class="giftcard-info-from-template">
+                        <dt><!-- ko i18n: 'Status:'--><!-- /ko --></dt>
+                        <dd><!-- ko i18n: giftCardInfo.status--><!-- /ko --></dd>
+
+                        <dt><!-- ko i18n: 'Current Balance:'--><!-- /ko --></dt>
+                        <dd data-bind="html: giftCardInfo.balance"></dd>
+
+                        <dt><!-- ko i18n: 'Valid till:'--><!-- /ko --></dt>
+                        <dd><!-- ko text: giftCardInfo.validTill--><!-- /ko --></dd>
+                    </dl>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
+                <div class="field">
+                    <label class="label" for="mageworx-giftcard-code">
+                        <span data-bind="i18n: 'Redeem and use your Gift Card now'"></span>
+                    </label>
+                    <div class="control">
+                        <input class="input-text"
+                               type="text"
+                               id="mageworx-giftcard-code"
+                               name="giftcard_code"
+                               data-validate="{'required-entry':true}"
+                               data-bind="value: giftCartCodeFieldValue, attr:{placeholder: $t('Redeem and use your Gift Card now')} "/>
+                    </div>
+                </div>
+            </div>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button class="action action-apply" type="submit" data-bind="'value': $t('Activate'), click: activateGiftCard">
+                        <span><!-- ko i18n: 'Activate'--><!-- /ko --></span>
+                    </button>
+                </div>
+                <div class="secondary">
+                    <button class="action action-check" type="button" data-bind="'value': $t('Check Gift Card status'), click: checkGiftCardInfo">
+                        <span><!-- ko i18n: 'Check Gift Card status'--><!-- /ko --></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!-- ko foreach: getRegion('applied-gift-cards-info') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+    </div>
+</div>

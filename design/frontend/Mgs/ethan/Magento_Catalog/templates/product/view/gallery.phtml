@@ -1,0 +1,208 @@
+<?php
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * Product media data template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View\Gallery
+ */
+?>
+<style>
+.product.media .owl-carousel .owl-nav>div.owl-prev {
+    display: none;
+}
+.product.media .owl-carousel .owl-nav>div.owl-next {
+    display: none;
+}
+</style>
+<input type="hidden" id="product_type_gallery" name="product_type_gallery" value="normal"/>
+<div id="pdp_gallery_images" class="product media">
+<?php $_product = $block->getProduct(); ?>
+<?php $_imagehelper = $this->helper('Magento\Catalog\Helper\Image'); ?>
+<?php $imgBase = $_imagehelper->init($_product, 'category_page_list')->getUrl(); ?>
+<?php $imgCelebrity = $_product->getData('celebrity_image'); ?>
+<?php $sizeChartImg = $_product->getData('prod_size_chart_img');?>
+
+
+<?php $galleryImages = $block->getGalleryImages(); ?>
+<?php if(count($galleryImages)): ?>
+	<?php $k = 0; foreach($galleryImages as $image): $k++; ?>
+		<?php if($k == 1): ?><?php $imgBase = $image->getLargeImageUrl(); ?><?php endif ?>
+		<?php if($image->getIsBaseImage()): ?>
+			<?php $imgBase = $image->getLargeImageUrl();?>
+		<?php endif ?>
+	<?php endforeach ?>
+	<div class="product-image-base">
+		<img class="img-responsive" src="<?php echo $imgBase; ?>" alt=""/>
+	</div>
+	<?php if(count($galleryImages) > 1): ?>
+		<div class="parent__gallery-thumbnail">
+			<div class="product-gallery-carousel gallery-thumbnail owl-carousel">
+				<?php foreach($galleryImages as $image): 
+                    if($image->getFile() == $sizeChartImg){continue;} ?>
+					<div class="item">
+						<div data-src ="<?php echo $image->getFile();?>" class="image-item<?php if($image->getMediaType() == 'external-video'): ?> video-thumbnail<?php endif ?><?php if($image->getIsBaseImage() || $imgBase == $image->getLargeImageUrl()): ?> base-image active<?php endif ?>" data-img-change="<?php echo $image->getLargeImageUrl(); ?>">
+							<?php if($image->getMediaType() == 'external-video'): ?>
+								<a href="<?php echo $image->getVideoUrl(); ?>">
+							<?php endif ?> 
+									<img class="img-responsive" src="<?php echo $image->getMediumImageUrl(); ?>" alt=""/>
+							<?php if($image->getMediaType() == 'external-video'): ?>
+								</a>
+							<?php endif ?> 
+						</div>
+					</div>
+				<?php endforeach ?>
+			</div>
+		</div>
+	<?php endif ?>
+	<script type="text/javascript">
+		require([
+			'jquery',
+			'mgs/owlcarousel',
+			'YouTubePopUp'
+		], function ($) {
+			<?php if(count($galleryImages) > 1): ?>
+				$('.product-gallery-carousel').owlCarousel({
+					items: 4,
+					autoplay: false,
+					autoplayHoverPause: false,
+					nav: false,
+					dots: false,
+					navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
+					responsive:{
+						0:{
+							items:2
+						},
+						480:{
+							items:2
+						},
+						768:{
+							items:3
+						},
+						992:{
+							items:4
+						}
+					}
+				});
+			<?php endif ?>
+			$(document).ready(function() {
+				zoomElement(".product-image-base");
+				$(".product-video-button a").YouTubePopUp();
+				$(".image-item.video-thumbnail a").YouTubePopUp();
+			});
+		});
+	</script>
+<?php else: ?>
+	<div class="product-image-base">
+		<img class="img-responsive" src="<?php echo $imgBase; ?>" alt=""/>
+	</div>
+<?php endif ?>
+</div>
+
+<?php 
+$designerArr = $_product->getDesigner();
+$patterns = $_product->getPatterns();
+$gender = $_product->getMenWomen();
+$colors = $_product->getColorMultiple();
+$category = $_product->getCategoryIds();
+$theme = $_product->getTheme();
+$finalPrice = $_product->getFinalPrice();
+$kids = $_product->getKids();
+
+$patternsId = '';
+if(gettype($patterns)=='array'){
+ 	$patternsId = $patterns[0];
+}else{
+	$patternsId = $patterns;
+}
+
+
+$designer='';
+if(gettype($designerArr)=='array'){
+	$designer = $designerArr[0];
+}else{
+	$designer = $designerArr;
+}
+
+$colorId = '';
+if(gettype($colors)=='array'){
+ 	$colorId = $colors[0];
+}else{
+	$colorId = $colors;
+}
+
+$categoryIds = '';
+if(gettype($category)=='array'){
+	// print_r($category);
+	// die();
+ 	$categoryIds = implode(',', $category);
+}else{
+	$categoryIds = $category;
+}
+$themeIds = '';
+if(gettype($theme)=='array'){
+	// print_r($category);
+	// die();
+ 	$themeIds = implode(',', $theme);
+}else{
+	$themeIds = $theme;
+}
+
+if (empty($finalPrice)) {
+    // $priceInfo = $_product->getPriceInfo();
+    // $finalPrice = $priceInfo->getPrice('final_price')->getValue();
+    $finalPrice = $_product->getPrice();
+}
+
+// -----
+// List of main parent categories
+$mainParentCategoryIds = [1374, 1380, 1381, 3374, 6023];
+
+// Categories mapped to the product
+$productCategoryIds = $_product->getCategoryIds();
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$categoryRepository = $objectManager->get(\Magento\Catalog\Api\CategoryRepositoryInterface::class);
+// Function to recursively find the last child category
+function getLastChildCategory($category, $categoryRepository, $productCategoryIds) {
+    $children = $category->getChildrenCategories();
+    foreach ($children as $child) {
+        if (in_array($child->getId(), $productCategoryIds)) {
+            return getLastChildCategory(
+                $categoryRepository->get($child->getId()),
+                $categoryRepository,
+                $productCategoryIds
+            );
+        }
+    }
+    return $category->getId(); // Return the last child ID that matches the product's categories
+}
+
+// Find the parent category that is mapped and its last child
+$lastChildCategoryId = null;
+foreach ($mainParentCategoryIds as $parentId) {
+    if (in_array($parentId, $productCategoryIds)) {
+        // Get the parent category and find the last child mapped to the product
+        $parentCategory = $categoryRepository->get($parentId);
+        $lastChildCategoryId = getLastChildCategory($parentCategory, $categoryRepository, $productCategoryIds);
+        break; // Stop after finding the first matching parent category
+    }
+}
+// -----
+?>
+<input type="hidden" id="p_patterns" value="<?php echo $patternsId;?>">
+<input type="hidden" id="p_designer" value="<?php echo $designer;?>">
+<input type="hidden" id="p_id" value="<?php echo $_product->getId();?>">
+<input type="hidden" id="p_gender" value="<?php echo $gender ;?>">
+<input type="hidden" id="p_color" value="<?php echo $colorId ;?>">
+<input type="hidden" id="p_category" value="<?php echo $categoryIds ;?>">
+<input type="hidden" id="p_theme" value="<?php echo $themeIds ;?>">
+<input type="hidden" id="p_finalprice" value="<?php echo $finalPrice ;?>">
+<input type="hidden" id="p_kids" value="<?php echo $kids ;?>">
+<input type="hidden" id="p_type" value="<?php echo $_product->getTypeId(); ?>">
+<input type="hidden" id="p_lastChildId" value="<?php echo $lastChildCategoryId; ?>">

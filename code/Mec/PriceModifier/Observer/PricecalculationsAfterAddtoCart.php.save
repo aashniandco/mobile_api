@@ -1,0 +1,118 @@
+<?php
+namespace Mec\PriceModifier\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
+use Amasty\Geoip\Model\Geolocation;
+
+class PricecalculationsAfterAddtoCart implements ObserverInterface
+{
+    protected $_storeManager;
+    private $remoteAddress;
+    protected $dataHelper;
+    private $geolocation;
+    protected $_priceHelper;
+
+    public function __construct(
+        RemoteAddress $remoteAddress,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Mec\PriceModifier\Helper\Data $dataHelper,
+        Geolocation $geolocation,
+        \Magento\Framework\Pricing\Helper\Data $priceHelper
+
+    ) {
+        $this->remoteAddress = $remoteAddress;
+        $this->_storeManager = $storeManager;
+        $this->dataHelper = $dataHelper;
+        $this->geolocation = $geolocation;
+        $this->_priceHelper = $priceHelper;
+        //parent::__construct($data );
+    }
+
+    public function getCountryCode(){
+        $currentIp = $this->remoteAddress->getRemoteAddress();
+        $location = $this->geolocation->locate($currentIp);
+        $country = $location->getCountry();
+        return $country;
+    }
+
+    public function convertToBaseCurrency($price)
+    {
+        $formattedCurrencyValue = $this->_priceHelper->currency($price, false, false);
+        return $formattedCurrencyValue;
+    }
+     
+    public function getCurrentCurrencyRate()
+    {
+        return $this->_storeManager->getStore()->getCurrentCurrencyRate();
+    }
+
+    public function execute(\Magento\Framework\Event\Observer $observer)
+    {
+        //$writer = new \Zend\Log\Writer\Stream(BP.'/var/log/stackexchange.log');
+        //$logger = new \Zend\Log\Logger();
+        //$logger->addWriter($writer);
+        /* Code here */
+        $quote_item = $observer->getEvent()->getQuoteItem();
+        if ($quote_item->getParentItem()) {$quote_item = $quote_item->getParentItem();}
+	    $item = $quote_item->getProduct();
+            //$previous_price = $item->getFinalPrice();
+            //$special_price = $item->getSpecialPrice();
+
+           
+        $country = $this->getCountryCode(); 
+        if($country != 'IN'){
+            //$previous_price = $item->getFinalPrice();
+            $additional_price =0;
+            $special_price = 0;
+            $product_id = $item->getId();
+            $main_price = $this->dataHelper->getMainPrice($product_id);
+
+            if($country == 'US'){
+                $us_price_rate = $this->dataHelper->getUsPriceRate($product_id);
+                if(empty($us_price_rate)){
+                    $us_price_rate = 0.5;
+                }				
+                $additional_price = ($us_price_rate*$main_price);
+                
+                $us_special_price = $this->dataHelper->getUsSpecialPrice($product_id); //212
+                if(!empty($us_special_price)){
+                    $special_price = $us_special_price;
+                }
+            }else{
+                $world_price_rate = $this->dataHelper->getWorldPriceRate($product_id);
+                if(empty($world_price_rate)){
+                    $world_price_rate = 1;
+                }
+                $additional_price = ($world_price_rate*);
+                 
+                $world_special_price = $this->dataHelper->getWorldSpecialPrice($product_id); //213
+                if(!empty($world_special_price)){
+                    $special_price = $world_special_price;
+                }
+            }
+            //$special_price =3000;
+           // $new_price = 101;
+            //$converted_new_price = $this->convertToBaseCurrency($new_price);
+            
+            $custom_price = 300;
+            $rate = $this->getCurrentCurrencyRate();
+            $custom_price = ($custom_price*$rate);
+            $quote_item->setPrice($custom_price);
+            $quote_item->setOriginalCustomPrice($custom_price);
+            $quote_item->setCustomPrice($custom_price);
+
+            //$quote_item->setPrice($original);
+            /*if($special_price > 0){
+                $converted_special_price = $this->convertToBaseCurrency($special_price);
+                $quote_item->specialPrice($converted_special_price);
+                $quote_item->originalSpecialPrice($converted_special_price);
+            }*/
+            
+
+            $quote_item->getProduct()->setIsSuperMode(false);
+            //$logger->info("success !!!!");
+        }
+
+    }
+}

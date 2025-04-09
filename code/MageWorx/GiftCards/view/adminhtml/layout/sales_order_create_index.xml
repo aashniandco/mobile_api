@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="items_grid">
+            <block class="MageWorx\GiftCards\Block\Adminhtml\Order\Create\Form\GiftCards" template="order/create/form/giftcards.phtml" name="form_giftcards" after="-"/>
+        </referenceBlock>
+    </body>
+</page>

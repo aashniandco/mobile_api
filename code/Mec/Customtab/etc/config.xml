@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config/etc/config.xsd">
+    <default>
+        <catalog>
+            <productpage_data>
+                <whatsapp_number>919136056602</whatsapp_number>
+                <phone_number>+91 9136056602</phone_number>
+                <email_id>customercare@aashniandco.com</email_id>
+            </productpage_data>
+        </catalog>
+    </default>
+</config>

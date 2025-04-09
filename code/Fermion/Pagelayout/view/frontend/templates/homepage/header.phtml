@@ -1,0 +1,534 @@
+<?php
+
+//$objectManager = Magento\Framework\App\ObjectManager::getInstance();
+$baseUrl = $this->getBaseUrl(); 
+$jsVersion = $this->getJsVersion();
+$urlInterface = $this->getUrlInterface();
+$currencies = $this->getCurrencies();
+$currentCurrencyCode = $this->getCurrentCurrencyCode();
+$cartItemCount = $this->getCartItemCount();
+$cartResponse = json_decode($this->getCartResponse(), true);
+$_Symbol = $this->getSymbol();
+$formKey = $this->getFormKey();
+// print_r($baseUrl);
+// print_r($jsVersion);
+// print_r($urlInterface->getCurrentUrl());
+// print_r($currencies);
+// print_r($currentCurrencyCode);
+// print_r($cartItemCount);
+// print_r($cartResponse);
+// print_r($_Symbol->getCurrencySymbol());
+// print_r($formKey);
+// die();
+
+$userAgent =  $_SERVER['HTTP_USER_AGENT'];
+  $mobileApk =false;
+  if($userAgent == 'android' || $userAgent == 'ios'){
+    $mobileApk =true;
+  }
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AASHNI + CO - Online Indian Luxury Fashion Shopping</title>
+<link rel="canonical" href="<?php echo $baseUrl ?>">
+<link rel="stylesheet" type="text/css" href="<?=$baseUrl?>pub/static/frontend/Mgs/ethan/en_US/css/homeheader.css?v=<?=$jsVersion?>">
+<link rel="stylesheet" type="text/css" href="<?=$baseUrl?>pub/static/frontend/Mgs/ethan/en_US/css/homefooter.css?v=<?=$jsVersion?>">
+<link rel="stylesheet" type="text/css" href="<?=$baseUrl?>pub/static/frontend/Mgs/ethan/en_US/css/homecontent.css?v=<?=$jsVersion?>">
+<link rel="stylesheet" type="text/css" href="<?=$baseUrl?>pub/static/frontend/Mgs/ethan/en_US/MGS_Mpanel/css/slick.css">
+<link rel="stylesheet" type="text/css" href="<?=$baseUrl?>pub/static/frontend/Mgs/ethan/en_US/MGS_Mpanel/css/slick-theme.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+<script src="<?=$baseUrl?>pub/static/frontend/Mgs/ethan/en_US/jquery.min.js" crossorigin="anonymous"></script>
+<!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+ fbq('init', '1777234279190603'); 
+fbq('track', 'PageView');
+</script>
+<noscript>
+ <img height="1" width="1" 
+src="https://www.facebook.com/tr?id=1777234279190603&ev=PageView
+&noscript=1"/>
+</noscript>
+<!-- End Facebook Pixel Code -->
+
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NR5T4JS');</script>
+<!-- End Google Tag Manager -->
+
+<script>
+(function(h,e,a,t,m,p) {
+m=e.createElement(a);m.async=!0;m.src=t;
+p=e.getElementsByTagName(a)[0];p.parentNode.insertBefore(m,p);
+})(window,document,'script','https://u.heatmap.it/log.js');
+</script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NR5T4JS"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<meta name="google-site-verification" content="UTCgbesurSWsQ7JywjsoCNInLc1zRTl9CRS3AgJudb8" />
+<meta name="p:domain_verify" content="ff8a82a93fc7467292ab2be39c8e3b3f"/>
+<meta name="p:domain_verify" content="5665e6ffcaf1dea0bbd3cf0e465a6008"/>
+
+<!-- Google tag (gtag.js) --> 
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-876062523"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-876062523'); </script>
+
+
+<!-- Pinterest Tag -->
+<script>
+!function(e){if(!window.pintrk){window.pintrk = function () {
+window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
+  n=window.pintrk;n.queue=[],n.version="3.0";var
+  t=document.createElement("script");t.async=!0,t.src=e;var
+  r=document.getElementsByTagName("script")[0];
+r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+pintrk('load', '2612658388757', {em: '<user_email_address>'});
+pintrk('page');
+</script>
+<noscript>
+<img height="1" width="1" style="display:none;" alt=""
+src="https://ct.pinterest.com/v3/?event=init&tid=2612658388757&pd[em]=<hashed_email_address>&noscript=1" />
+</noscript>
+<!-- end Pinterest Tag -->
+<!-- FB login live start vin --> 
+<script type="text/javascript">
+  // Load the Facebook SDK after the page has fully loaded
+  window.addEventListener('load', function() {
+    window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '477719177958782',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v20.0'
+    });
+      FB.AppEvents.logPageView();   
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  });
+</script>
+<!-- FB login live end vin --> 
+
+
+<!--Start of Zendesk Chat Script-->
+<script type="text/javascript">
+  // Function to detect if the user is on a mobile device
+  function isMobileDevice() {
+    return /Mobi|Android/i.test(navigator.userAgent);
+  }
+
+  // Function to load the Zendesk script dynamically
+  function loadZendeskScript() {
+    (function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+    d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+    _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+    $.src="https://v2.zopim.com/?48CO9OrOpfXKHCqLXxJJbxdirj4novFZ";z.t=+new Date;$.
+    type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+  }
+
+  // Check device type and load script if on desktop
+  if (!isMobileDevice()) {
+    loadZendeskScript();
+  }
+</script>
+<!--End of Zendesk Chat Script-->
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NR5T4JS"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<!-- PushAlert -->
+<script type="text/javascript">
+        (function(d, t) {
+                var g = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+                g.src = "https://cdn.pushalert.co/integrate_9b3ca7165915dd11ec28df5f688aa915.js";
+                s.parentNode.insertBefore(g, s);
+        }(document, "script"));
+</script>
+<!-- End PushAlert -->
+</head>
+
+<body>
+	<input type="hidden" name="baseUrl" id="base_url" value="<?php echo $baseUrl; ?>">
+   <input type="hidden" name="formKey" id="formKey" value="<?php echo $formKey; ?>">
+	   <div class="main-page-wrapper">
+         <div class="page-wrapper">
+            <header class="new-header">
+               <?php $_SERVER['HTTP_USER_AGENT']; 
+               if($userAgent == 'android' || $userAgent == 'ios') : ?>
+                  <div class="whatsapppc native-whatsapp">
+               <?php else : ?>
+                  <div class="whatsapppc">
+               <?php endif; ?>
+                  <a id = "whatsapp_connect" target="_blank" href="https://api.whatsapp.com/send?phone=918375036648&text=<?php echo $urlInterface->getCurrentUrl();?> Hello Aashni + Co ! I have a question I would like to ask.">
+                     <img src="https://aashniandco.com/pub/media/logo/whatsapp.svg"/>
+                  </a>
+               </div>
+               <div class="sticky-header" id="aashnisticky">
+                  <div class="login_message">
+                     <a target="_blank" href="https://api.whatsapp.com/send?phone=918375036648">For styling assistance & customizations, Whatsapp us at +91 8375036648</a>
+                     <div class="greet welcome" style="color: white; font-size: 15px;"></div>
+                  </div>
+                  <div class="top-header-content" style="background:#fff;">
+                     <div class="INR-wrap mobile_currency">
+                        <div class="dropdown dropdown-switcher currency switcher-currency">
+                           <?php foreach ($currencies as $_code => $_name): ?>
+                              <?php if ($_code == $currentCurrencyCode): ?>
+                                 <?php //$_Symbol = $objectManager->create('Magento\Directory\Model\CurrencyFactory')->create()->load($_code); ?>
+                                 <a class="switcher-toggle dropdown-toggle" type="button">
+                                    <span><?php echo $_code ; ?> | <?php /* @escapeNotVerified */ echo $_Symbol->getCurrencySymbol(); ?> </span> 
+                                    <i class="fa fa-angle-down" aria-hidden="true" ></i>  
+                                 </a>
+                              <?php endif; ?>
+                           <?php endforeach; ?>
+                           <ul class="INR-ul-wrap">
+                              <?php foreach ($currencies as $_code => $_name): ?>
+                                 <?php if ($_code != $currentCurrencyCode): ?>
+                                    <li>
+                                       <a <?php echo $_code; ?> href="/directory/currency/switch/?currency=<?php echo $_code; ?>"><?php echo $_code; ?></a>
+                                    </li>
+                                 <?php endif; ?>
+                              <?php endforeach; ?>
+                           </ul>
+                        </div>
+                     </div>
+                     <div class="sign-in m_login"><a href="<?=$baseUrl?>customer/account/"><span class="fa fa-user" aria-hidden="true"></span><span> Sign In</span> </a></div>
+                     <div class="wishlist m_box_border"><a href="<?=$baseUrl?>wishlist"><span class="fa fa-heart" aria-hidden="true"></span><span>    Wishlist </span> </a></div>
+                     <div class="search"><button type="button" id="mobileSearchPop" title="Search" class="button" onclick=""><span class="fa fa-search" aria-hidden="true"></span> </button></div>
+                  </div>
+                  <div class="middle-header-content">
+                     <div class="middle-header-wrp">
+                        <div class="currency-selector">
+                           <div class="dropdown dropdown-switcher currency switcher-currency">
+                              <?php foreach ($currencies as $_code => $_name): ?>
+                                 <?php if ($_code == $currentCurrencyCode): ?>
+                                    <?php //$_Symbol = $objectManager->create('Magento\Directory\Model\CurrencyFactory')->create()->load($_code); ?>
+                                    <a class="switcher-toggle dropdown-toggle" type="button"><span><?php echo $_code ; ?> | <?php /* @escapeNotVerified */ echo $_Symbol->getCurrencySymbol(); ?></span> 
+                                       <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </a>
+                                 <?php endif; ?>
+                              <?php endforeach; ?>
+                              <ul class="currency-dropdown-menu dropdown-menu">
+                                 <?php foreach ($currencies as $_code => $_name): ?>
+                                    <?php if ($_code != $currentCurrencyCode): ?>
+                                       <li class="currency-AUD switcher-option"><a class="switcher-toggle dropdown-toggle" type="button">
+                                          </a><a <?php echo $_code; ?> href="/directory/currency/switch/?currency=<?php echo $_code; ?>"><?php echo $_code; ?></a>
+                                       </li>
+                                    <?php endif; ?>
+                                 <?php endforeach; ?>
+                              </ul>
+                           </div>
+                        </div>
+                        <div class="whatsapppc">
+                           <a id = "whatsapp_connect" target="_blank" href="https://api.whatsapp.com/send?phone=918375036648&text=<?php echo $urlInterface->getCurrentUrl();?> Hello Aashni + Co ! I have a question I would like to ask.">
+                              <img src="https://aashniandco.com/pub/media/logo/whatsapp.svg"/>
+                           </a>
+                        </div>
+                     </div>
+                     <div class="middle-header-wrp">
+                        <div id="sticky_logo">
+                           <a class="logo utm_class" href="<?=$baseUrl?>" title="">
+                           <img src="https://aashniandco.com/pub/media/logo/stores/1/Logo_updated.jpeg" alt="">
+                           </a>
+                        </div>
+                     </div>
+                     <div class="middle-header-wrp">
+                        <div class="login-custom-link">
+                           <div class="search-wrap">
+                              <div class="search-plot">
+                                 <input id="search-form1"  type="text" name="q" value="" class="input-text form-control" maxlength="128" placeholder="Search">
+                              <i class="fa fa-search"></i>
+                              </div>
+                           </div>
+                           <div class="right-icon">
+                              <a class="header_wishlist" href="<?=$baseUrl?>wishlist">
+                              <i style="margin: 0px;" class="fa fa-heart" aria-hidden="true"></i>
+                              <span style="display:none;">Wishlist</span>
+                              </a>
+                              <a href="<?=$baseUrl?>customer/account" class="user-wrap"><span class="fa fa-user" aria-hidden="true"></span></a>
+                              <a href="<?=$baseUrl?>checkout/cart" class="action showcart"><span class="fa fa-shopping-bag" aria-hidden="true"></span> <div class="counter-number"><?=$cartItemCount?></div></a>
+
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="bottom-header-content">
+                     <div class="bottom-header-wrap">
+                        <div class="menu-content">
+
+                           <div class="left-mobile-icons" <?php if($mobileApk){echo 'style="width:35px;"';} ?> >
+                              <?php $userAgent =  $_SERVER['HTTP_USER_AGENT'];  if($userAgent == 'android' || $userAgent == 'ios') : ?>
+                                 <button class="action-new nav-toggle-new hidden-lg-new" style="font-size: 30px;height: 74px;border: none;box-shadow: none;background: none;color: #272727; padding:5px;" onclick="window.history.back();">
+                                       <span class="fa fa-angle-left" aria-hidden="true"></span>
+                                 </button>
+                              <?php else : ?> 
+                           <button class="action nav-toggle "><span class="fa fa-bars" aria-hidden="true"></span></button>
+                                 <div class="mobile-wishlist">
+                                    <a href="/wishlist/"> <i class="fa fa-heart" aria-hidden="true"></i></a>
+                                 </div>
+                              <?php endif; ?>
+                           </div>
+                           <div class="mob_url">
+                              <a href="<?=$baseUrl?>">
+                                 <div class="logo">
+                                    <img src="https://aashniandco.com/pub/media/logo/stores/1/Logo_updated.jpeg" alt="">
+                                 </div>
+                              </a>
+                           </div>
+                           <div  class="minicart-wrapper">
+                              <?php $userAgent =  $_SERVER['HTTP_USER_AGENT'];  if($userAgent == 'android' || $userAgent == 'ios') : ?>
+                                 <button type="button" style="background: #fff;right: 36px;text-align: center;top: 22px;width: 30px;font-size: 16px; bottom: 1px;padding-top: 0;height: 25px;border: medium none;box-shadow: none;color: #2a2a2a;display: block;position: absolute;" onclick="window.location.href='/customer/account/';">
+                                    <i class="fa fa-user"></i>
+                                 </button>
+                              <?php else: ?>
+                                 <button type="button" id="mobileSearchPop" title="<?php echo $block->escapeHtml(__('Search')) ?>" class="button" onclick>
+                                    <i class="fa fa-search"></i>
+                                 </button>
+                              <?php endif; ?>
+                              <a class="action showcart" href="/checkout/cart" >
+                              <span class="text"><i class="fa fa-shopping-bag"></i></span>
+                              <div class="counter-number"><?=$cartItemCount?></div> 
+                              </a>
+                           </div>
+                           <div class="megamenu-content">
+                              <!-- <ul class="nav nav-tabs">
+                                 <li class="active-tabs"><a data-toggle="tab" href="#main-Menucontent">Menu</a></li>
+                                 <li ><a data-toggle="tab" href="#main-Accountcontent">My Account</a></li>
+                                 </ul> -->
+                              <div class="INR-wrap mobile_currency">
+                                 <div class="dropdown dropdown-switcher currency switcher-currency">
+                                    <?php foreach ($currencies as $_code => $_name): ?>
+                                       <?php if ($_code == $currentCurrencyCode): ?>
+                                          <?php //$_Symbol = $objectManager->create('Magento\Directory\Model\CurrencyFactory')->create()->load($_code); ?>
+                                          <a class="switcher-toggle dropdown-toggle" type="button">
+                                             <span><?php echo $_code ; ?> | <?php /* @escapeNotVerified */ echo $_Symbol->getCurrencySymbol(); ?> </span> 
+                                             <i class="fa fa-angle-down" aria-hidden="true" ></i>  
+                                          </a>
+                                       <?php endif; ?>
+                                    <?php endforeach; ?>
+                                    <ul class="INR-ul-wrap">
+                                       <?php foreach ($currencies as $_code => $_name): ?>
+                                          <?php if ($_code != $currentCurrencyCode): ?>
+                                             <li>
+                                                <a <?php echo $_code; ?> href="/directory/currency/switch/?currency=<?php echo $_code; ?>"><?php echo $_code; ?></a>
+                                             </li>
+                                          <?php endif; ?>
+                                       <?php endforeach; ?>
+                                    </ul>
+                                 </div>
+                              </div>
+                              <div class="nav nav-tabs">
+                                 <button class="tablinks active-tabs" onclick="openmenu(event,'main-Menucontent')">Menu</button>
+                                 <button class="tablinks" onclick="openmenu(event,'main-Accountcontent')">My Account</button>
+                              </div>
+                              <div class="tab-content ">
+                                 <div class="tab-pane tabcontentmenus" id="main-Menucontent">
+                                    <nav class="navigation">
+                                       <?php
+										$blockId = 'homepage_megamenu';
+										// Load the CMS block content
+										$blockContent = $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId($blockId)->toHtml();
+										echo $blockContent; ?>
+                                    </nav>
+                                 </div>
+                                 <div class="main-Account tabcontentmenus" id="main-Accountcontent" style="display: none;">
+                                    <ul class="top-links">
+                                       <li><a href="<?=$baseUrl?>customer/account/">My Account</a></li>
+                                       <li><a href="<?=$baseUrl?>wishlist/">My Wish List</a></li>
+                                       <li><a href="<?=$baseUrl?>customer/account/create/">Create an Account</a></li>
+                                       <li class="mobile-menu signin-signout"><a href="<?=$baseUrl?>customer/account/login/">Sign In </a></li>
+                                       <li><a href="<?=$baseUrl?>">My Gift Cards List</a></li>
+                                    </ul>
+                                    <div class="top-custom-link">
+                                       <ul>
+                                          <li><a href="<?=$baseUrl?>sales/order/history/"><span class="fa fa-car"></span>Track Your Order</a></li>
+                                          <li><a href="<?=$baseUrl?>storelocator"><span class="fa fa-map-marker"></span>Store Locator</a></li>
+                                       </ul>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+             		<!-- ---------------search start-------------------- -->
+					<div class="search-block" style="display: none;">
+						<div class="search-forms">
+							<div class="input">
+								<button id="mobileSearchBtn" class="btn"></button>
+								<input type="text" id="mobileSearchInp" class="mobileSearchInput" name="mobileSearchInput">
+								<img src="/pub/media/close-btn.png" class="close-btn">
+							</div>
+
+							<div class="search-block-content" style="display: none;"></div>
+						</div>
+					</div>
+					<!-- ---------------search end-------------------- -->
+					<!-- -------desktop search start-------- -->
+						<div class="search-form ">
+							<div class="form-search">
+								<form class="form minisearch" id="search_mini_form" action="/catalogsearch/result/" data-gtm-form-interact-id="1">
+									<div id="search-autocomplete_custom" class="search-block-content" ></div>
+								</form>
+							</div>
+						</div>
+					<!-- -------desktop search start-------- -->
+                  </div>
+               </div>
+               <button class="action close-nav-button"><span class="fa fa-times" aria-hidden="true"></span></button>
+            </header>
+         </div>
+      </div>
+
+      <!-- newsletter popup start-->
+      <!-- Trigger button for the modal -->
+      <!-- <button id="openModalBtn">Open Modal</button> -->
+      <!-- Modal structure -->
+      <div id="customModal" class="modal">
+         <div class="modal-content">
+            <div class="content-wrapper">
+               <span class="close-btn">&times;</span>
+               <div class="subscribe-wrap">
+                  <div class="content">
+                     <form class="form-subscribe" action="/newsletter/subscriber/new/" method="post">
+                        <div class="input-div">
+                           <input name="email" type="email"  placeholder="Enter your email address" data-validate="{required:true, 'validate-email':true}">
+                        </div>
+                        <div class="subscribe-btn-wrap">
+                           <button class="subscribe-btn " title="Subscribe" type="submit">
+                           <span>Subscribe</span>
+                           </button>
+                        </div>
+                        <div class="checkbox-wrap">
+                           <label >
+                           <input id="dontShowAgain" type="checkbox" onchange="dontShowPopup(this.id)">
+                           Don't show this popup again</label>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="modal-content-mobile">
+            <div class="content-wrapper-mobile">
+                  <span class="close-btn">×</span>
+                  <div class="subscribe-wrap-mob">
+                     <div class="content">
+                        <div class="welcome-to">WELCOME TO</div>
+                        <div class="logo-mobile"><img src="https://aashniandco.com/pub/media/logo/stores/1/Logo_updated.jpeg"></div>
+
+                        <div class="get-off">Get 10% OFF</div>
+                        <div class="subscribe-text">on your first order when you subscribe</div>
+                        <form class="form-subscribe" action="/newsletter/subscriber/new/" method="post">
+                           <div class="input-div">
+                                 <input name="email" type="email" placeholder="Enter your email address" data-validate="{required:true, 'validate-email':true}">
+                           </div>
+                            <div class="subscribe-btn-wrap">
+                                 <button class="subscribe-btn " title="Subscribe" type="submit">
+                                    <span>Subscribe</span>
+                                 </button>
+                            </div>
+
+                           <div class="priority-access">Priority access to new arrival, promotions, events and more</div>
+                           
+                            <div class="checkbox-wrap">
+                               <label>
+                               <input id="dontShowAgainMobile" type="checkbox" onchange="dontShowPopup(this.id)">
+                               Don't show this popup again</label>
+                            </div>
+                        </form>
+                     </div>
+                  </div>
+             </div>
+         </div>
+      </div>
+      <!-- newsletter popup end-->
+      <!-- bootom strip start-->
+      <?php $userAgent =  $_SERVER['HTTP_USER_AGENT']; ?>
+      <?php if($userAgent == 'android' || $userAgent == 'ios') : ?>
+         <!-- <div class="app-footer-wrapper">
+            <div class="overlay-content-wrap mobile-home">
+               <a href="/"><div class="fa fa-home icon"></div>
+              <div class="icon-name">Home</div></a>
+            </div>
+            <div class="overlay-content-wrap mobile-designer">
+               <a href="/designer"><div class="fa fa-designer icon"></div>
+              <div class="icon-name">Designer</div></a>
+            </div>
+            <div class="overlay-content-wrap mobile-menu">
+               <div class="fa fa-menu icon"></div>
+              <div class="icon-name">Menu</div>
+            </div>
+            <div class="overlay-content-wrap mobile-wishlist">
+               <a href="/wishlist"><div class="fa fa-heart icon"></div>
+              <div class="icon-name">Wish List</div></a>
+            </div>
+            <div class="overlay-content-wrap mobile-search">
+               <div class="fa fa-search icon"></div>
+              <div class="icon-name">Search</div>
+            </div>
+         </div> -->
+      <?php endif; ?>
+      <!-- bootom strip end-->
+
+      <!-- search opem apk start-->
+        <div class="top-header native-search">
+          <div class="contain">
+            <div class="search-block-native">
+              <div class="search-form-native">
+                <div class="search-loader">
+                  <img src="skin/img/img-loader.gif">
+                </div>
+                <div class="input">
+                  <button class="btn"></button>
+                  <input type="text"  class="" name="" id="mobileSearchInpNative" placeholder="Search here">
+                  <div><img class="close-btn" src="https://aashniandco.com/pub/media/close-btn.png"></div>
+                </div>
+              </div>
+
+              <div class="search-block-content"></div>
+
+              <div class="mid-content">
+                <div class="mid-plot">
+                  <div class="content">
+                    <div class="img-pod">
+                      <img src="https://aashniandco.com/pub/media/search-icon.svg">
+                    </div>
+                    <div class="find-lookingfor">Find what you're looking for</div>
+                    <div class="search-for">Search for designers, categories and products</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- search opem apk end-->

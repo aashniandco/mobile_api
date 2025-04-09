@@ -1,0 +1,22 @@
+{
+    "name": "mec/module-categorydesignerinfo",
+    "description": "This extension is used for uploading designer images and their information from admin ",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Mage2Gen",
+            "email": "info@mage2gen.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Mec\\CategoryDesignerInfo\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}

@@ -1,0 +1,70 @@
+<style type="text/css">
+	.delete-account-alert{
+		font-size: 20px;
+		font-weight: 400px;
+	}
+	.delete-account-button-container{
+		margin-top: 10px;
+	}
+	.delete-account-section #delete-account-btn{
+		width: 160px;
+	    height: 40px;
+	    margin-right: 15px;
+	    background-color: #000 !important;
+	    border-color: #000 !important;
+	    color: #ffffff !important;
+	    font-size: 13px;
+	    text-align: center;
+	    border-radius: 0;
+	    box-shadow: none;
+	}
+	#delete-confirm-modal{
+		padding: 20px;
+	}
+	#delete-confirm-modal .dcm-heading{
+		font-size: 16px;
+		color: black;
+		margin-bottom: 20px;
+	}
+	#delete-confirm-modal .dcm-action-container .dcm-confirm-btn, #delete-confirm-modal .dcm-action-container .dcm-cancel-btn{
+		width: 70px;
+	    height: 40px;
+	    margin-right: 15px;
+	    background-color: #000 !important;
+	    border-color: #000 !important;
+	    color: #ffffff !important;
+	    font-size: 13px;
+	    text-align: center;
+	    border-radius: 0;
+	    box-shadow: none;
+	}
+	.modal-popup .action-close{
+		top: 35px;
+    	right: 5px;
+	}
+</style>
+
+<?php 
+	$customer_id = $block->getCustomerId();
+?>
+
+<div class="delete-account-section">
+	<div class="delete-account-alert">
+		Caution! You are about to delete your account.
+	</div>
+	<div class="delete-account-warning">
+		Please Note that the Account is not restorable so the action you perform can not be undone or restored later. This Action will delete your account from our website completely. Your newsletter subscription will be unsubscribed too automatically.
+	</div>
+	<div class="delete-account-button-container">
+		<button class="delete-account-btn" id="delete-account-btn" data-mage-init='{"Fermion_Pagelayout/js/deleteaccountconfirm": {}}'>Delete My Account</button>
+	</div>
+</div>
+<div id="delete-confirm-modal" style="display: none;">
+	<div class="dcm-heading">
+		You are Deleting your account! Please confirm.
+	</div>
+	<div class="dcm-action-container">
+		<button class="dcm-confirm-btn" id="dcm-confirm-btn" data-value="<?= $customer_id; ?>">Confirm</button>
+		<button class="dcm-cancel-btn" id="dcm-cancel-btn">Cancel</button>
+	</div>
+</div>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <social>
+            <general_settings>
+                <active>0</active>
+            </general_settings>
+            <facebook_settings>
+                <active>0</active>
+            </facebook_settings>
+            <facebook_page_plugin_settings>
+                <active>0</active>
+                <show_title>1</show_title>
+                <title>Like And Follow Us</title>
+                <width>230</width>
+                <height>460</height>
+                <tabs>timeline</tabs>
+                <hide_cover>0</hide_cover>
+                <show_facepile>1</show_facepile>
+                <hide_cta>0</hide_cta>
+                <small_header>0</small_header>
+                <adapt_container_width>0</adapt_container_width>
+            </facebook_page_plugin_settings>
+            <twitter_settings>
+                <active>0</active>
+            </twitter_settings>
+        </social>
+    </default>
+</config>

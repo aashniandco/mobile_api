@@ -1,0 +1,723 @@
+<?php $block = $this->getBlock() ?>
+
+<?php $helper = $this->helper('MGS\Mpanel\Helper\Data') ?>
+<?php $canUsePanel = $helper->acceptToUsePanel() ?>
+
+<?php $objectManager = \Magento\Framework\App\ObjectManager::getInstance(); ?>
+<?php $storeManager = $objectManager->get(\Magento\Store\Model\StoreManagerInterface::class); ?>
+<?php $customerSession = $objectManager->create('Magento\Customer\Model\Session'); ?>
+<?php $customerUrl = $objectManager->create('Magento\Customer\Model\Url'); ?>
+
+<?php $topLeftBlock = $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('header_1_top_left_link')->setCanUsePanel($canUsePanel)->toHtml(); ?>
+<?php $welcomeMessage = $block->getWelcome(); ?>
+<?php
+/** @var \Magento\Framework\UrlInterface $urlInterface */
+$urlInterface = \Magento\Framework\App\ObjectManager::getInstance()->get('Magento\Framework\UrlInterface');
+?>
+<style>
+@media only screen and (min-width: 1024px) {
+.header .nav.nav-main-menu > li > a {
+padding: 5px 14px 15px 14px !important;
+}
+}
+#search_mini_form a {
+    width: auto;
+}
+.header_wishlist{width:25px;
+display: block;
+margin-left: 10px !important;
+}
+.m_box_border{ border:1px #ccc solid; border-width:0px 1px;}
+.header.header7 .login-custom-link .fa {
+    margin-right: 5px;
+}
+.top-header-content .col-xs-4{ padding-top:3px;}
+.top-header-content {
+    text-align: center;
+font-size: 14px;
+border-bottom: 1px #ccc solid;
+-webkit-box-shadow: 0px 3px 7px -4px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 3px 7px -4px rgba(0,0,0,0.75);
+box-shadow: 0px 3px 7px -4px rgba(0,0,0,0.75);
+}
+.minicart-wrapper .action.showcart::before {
+    content: '\f290' !important;
+    line-height: 21px !important;
+    font-size: 15px !important;
+}
+.header.header7 .minicart-wrapper a .text {
+    font-size: 14px;
+    font-weight: 300;
+}
+.header.header7 .login-custom-link a {
+    font-size: 14px;
+    font-weight: 300;
+  float:right;
+width: 32px;
+margin: 0px 5px 0px 5px ;
+}
+.header.header7 .search-form {
+    max-width: 167px;
+    float:left;
+    margin-left:20%;
+}
+#mobile_search .search-form {
+    max-width: 90%;
+    min-width: 90%;
+    float: left;
+    width: 90%;
+    margin: 0px;
+}
+#mobile_search .form-search .button{
+background: #fff;
+right: 10px;
+text-align: center;
+bottom: 1px;
+width: 30px;
+padding-top: 0px;
+height: 25px;
+}
+
+@media (min-width:1025px) {
+.minisearch{ position: absolute;
+width: 168px;
+}
+.header.header7 .search-form > .form-search .input-text{padding-left: 5px;}
+.top-header-content{display:none;}
+.header.header7 .login-custom-link {
+    margin-right: 0px;
+width:100%; float:left;
+padding-top:14px;
+}
+.header.header7 .minicart-wrapper {
+    right:-40px;
+}
+}
+#minca{margin-left:10px; width:35px;height:28px; float: right;}
+#minca .minicart-wrapper{
+position: relative;
+top: -3px !important;
+right: 0;
+left: 0px; margin:0px !important;
+}
+/*changes 07-09-2023*/
+.whatsapppc{ 
+	/*width:22px; */
+	/*float:left;*/
+	width: 36px;
+    height: 36px !important;
+    float: left;
+    position: fixed;
+    font-size: 10px;
+    font-weight: 700;
+    right: 40px;
+    bottom: 17px;
+    z-index: 8;
+}
+.whatsapppc img{ width:100%; height: auto !important;}
+#switcher-currency {
+    width: 105px;
+    float: left;
+    padding-top: 3px;
+}
+.login_message .anniversary-2023-ticket{
+	color: #fff;
+	font-size: 20px;
+	font-family: Times New Roman;
+}
+/*code changes 06-09-2023 start*/
+.stylingqueries{
+	font-size: 18px;
+	color: white;
+	font-family: Times New Roman;
+}
+.stylingqueries a{
+	color: white;
+}
+@media (max-width: 1112px) {
+	.login_message .stylingqueries {
+		color: #fff;
+		font-size: 18px;
+		font-family: Times New Roman;
+	}
+}
+@media (max-width: 768px) {
+	.login_message .stylingqueries {
+		color: #fff;
+		font-size: 11px;
+		font-family: Times New Roman;
+	}
+}
+@media (max-width: 480px) {
+	.login_message .stylingqueries{
+		color: #fff;
+		font-size: 10px;
+		font-family: Times New Roman;
+	}
+    #launcher
+	{
+		display: none;
+	}
+}
+
+ 
+
+/*.anniversary-2023-ticket:hover{
+
+    color: #a4a4a4
+
+}*/
+
+ 
+
+/*@font-face {
+
+    font-family: "Verlag Bold";
+
+    src: url("https://aashniandco.com/pub/static/frontend/Mgs/ethan/en_US/fonts/Verlag-Bold.otf");
+
+    src: url("https://aashniandco.com/pub/static/frontend/Mgs/ethan/en_US/fonts/Verlag Bold.otf?#iefix")format("embedded-opentype"),
+
+        url("https://aashniandco.com/pub/static/frontend/Mgs/ethan/en_US/fonts/Verlag-Bold.otf")format("woff"),
+
+        url("https://aashniandco.com/pub/static/frontend/Mgs/ethan/en_US/fonts/Verlag-Bold.otf")format("woff2"),
+
+        url("https://aashniandco.com/pub/static/frontend/Mgs/ethan/en_US/fonts/Verlag-Bold.otf")format("truetype"),
+
+        url("https://aashniandco.com/pub/static/frontend/Mgs/ethan/en_US/fonts/Verlag-Bold.otf")format("svg");
+
+    font-weight:normal;
+
+    font-style:normal;
+
+    font-display:swap;
+
+}';*/
+<?php 
+	if($_SERVER['HTTP_USER_AGENT'] == 'android' || $_SERVER['HTTP_USER_AGENT'] == 'ios'){
+		echo "@media (max-width: 480px) {
+			.footer-container .mobile_whatsup img{
+				display: none !important;
+				width: 35px !important;
+    			height: 35px !important;
+				margin-bottom: 45px !important;
+			}
+			.wrap .filter-section{
+				display: none !important
+			}	
+		}";
+	}
+?>
+</style>
+<input type="hidden" id="base_url" value="<?php echo $storeManager->getStore()->getBaseUrl();?>">
+<div id="aashnisticky">
+
+
+<div class="login_message">
+	<!-- <a href="https://aashniandco.com/anniversary-sale-2023" class="anniversary-2023-ticket"><span>Last 24 hours: Anniversary sale upto 70% off!</span></a> -->
+	<div class="stylingqueries">
+		 <!-- <a target="_blank" href="https://aashniandco.com/independence-day-sale.html">The Independence Day Sale Live Now</a> -->
+
+	 	  <a target="_blank" href="https://api.whatsapp.com/send?phone=918375036648&text=<?php echo $urlInterface->getCurrentUrl();?> ">For styling assistance & customizations, Whatsapp us at +91 8375036648</a> 
+	 	<!-- <a target="_blank">15% cashback on selected designers</a> -->
+		<!-- <a target="_blank" href="/eid-sale.html">The Eid Sale Upto 70% Off, SHOP NOW</a> -->
+	</div>
+    <div class="greet welcome" data-bind="scope: 'customer'">
+		<?php //if($customerSession->isLoggedIn()): ?>
+		<?php //$name = $customerSession->getCustomer()->getName(); ?>
+        <!-- <span> Welcome <?php //echo $block->escapeHtml($name); ?> !!!</span>
+                                <?php //else: ?>
+                                        <span><?php //echo $block->escapeHtml($welcomeMessage); ?></span> -->
+                                <?php //endif; ?>
+    </div>
+</div>
+<div style="clear:both"> </div>
+
+
+
+<div class="top-header-content" style="background:#fff; display: none;">
+	<div style="background:#fff;" class="container">
+		<div class="row">
+			<div class="mobile_currency">
+			 	<?php echo $block->getChildHtml('currency') ?>
+			</div>
+            <div class="col-xs-4 m_login">
+            	<a href="/customer/account/login"><span class="fa fa-user" aria-hidden="true"></span><span> Sign In</span> </a>
+				<?php //if($customerSession->isLoggedIn()): ?>
+					<!-- <a href="<?php //echo $customerUrl->getAccountUrl(); ?>">
+					<span class="fa fa-user" aria-hidden="true"></span></a>
+					<a class="h7_signout" href="<?php //echo $customerUrl->getLogoutUrl(); ?>">
+						<?php //echo __('Sign Out'); ?></a> -->
+					<?php //else: ?>
+						<!-- <a href="<?php //echo $customerUrl->getLoginUrl(); ?>">
+							<span class="fa fa-user" aria-hidden="true"></span>
+							<span><?php //echo __('Sign In'); ?></span> 
+						</a> -->
+					<?php //endif ?>
+			</div>
+
+			<div class="col-xs-4 m_box_border">
+                            <a href="<?php echo $block->getUrl('wishlist'); ?>"> <i class="fa fa-heart" aria-hidden="true"></i>   Wishlist </a>
+                        </div>
+			<div id="mobile_search" class="col-xs-1">
+			  	<?php echo $block->getChildHtml('top.search') ?>
+            </div>
+        </div>
+	</div>
+</div>
+<div class="middle-header-content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4 currency-selector">
+
+
+			<!--  currency-selector !-->
+			<?php echo $block->getChildHtml('currency') ?>
+ 			<div class="whatsapppc">
+			 <a id = "whatsapp_connect" target="_blank" href="https://api.whatsapp.com/send?phone=918375036648&text=<?php echo $urlInterface->getCurrentUrl();?> Hello Aashni + Co ! I have a question I would like to ask.">
+                        <img src="https://aashniandco.com/pub/media/logo/whatsapp.svg"/>
+                        </a>
+			</div>
+			</div>
+			<div class="col-md-4">
+				<div id="sticky_logo">
+					<?php $utm_cookie = isset($_COOKIE['UTM'])?$_COOKIE['UTM']:'';
+					$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+					$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+					$baseurl = $storeManager->getStore()->getBaseUrl();
+					if($utm_cookie!='') { ?>
+					<a href="<?php echo $baseurl.$utm_cookie; ?>"><?php echo $block->getChildHtml('logo') ?> </a>
+					<?php }else{ ?>
+			   <a href="<?php echo $baseurl; ?>"><?php echo $block->getChildHtml('logo') ?> </a>
+			<?php } ?>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div id="sticky_login_link" class="login-custom-link">
+					
+					<div id="minca">
+                               			 <?php echo $block->getChildHtml('minicart') ?>
+                                        </div>
+					
+					<?php echo $block->getChildHtml('top.search') ?>
+					<?php //if($customerSession->isLoggedIn()): ?>
+						<!-- <a href="<?php //echo $customerUrl->getAccountUrl(); ?>">
+						<span class="fa fa-user" aria-hidden="true"></span>
+						</a>
+						<a class="h7_signout" href="<?php //echo $customerUrl->getLogoutUrl(); ?>">
+						<span style="display:none;" class="fa fa-sign-out" aria-hidden="true"></span>
+					      <span style="display:none;"> <?php //echo __('Sign Out '); ?> </span>
+						<i class="fa fa-unlock-alt" aria-hidden="true"></i>
+
+						</a> -->
+					<?php //else: ?>
+						<!-- <a class="h7_signin"  href="<?php //echo $customerUrl->getLoginUrl(); ?>">
+						<span class="fa fa-user" aria-hidden="true"></span><span style="display:none;"><?php //echo __('Sign In'); ?><span> </a> -->
+					<?php //endif ?>
+						<a class="header_wishlist" href="/wishlist">
+							<i style="margin: 0px;" class="fa fa-heart" aria-hidden="true"></i>
+ 							<span style="display:none;">Wishlist</span>
+						 </a>
+
+
+
+
+				</div>
+			   </div>
+		</div>
+	</div>
+</div>
+<div class="bottom-header-content">
+	<div class="container">
+		<div class="menu-content">
+			<!-- <div class="whatsup_url">
+				<a target="_blank" href="https://api.whatsapp.com/send?phone=918375036648&text=<?php echo $urlInterface->getCurrentUrl();?> Hello Aashni + Co ! I have a question I would like to ask.">
+					<img src="https://aashniandco.com/pub/media/logo/whatsapp.svg"/>
+				</a>
+			</div> -->
+			<?php $userAgent =  $_SERVER['HTTP_USER_AGENT'];  if($userAgent == 'android' || $userAgent == 'ios') { ?> 
+			<button class="action-new nav-toggle-new hidden-lg-new" 
+					style="font-size: 30px;height: 74px;border: none;box-shadow: none;background: none;color: #272727;"
+					onclick="window.history.back();">
+					<span class="fa fa-angle-left" aria-hidden="true"></span>
+			</button>
+			<?php }else{ ?>
+			<button class="action nav-toggle hidden-lg"><span class="fa fa-bars" aria-hidden="true"></span></button>
+			<div class="mobile-wishlist">
+				<a href="/wishlist/"> <i class="fa fa-heart" aria-hidden="true"></i></a>
+			</div>
+			<?php } ?>
+			
+			<div class="mob_url">
+				<?php if($utm_cookie!='') { ?>
+				<a href="<?php echo $baseurl.$utm_cookie; ?>"> <?php echo $block->getChildHtml('logo') ?> </a>
+				<?php }else{ ?>
+				<a href="<?php echo $baseurl; ?>"><?php echo $block->getChildHtml('logo') ?> </a>
+				<?php } ?>
+			</div>
+
+			<div class="megamenu-content<?php if($block->getChildHtml('megamenu')!=''): ?> mgs-menu<?php else: ?> mgt-menu<?php endif ?>">
+				<div class="mobile_currency">
+				 	<?php echo $block->getChildHtml('currency') ?>
+				</div>
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#main-Menucontent"><?php echo __('Menu'); ?></a></li>
+					<li><a data-toggle="tab" href="#main-Accountcontent"><?php echo __('My Account'); ?></a></li>
+				</ul>
+				<div class="tab-content">
+					<div id="main-Menucontent" class="tab-pane active">
+						<?php if($block->getChildHtml('megamenu')!=''): ?>
+							<?php echo $block->getChildHtml('megamenu') ?>
+						<?php else: ?>
+							<?php echo $block->getChildHtml('catalog.topnav') ?>
+						<?php endif ?>
+					</div>
+					<div id="main-Accountcontent" class="tab-pane">
+						<?php echo $block->getChildHtml('top.links') ?>
+						<?php if($topLeftBlock): ?>
+							<div class="top-custom-link">
+								<?php echo $topLeftBlock; ?>
+							</div>
+						<?php endif ?>
+					</div>
+				</div>
+			</div>
+	           <!--	minicart  -->
+
+
+			<?php $userAgent =  $_SERVER['HTTP_USER_AGENT'];  if($userAgent == 'android' || $userAgent == 'ios') { ?> 
+				<button type="button" 
+						style="background: #fff;right: 36px;text-align: center;top: 22px;width: 30px;font-size: 16px; bottom: 1px;padding-top: 0;height: 25px;border: medium none;box-shadow: none;color: #2a2a2a;display: block;position: absolute;"
+						onclick="window.location.href='/customer/account/';">
+					<i class="fa fa-user"></i>
+				</button>
+			<?php }else{ ?>
+				<button type="button" id="mobileSearchPop" title="<?php echo $block->escapeHtml(__('Search')) ?>" class="button" onclick>
+					<i class="fa fa-search"></i>
+				</button>
+			<?php } ?>
+
+		<div class="mobile_mincart">
+                  	<a style="position:absolute;width:100%; height:35px; z-index:100;" href="/checkout/cart/"> </a>
+			<?php echo $block->getChildHtml('minicart') ?>	
+        	</div>
+
+
+		</div>
+	</div>
+
+	<div class="search-block">
+		<div class="search-forms">
+			<!-- <div class="search-loader">
+				<img src="https://aashniandco.com/pub/media/img-loader.gif">
+			</div> -->
+			<div class="input">
+				<button id="mobileSearchBtn" class="btn"></button>
+				<input type="text" id="mobileSearchInp" class="mobileSearchInput" name="mobileSearchInput">
+				<img src="https://aashniandco.com/pub/media/close-btn.png" class="close-btn">
+			</div>
+
+			<div class="search-block-content">
+			</div>
+		</div>
+	</div>
+
+	<div class="top-header native-search">
+		<div class="contain">
+			<div class="search-block-native">
+				<div class="search-form-native">
+					<div class="search-loader">
+						<img src="skin/img/img-loader.gif">
+					</div>
+					<div class="input">
+						<button class="btn"></button>
+						<input type="text"  class="" name="" id="mobileSearchInpNative" placeholder="Search here">
+						<div><img class="close-btn" src="https://aashniandco.com/pub/media/close-btn.png"></div>
+						<!-- <div class="log-img search-img"></div> -->
+					</div>
+				</div>
+
+				<div class="search-block-content"></div>
+
+				<div class="mid-content">
+					<div class="mid-plot">
+						<div class="content">
+							<div class="img-pod">
+								<img src="https://aashniandco.com/pub/media/search-icon.svg">
+							</div>
+							<div class="find-lookingfor">Find what you're looking for</div>
+							<div class="search-for">Search for designers, categories and products</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<?php $userAgent =  $_SERVER['HTTP_USER_AGENT']; ?>
+<?php if($userAgent == 'android' || $userAgent == 'ios') : ?>
+	<div class="filter-section-mobileapp">
+        <div class="btn-sort-by">
+            <div class="img-pod">
+                <img src="https://orders.aashniandco.com/pub/media//mobilefilter/sort-icon.svg">
+            </div>
+            <div class="sort-data">
+                <div class="head">SORT BY</div>
+                
+            </div>
+        </div>
+        <div class="seperator"></div>
+        <div class="btn-filter-by">
+            <div class="img-pod">
+                <img src="https://orders.aashniandco.com/pub/media//mobilefilter/funnel.svg">
+                <div class="filter-applied"></div>
+            </div>
+            <div class="f-data click-filter">
+                <div class="head">FILTER</div>
+                
+            </div>
+        </div>
+    </div>
+
+
+	<!-- <div class="app-footer-wrapper">
+	   	<div class="overlay-content-wrap mobile-home">
+	      	<a href="/"><div class="fa fa-home icon"></div>
+	        <div class="icon-name">Home</div></a>
+	   	</div>
+	   	<div class="overlay-content-wrap mobile-designer">
+	      	<a href="/designer"><div class="fa fa-designer icon"></div>
+	        <div class="icon-name">Designer</div></a>
+	   	</div>
+	   	<div class="overlay-content-wrap mobile-menu">
+	      	<div class="fa fa-menu icon"></div>
+	        <div class="icon-name">Menu</div>
+	   	</div>
+	   	<div class="overlay-content-wrap mobile-wishlist">
+	      	<a href="/wishlist"><div class="fa fa-heart icon"></div>
+	        <div class="icon-name">Wish List</div></a>
+		</div>
+	   	<div class="overlay-content-wrap mobile-search">
+	      	<div class="fa fa-search icon"></div>
+	        <div class="icon-name">Search</div>
+	   	</div>
+	</div> -->
+<?php endif; ?>
+
+</div>
+<button class="action close-nav-button"><span class="fa fa-times" aria-hidden="true"></span></button>
+<script>
+	document.getElementById("whatsapp_connect").onclick = function() {
+    fbq('track', 'whatsapp-track');
+  };
+</script>
+
+<script>
+//-----------------------sticky header and filter------------------------------
+
+var lasty = 0;
+var buffer = 5; // Adding a buffer to prevent small flickers
+var scrollTimeout = null;
+
+function isOnScreen(elem) {
+    var $elem = jQuery(elem);
+    var $window = jQuery(window);
+
+    var viewport_top = $window.scrollTop();
+    var viewport_bottom = viewport_top + $window.height();
+
+    var elem_top = $elem.offset().top;
+    var elem_bottom = elem_top + $elem.height();
+
+    return elem_bottom > viewport_top && elem_top < viewport_bottom;
+}
+
+var myScrollFunc = function() {
+    var y = window.scrollY;
+
+    // Add a buffer to prevent flickering due to small movements
+    if (Math.abs(y - lasty) > buffer) {
+        console.log('y :: ' + y);
+        console.log('lasty :: ' + lasty);
+
+        // Apply fixed position to header (#aashnisticky) only when scrolling up
+        if (y < lasty && y >= 100 
+            && !jQuery('body').hasClass('catalog-product-view') 
+            && !jQuery('body').hasClass('nativeapp-account-mobileweblogin') 
+            && !jQuery('body').hasClass('account') 
+            && !jQuery('body').hasClass('loyaltypoint-account-accountloyalty')) {
+
+            jQuery('#aashnisticky').css({
+                "position": "fixed",
+                "z-index": "100",
+                "right": "0",
+                "top": "0",
+                "left": "0",
+                "width": "100%",
+                "background": "#fff",
+                "display": "block"
+            });
+        } else {
+            // Reset styles when scrolling down or not meeting conditions
+            jQuery('#aashnisticky').css({
+                "position": "",
+                "z-index": "",
+                "right": "",
+                "top": "",
+                "left": "",
+                "width": "",
+                "background": "",
+                "display": "block"
+            });
+        }
+
+        // Handle the sidebar (filter)
+        if (jQuery(document).width() > 834 && (jQuery('body').hasClass('pagelayout-listing-index') || jQuery('body').hasClass('pagelayout-search-index'))) {
+            if (jQuery('.products.list.items.product-items li').length > 0) {
+                if (isOnScreen('footer')) {
+                    var element = document.getElementsByTagName("footer")[0];
+                    var rect = element.getBoundingClientRect();
+                    var filterBottom = window.innerHeight - rect.y + 10;
+                    jQuery('.sidebar-main').addClass('filter-sticky').css({
+                        "bottom": filterBottom + "px",
+                        "top": "unset"
+                    });
+                } else {
+                    var filterTop = (y <= 100) ? jQuery('#aashnisticky').height() + 60 : 10;
+                    if (y < lasty && y > 100) {
+                        filterTop = 130;
+                    }
+
+                    jQuery('.sidebar-main').addClass('filter-sticky').css({
+                        "bottom": "unset",
+                        "top": filterTop + "px"
+                    });
+                }
+            } else {
+                // Reset styles for sidebar if no products
+                jQuery('.sidebar-main').removeClass('filter-sticky').css({
+                    "top": "unset",
+                    "bottom": "unset"
+                });
+            }
+        }
+
+        lasty = y; // Update the last scroll position
+    }
+};
+
+// Debounce function to limit scroll handler invocation
+function debounce(func, wait) {
+    return function() {
+        var context = this, args = arguments;
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(function() {
+            func.apply(context, args);
+        }, wait);
+    };
+}
+
+// Apply debounced scroll function
+window.addEventListener('scroll', debounce(myScrollFunc, 10));
+
+//-----------------------sticky header and filter------------------------------
+ </script>
+
+
+ <script>
+var myScrollFunc = function() {
+var y = window.scrollY;
+if (y >=150) {
+document.getElementById('sticky_logo').style.width ='70%';
+document.getElementById('sticky_logo').style.margin ='auto';
+  } else {
+ document.getElementById('sticky_logo').style.width ='';
+document.getElementById('sticky_logo').style.margin ='';
+  }
+};
+window.addEventListener("scroll", myScrollFunc);
+
+ </script>
+
+ <script>
+var myScrollFunc = function() {
+var y = window.scrollY;
+if (y >=150) {
+document.getElementById('sticky_login_link').style.paddingTop = '0px'; 
+  } else { 
+document.getElementById('sticky_login_link').style.paddingTop ='';
+  }
+};
+window.addEventListener("scroll", myScrollFunc);
+
+ </script>
+
+<script>
+
+require(["Magento_Customer/js/customer-data", "jquery"], function (customerData, $) {
+	jQuery(document).ready(function() {
+		var baseurl = $('#base_url').val();
+		html = '';
+
+		function getQueryParam(param) {
+		    var urlParams = new URLSearchParams(window.location.search);
+		    return urlParams.get(param);
+		}
+
+		var token = getQueryParam('token');
+		console.log(token);
+
+		if(token != '' && token != null){
+			$.ajax({
+				url: '/customer/account/loginPost',
+				method: 'post',
+				async:'false',
+				data: {'isAjax':1,'token':token},
+				success: function(res){
+					callSession();
+					var sections = ['cart'];
+		            customerData.invalidate(sections);
+		            customerData.reload(sections, true);
+				},
+				error:function(err){
+					callSession();
+				}
+			});
+		}
+		else{
+			callSession();
+		}
+
+		function callSession(){
+			$.ajax({
+				url: baseurl + 'session.php',
+				method: 'post',
+				success: function(result){
+					res = JSON.parse(result);
+					if(res.is_logged_in){
+						html = "<span>"+res.welcomeMessage+"</span>";
+						$('.greet.welcome').html(html);
+						var loginUrl = baseurl+'customer/account/';
+						var loginhtml = '<a href="'+loginUrl+'"><span class="fa fa-user" aria-hidden="true"></span></a><a class="h7_signout" href="'+baseurl+'customer/account/logout/"><i class="fa fa-unlock-alt" aria-hidden="true"></i></a>';
+						var mobileLoginHtml = '<a href="'+loginUrl+'"><span class="fa fa-user" aria-hidden="true"></span></a><a class="h7_signout" href="'+baseurl+'customer/account/logout/"> Sign Out</a>';
+					}else{
+						var loginUrl = baseurl+'customer/account/login';
+						var loginhtml = '<a href="'+loginUrl+'"><span class="fa fa-user" aria-hidden="true"></span></a>';
+						var mobileLoginHtml = '<a href="'+loginUrl+'"><span class="fa fa-user" aria-hidden="true"></span><span> Sign In</span> </a>';
+					}
+
+					jQuery('#sticky_login_link .search-form').after(loginhtml);
+					jQuery('.top-header-content .col-xs-4.m_login').html(mobileLoginHtml);
+					if(res.form_key && jQuery("input[name='form_key']").length > 0){
+						setTimeout(function(){
+							jQuery("input[name='form_key']").val(res.form_key);
+						},1000);
+					}
+
+					
+				}
+			});
+		}
+	});
+});
+</script>

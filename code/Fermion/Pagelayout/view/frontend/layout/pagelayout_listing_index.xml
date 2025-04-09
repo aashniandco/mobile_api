@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+
+    <head>
+        <css src="Fermion_Pagelayout::css/filter.css"/>
+        <!-- <script src="Fermion_Pagelayout::js/nouislider.min.js"/> -->
+        <script src="Fermion_Pagelayout::css/nouislider.min.css"/>
+        <script src="Fermion_Pagelayout::js/filter.js"/>
+    </head>
+    <referenceContainer name="sidebar.additional" remove="true"/>
+    <referenceContainer name="sidebar.main">
+        <block class="Fermion\Pagelayout\Block\Index" name="custom_filter_block" template="Fermion_Pagelayout::filter.phtml" />
+        
+    </referenceContainer>
+
+    <referenceContainer name="content">
+        <block class="Fermion\Pagelayout\Block\Index" name="pagelayout_listing_index" template="Fermion_Pagelayout::index.phtml" />
+    </referenceContainer>
+    <referenceContainer name="main.content" htmlClass="page-main container listing"/>
+    
+
+</page>

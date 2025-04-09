@@ -1,0 +1,21 @@
+<?php
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+/** @var \MageWorx\GiftCards\Block\Sales\Order\Totals\GiftCards $block */
+
+$source = $block->getSource();
+$order  = $block->getOrder();
+?>
+<?php if ((float) $source->getMageworxGiftcardsAmount()): ?>
+    <tr class="mageworx_giftcards">
+        <th <?php /* @escapeNotVerified */ echo $block->getLabelProperties() ?>>
+            <?php /* @escapeNotVerified */ echo $order->getMageworxGiftcardsDescription() ?>
+        </th>
+        <td <?php /* @escapeNotVerified */ echo $block->getValueProperties() ?>>
+            <?php /* @escapeNotVerified */ echo $order->formatPrice($source->getMageworxGiftcardsAmount()) ?>
+        </td>
+    </tr>
+<?php endif; ?>

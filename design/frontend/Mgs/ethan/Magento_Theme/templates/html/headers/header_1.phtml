@@ -1,0 +1,291 @@
+<?php $block = $this->getBlock() ?>
+
+<?php $helper = $this->helper('MGS\Mpanel\Helper\Data') ?>
+<?php $canUsePanel = $helper->acceptToUsePanel() ?>
+
+<?php $objectManager = \Magento\Framework\App\ObjectManager::getInstance(); ?>
+<?php $customerSession = $objectManager->create('Magento\Customer\Model\Session'); ?>
+<?php $customerUrl = $objectManager->create('Magento\Customer\Model\Url'); ?>
+
+<?php $topLeftBlock = $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('header_1_top_left_link')->setCanUsePanel($canUsePanel)->toHtml(); ?>
+
+
+<div class="top-header-content">
+	<div class="container">
+		<?php echo $block->getChildHtml('store_language') ?>
+		<?php echo $block->getChildHtml('currency') ?>
+		<!-- Static block: header_1_top_left_link -->
+		<?php if($topLeftBlock): ?>
+			<div class="top-custom-link">
+				<?php echo $topLeftBlock; ?>
+			</div>
+		<?php endif ?>
+		<!-- Static block:  footer_block_social-->
+		<div class="hidden-xs">
+		<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_social')->setCanUsePanel($canUsePanel)->toHtml() ?>
+		</div>
+	</div>
+</div>
+<style>
+.m_mincart .text {
+    display: none;
+}
+.m_mincart .minicart-wrapper .action.showcart::before {
+content: '\f290' !important;
+line-height: 18px !important;
+font-size: 16px !important;
+}
+.m_mincart{
+width: 75px;
+height: 30px;
+position: absolute;
+right: 1px;
+top: 20px;
+}
+.header .minicart-wrapper:hover .action.showcart {
+    color: #000;
+}
+.header .minicart-wrapper .action.showcart {
+    color: #000;
+}
+
+
+.top-header-content {
+    display: none;
+}
+/*
+.header.header1 .middle-header-content {
+margin-top: 15px !important;
+}
+*/
+.minicart-wrapper {
+    margin-left: 15px !important;
+}
+.header-wishlist{
+padding: 8px 5px 8px 14px;  margin:0px 10px;}
+#headercart{margin-right: 100px; float:right;
+border: 1px #333 solid;
+border-width: 0px 0px;
+padding: 0px 15px 0px 5px;
+margin-top: 6px;
+}
+#headercart .minicart-wrapper { 
+    padding: 5px 0 !important;
+}
+.aashnisearch { float:right;
+border-bottom: 1px #000 solid;
+ height:35px;
+text-align: right;
+}
+.search-form .actions-search .action-search {
+    width: 100px;
+font-weight: 300;
+font-size: 14px;
+}
+.login-custom-link{margin-top: 10px; float:right;}
+.aashni_currency #switcher-currency{ text-align: left;}
+.aashni_currency #switcher-currency .switcher-toggle{
+background: #fff;
+padding: 0px;
+border: 0px;
+}
+@media only screen and (min-width: 1025px) {
+#m2mobile{ display:none;}
+.m_mincart{ display:none;}
+}
+
+@media only screen and (max-width: 1024px) {
+    #m2mobile{ 
+	border-bottom:1px #000 solid;
+	text-align: center;
+    }
+} 
+</style>
+
+<div id="aashnisticky">
+<div id="stickytopheader" class="middle-header-content">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 aashni_currency">
+			 <?php echo $block->getChildHtml('currency') ?>
+			</div>
+			<div class="col-md-4">
+			     <div id="sticky_logo">
+				<?php echo $block->getChildHtml('logo') ?>
+			     </div>
+			</div>
+			<div class="col-md-4">
+				<div id="headercart">
+<?php echo $block->getChildHtml('minicart') ?>
+        </div>
+                                <div class="aashnisearch">
+                               		<!--  <?php echo $block->getChildHtml('top.search') ?> -->
+                                </div>
+
+				<div class="login-custom-link">
+					<?php if($customerSession->isLoggedIn()): ?>
+						<a href="<?php echo $customerUrl->getAccountUrl(); ?>"><span class="fa fa-user" aria-hidden="true"></span><?php echo $customerSession->getCustomer()->getName(); ?></a>
+						<a href="<?php echo $customerUrl->getLogoutUrl(); ?>"><span class="fa fa-sign-out" aria-hidden="true"></span><?php echo __('Logout'); ?></a>
+					<?php else: ?>
+						<a href="<?php echo $customerUrl->getLoginUrl(); ?>">
+						<span class="fa fa-user" aria-hidden="true"></span> <?php echo __('Sign In'); ?><span>
+						</a>
+
+						<a class="header-wishlist" href="<?php echo $customerUrl->getLoginUrl(); ?>">
+					      <i class="fa fa-heart"></i> <span> Wishlist </span>
+						</a>
+					<?php endif ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="bottom-header-content">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-4 col-md-4">
+			</div>
+			<div class="col-xs-4 col-md-4">
+                        </div>
+			<div id="asn_search" class="col-xs-4 col-md-4" style="top:-37px;">
+                         <?php echo $block->getChildHtml('top.search') ?>
+			</div>
+		</div>
+	</div>
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~Mobile ~~~~~~~~~~~~~~~~~~~~~~ -->
+        <div id="m2mobile" class="container">
+                <div class="row">
+                        <div class="col-xs-4 col-md-4">
+                            <a href="<?php echo $customerUrl->getLoginUrl(); ?>">
+                                <span class="fa fa-user" aria-hidden="true"></span> <?php echo __('Sign In'); ?><span>
+                            </a>
+                        </div>
+                        <div class="col-xs-4 col-md-4 mborder">
+                                <a class="header-wishlist" href="<?php echo $customerUrl->getLoginUrl(); ?>">
+                                     <i class="fa fa-heart"></i> <span> Wishlist </span>
+                                </a>
+                         </div>
+                         <div class="col-xs-4 col-md-4">
+
+                         </div>
+
+                </div>
+        </div>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~Mobile ~~~~~~~~~~~~~~~~~~~~~~ -->
+
+	<div class="container">
+		<div class="menu-content">
+			<button class="action nav-toggle hidden-lg"><span class="fa fa-bars" aria-hidden="true"></span></button>
+			<?php echo $block->getChildHtml('logo') ?>
+			<div  class="m_mincart">
+				<?php echo $block->getChildHtml('minicart') ?>
+			</div>
+			<div class="megamenu-content<?php if($block->getChildHtml('megamenu')!=''): ?> mgs-menu<?php else: ?> mgt-menu<?php endif ?>">
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#main-Menucontent"><?php echo __('Menu'); ?></a></li>
+					<li><a data-toggle="tab" href="#main-Accountcontent"><?php echo __('My Account'); ?></a></li>
+				</ul>
+				<div class="tab-content">
+					<div id="main-Menucontent" class="tab-pane active">
+						<?php if($block->getChildHtml('megamenu')!=''): ?>
+							<?php echo $block->getChildHtml('megamenu') ?>
+						<?php else: ?>
+							<?php echo $block->getChildHtml('catalog.topnav') ?>
+						<?php endif ?>
+					</div>
+					<div id="main-Accountcontent" class="tab-pane">
+						<?php echo $block->getChildHtml('top.links') ?>
+						<?php if($topLeftBlock): ?>
+							<div class="top-custom-link">
+								<?php echo $topLeftBlock; ?>
+							</div>
+						<?php endif ?>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		
+	</div>
+</div>
+</div>
+
+
+
+<button class="action close-nav-button"><span class="fa fa-times" aria-hidden="true"></span></button>
+
+<script> 
+var myScrollFunc = function() {
+var y = window.scrollY;
+if (y >=100) {
+  document.getElementById('aashnisticky').style.position='fixed'; 
+  document.getElementById('aashnisticky').style.zIndex ='100';
+  document.getElementById('aashnisticky').style.right ='0';
+  document.getElementById('aashnisticky').style.top ='0';
+document.getElementById('aashnisticky').style.left ='0';
+document.getElementById('aashnisticky').style.width ='100%'; 
+document.getElementById('aashnisticky').style.background ='#fff';
+  } else {
+    document.getElementById('aashnisticky').style.position='';
+  document.getElementById('aashnisticky').style.zIndex ='';
+  document.getElementById('aashnisticky').style.right =''; 
+  document.getElementById('aashnisticky').style.top ='';
+document.getElementById('aashnisticky').style.left ='';
+document.getElementById('aashnisticky').style.width =''; 
+document.getElementById('aashnisticky').style.background ='';
+  }
+};
+window.addEventListener("scroll", myScrollFunc);
+
+ </script>
+
+ <script> 
+var myScrollFunc = function() {
+var y = window.scrollY;
+if (y >=150) {
+document.getElementById('sticky_logo').style.width ='70%';
+document.getElementById('sticky_logo').style.margin ='auto';  
+  } else {
+ document.getElementById('sticky_logo').style.width ='';
+document.getElementById('sticky_logo').style.margin ='';
+  }
+};
+window.addEventListener("scroll", myScrollFunc);
+
+ </script>
+
+<script> 
+var myScrollFunc = function() {
+var y = window.scrollY;
+if (y >=150) {
+document.getElementById('stickytopheader').style.marginTop  ='0px';
+document.getElementById('stickytopheader').style.paddingTop  ='0px';
+ } else {
+ document.getElementById('stickytopheader').style.marginTop ='10px'; 
+document.getElementById('stickytopheader').style.paddingTop  ='10px';
+ }
+};
+window.addEventListener("scroll", myScrollFunc);
+
+ </script>
+
+<script> 
+var myScrollFunc = function() {
+var y = window.scrollY;
+if (y >=150) {
+document.getElementById('asn_search').style.top  ='-28px';  
+ } else {
+ document.getElementById('asn_search').style.top ='-39px'; 
+ }
+};
+window.addEventListener("scroll", myScrollFunc);
+
+ </script>
+
+
+
+
+

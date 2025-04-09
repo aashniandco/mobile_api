@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+        <system>
+                <section id="catalog" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                        <tab>catalog</tab>
+                        <resource>Mec_Customtab::config_mec_customtab</resource>
+                        <group id="custom_filter_gender" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                                <label>Show Gender In</label>
+                                <field id="custom_filter_gender" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                                        <label>Gender attribute will be only visible in these categories</label>
+                                </field>
+                       </group>
+
+                        <group id="productpage_data" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                                <label>Product page contact details</label>
+                               <field id="whatsapp_number" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                                         <label>Enter whatsapp number</label>
+                               </field>
+                               <field id="phone_number" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                                         <label>Enter phone number</label>
+                               </field>
+                               <field id="email_id" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                                         <label>Enter email id</label>
+                               </field>
+                        </group>
+                </section>
+        </system>
+</config>

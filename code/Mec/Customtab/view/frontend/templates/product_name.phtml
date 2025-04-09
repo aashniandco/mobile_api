@@ -1,0 +1,10 @@
+<?php $product = $block->getProduct(); ?>
+<?php
+$product_name = $product->getData('name');
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$category = $objectManager ->create('Magento\Catalog\Model\ResourceModel\Category\Collection');
+$_categories = $category->addAttributeToSelect('*')->addAttributeToFilter('name',$product_name)->getFirstItem();
+$cat_url = $_categories->getUrl();
+?>
+
+<div  class = "page-title-wrapper" ><h1 class="page-header"><a style="color:#000"  href="<?php echo $cat_url;  ?>"><?php echo $product->getData('name'); ?></a><h1></div>

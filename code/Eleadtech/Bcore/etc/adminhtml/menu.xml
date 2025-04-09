@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+    <menu>
+	    <add id="Eleadtech_Bcore::backend" title="Eleadtech" module="Eleadtech_Bcore" sortOrder="10" resource="Eleadtech_Bcore::parent"/>
+    </menu>
+</config>

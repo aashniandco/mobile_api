@@ -1,0 +1,167 @@
+<div class="exhibtion-wrap">
+    <div class="exhibtion-bgcover">
+        <div class="form-container">
+            <form id="eventRegistrationForm">
+                <div class="login-box">
+                    <div class="form-plot">
+                        <div class="head">
+                            <div class="title">Event Registration</div>
+                        </div>
+                        <div class="block">
+                            <div class="form-input error">
+                                <div class="input">
+                                    <input type="hidden" name="is_event_registration" id="is_event_registration" value="1">
+                                    <input type="hidden" name="is_Ajax" id="is_Ajax" value="1">
+                                    <input type="text" name="firstname" id="firstname" placeholder="First Name" value="">
+                                </div>
+                            </div>
+
+                            <div class="form-input error">
+                                <div class="input">
+                                    <input type="text" name="lastname" id="lastname" placeholder="Last Name" value="">
+                                </div>
+                            </div>
+
+                            <div class="form-input error">
+                                <div class="select-country ">
+                                    <select name="country" id="country" title="Country" class="input-text required-entry">
+                                        <?php foreach ($block->getCountryOptions() as $country): ?>
+                                            <option data-dialcode="<?php echo $country['dial_code']; ?>" value="<?php echo $country['dial_code']; ?>"><?php echo $country['name'].' ('.$country['dial_code'].')'; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="select-state">
+                                    <div class="input">
+                                        <input type="text" id="phone" name="phone" placeholder="Mobile" value="">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-input error">
+                                <div class="select-country full-width">
+                                    <select name="sourceOfInfo" id="sourceOfInfo" title="sourceOfInfo" class="input-text required-entry">
+                                        <option value="">Select Source Of Info</option>
+                                        <option value="whatsapp">Whatsapp</option>
+                                        <option value="email">Email</option>
+                                        <option value="socialMedia">Social media</option>
+                                        <option value="friendOrFamily">Friend/family</option>
+                                    </select>
+                                </div>
+                            </div> 
+
+                            <div class="form-input error">
+                                <div class="input">
+                                    <input type="text" id="user_email" name="user_email" placeholder="Email" value="">
+                                </div>
+                            </div>
+
+                            <div class="form-input error">
+                                <div class="input">
+                                    <input type="text" name="city" id="city" placeholder="City" value="" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-input error ticket-quality">
+                                <div class="name">Registration Fees</div>
+                                <div class="inputs">
+                                    <input type="text" name="amount" id="amount" value="2500" readonly="readonly">
+                                </div>
+                                <div class="name">Head Count</div>
+                                <div class="inputs">
+                                    <button type="button" class="qty-btn minus">-</button>
+                                    <input type="number" id="ticket_qty" class="input-center" name="ticket_qty" value="1" min="1" >
+                                    <button type="button" class="qty-btn plus">+</button>
+                                </div>
+                            </div>
+
+                            <div class="submit-btn">
+                                <button class="submit-button">Pay Now <img src="https://orders.aashniandco.com/pub/media/wysiwyg/event_form/check-button.png"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+            require([
+            'jquery'
+        ], function(jQuery){
+            (function($) {
+                $('#eventRegistrationForm').on('submit', function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: '/pagelayout/eventregistration/redirect',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        is_event_registration: $('#is_event_registration').val(),
+                        is_Ajax: $('#is_Ajax').val(),
+                        firstname: $('#firstname').val(),
+                        lastname: $('#lastname').val(),
+                        user_email: $('#user_email').val(),
+                        ticket_qty: $('#ticket_qty').val(),
+                        amount: $('#amount').val(),
+                        country: $('#country').val(),
+                        phone: $('#phone').val(),
+                        sourceOfInfo: $('#sourceOfInfo').val(),
+                        city: $('#city').val(),
+                    },
+                    success: function(response) {
+                        if (response && response.fields && response.url) {
+                            let form = $('<form>', {
+                                action: response.url,
+                                method: 'POST'
+                            });
+
+                            $.each(response.fields, function(key, value) {
+                                $('<input>').attr({
+                                    type: 'hidden',
+                                    name: key,
+                                    value: value
+                                }).appendTo(form);
+                            });
+                            form.appendTo('body').submit();
+                        }
+                    },
+                    error: function() {
+                        alert('Something went wrong. Please try again.');
+                    }
+                });
+            });
+
+
+            $(document).ready(function() {
+                // Function to update the Pay Now button text
+                function updatePayButton() {
+                    var ticketQty = parseInt($('#ticket_qty').val(), 10);
+                    var totalAmount = ticketQty * 2500; // Assuming 100 is the price per ticket
+                    $('.submit-button').text('Pay Rs. ' + totalAmount);
+                    $('#amount').val(totalAmount);
+                }
+                // Event listener for the plus button
+                $('.qty-btn.plus').on('click', function() {
+                    var $qtyInput = $(this).siblings('input[type="number"]');
+                    var currentValue = parseInt($qtyInput.val(), 10);
+                    $qtyInput.val(currentValue + 1);
+                    updatePayButton();
+                });
+
+                // Event listener for the minus button
+                $('.qty-btn.minus').on('click', function() {
+                    var $qtyInput = $(this).siblings('input[type="number"]');
+                    var currentValue = parseInt($qtyInput.val(), 10);
+                    if (currentValue > 1) {
+                        $qtyInput.val(currentValue - 1);
+                        updatePayButton();
+                    }
+                });
+            });
+
+
+
+            })(jQuery);
+        });
+    </script>

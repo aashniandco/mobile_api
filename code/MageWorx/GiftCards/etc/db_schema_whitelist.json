@@ -1,0 +1,111 @@
+{
+    "mageworx_giftcards_card": {
+        "column": {
+            "card_id": true,
+            "card_code": true,
+            "customer_id": true,
+            "order_id": true,
+            "product_id": true,
+            "card_currency": true,
+            "card_amount": true,
+            "card_balance": true,
+            "card_status": true,
+            "card_type": true,
+            "mail_from": true,
+            "mail_to": true,
+            "mail_to_email": true,
+            "mail_message": true,
+            "offline_country": true,
+            "offline_state": true,
+            "offline_city": true,
+            "offline_street": true,
+            "offline_zip": true,
+            "offline_phone": true,
+            "mail_delivery_date": true,
+            "created_time": true,
+            "updated_at": true,
+            "storeview_ids": true,
+            "lifetime_days": true,
+            "ignore_default_lifetime": true,
+            "mageworx_gc_customer_groups": true,
+            "expire_date": true,
+            "expired_email_send": true,
+            "expiration_alert_email_send": true,
+            "delivery_status": true,
+            "store_id_for_email": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MAGEWORX_GIFTCARDS_CARD_CARD_CODE": true,
+            "MAGEWORX_GIFTCARDS_CARD_STORE_ID_FOR_EMAIL_STORE_STORE_ID": true
+        }
+    },
+    "mageworx_giftcard_order": {
+        "column": {
+            "entity_id": true,
+            "giftcard_id": true,
+            "order_id": true,
+            "discounted": true,
+            "created_time": true,
+            "updated_at": true,
+            "giftcard_code": true,
+            "order_increment_id": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "quote": {
+        "column": {
+            "mageworx_giftcards_description": true,
+            "mageworx_giftcards_amount": true,
+            "base_mageworx_giftcards_amount": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "mageworx_giftcards_description": true,
+            "mageworx_giftcards_amount": true,
+            "base_mageworx_giftcards_amount": true
+        }
+    },
+    "mageworx_giftcards_store": {
+        "column": {
+            "card_id": true,
+            "store_id": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MAGEWORX_GIFTCARDS_STORE_CARD_ID_MAGEWORX_GIFTCARDS_CARD_CARD_ID": true,
+            "MAGEWORX_GIFTCARDS_STORE_STORE_ID_STORE_STORE_ID": true
+        }
+    },
+    "mageworx_giftcards_customer_group": {
+        "column": {
+            "card_id": true,
+            "customer_group_id": true
+        },
+        "index": {
+            "MAGEWORX_GIFTCARDS_CUSTOMER_GROUP_CUSTOMER_GROUP_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_A611513084D227FE627DB5E031BC32DE": true,
+            "FK_E1D2D9789C434CFDAF03B343B5EE1779": true
+        }
+    },
+    "sales_invoice": {
+        "column": {
+            "mageworx_giftcards_amount": true,
+            "base_mageworx_giftcards_amount": true,
+            "mageworx_giftcards_description": true
+        }
+    },
+    "sales_creditmemo": {
+        "column": {
+            "mageworx_giftcards_amount": true,
+            "base_mageworx_giftcards_amount": true,
+            "mageworx_giftcards_description": true
+        }
+    }
+}

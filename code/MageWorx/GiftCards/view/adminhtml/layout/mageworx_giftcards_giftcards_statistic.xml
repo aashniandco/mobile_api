@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <body>
+        <referenceBlock name="page.title">
+            <action method="setTitleClass">
+                <argument name="class" xsi:type="string">complex</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="MageWorx\GiftCards\Block\Adminhtml\GiftCards\StatisticContainer" name="mageworx_giftcards_statistic">
+                <block class="MageWorx\GiftCards\Block\Adminhtml\GiftCards\Statistic" name="mageworx_giftcards_statistic_grid" as="grid"/>
+            </block>
+        </referenceContainer>
+    </body>
+</layout>

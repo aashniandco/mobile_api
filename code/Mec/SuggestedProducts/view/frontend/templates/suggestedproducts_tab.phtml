@@ -1,0 +1,137 @@
+<?php 
+  // if(isset($_GET['mnhtest'])){
+  //   die("sorry for inconvenience.");
+  // }
+?>
+<style>
+	/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+  animation: fadeEffect 1s; /* Fading effect takes 1 second */
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+
+#pdp-btab button{
+width: 100%;
+padding: 8px 10px;
+color:#000;
+background:#fff; border:1px #CCC solid
+}
+#pdp-btab .active{ background:#000; color:#fff !important;  border:1px #000 solid;}
+#block-related-heading {
+    font-family: 'Prata', serif;
+background: #fff;
+position: relative;
+z-index: 1;
+padding: 0px 10px;
+}
+.content-heading .title hr {
+    position: relative;
+    top: -33px;
+border-top: 1px solid #444;
+}
+.content-heading {
+    padding-top: 25px;
+}
+</style>
+<div class="content-heading">
+	<h3 class="title"><span id="block-related-heading" role="heading" aria-level="2"> DISCOVER MORE </span>
+<hr>
+</h3>
+</div>	
+<div id="pdp-btab"  class="nav nav-tabs nav-justified">
+ <li><button class="tablinks active" id="defaultOpen" onclick="openTab(event, 'category-tab')">You may also like</button></li>
+ <!--<li><button class="tablinks" onclick="openTab(event, 'recent-tab')">Recently Viewed Products</button></li>-->
+ <li><button class="tablinks" onclick="openTab(event, 'related-tab')">More from designer</button></li>
+</div>
+<script>
+
+	function openTab(evt, tabName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+  window.onload = function() {
+  var elem = document.getElementById("defaultOpen");
+  elem.click();
+  //openTab(event,'category-tab');
+};
+</script>
+
+<script>
+  require(["jquery"], function ($) {
+    $(document).on("click", "#add_to_wish_ymal, #add_to_wish_mfd", function(){
+      gtag("event", "add_to_wishlist", {
+          currency: "<?php echo $this->getLayout()->createBlock('\Magento\Directory\Block\Currency')->getCurrentCurrencyCode(); ?>",
+          value: this.getAttribute('data-value'),
+          items: [
+              {
+                  item_id: this.getAttribute('data-sku'),
+                  item_name: this.getAttribute('data-name'),
+                  affiliation: "",
+                  coupon: "",
+                  discount: "",
+                  index: 0,
+                  item_brand: this.getAttribute('data-brand'),
+                  item_category: this.getAttribute('data-category'),
+                  item_variant: "",
+                  price: this.getAttribute('data-value'),
+                  quantity: 1
+              }
+          ],
+      });
+    });
+  })
+</script>

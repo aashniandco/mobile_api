@@ -1,0 +1,83 @@
+<?php $product = $block->getProduct(); ?>
+<div class="custom-product-tab">
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#custom-details" aria-controls="custom-details" role="tab" data-toggle="tab"><h2>Details</h2></a></li>
+	<?php if(!$product->getHideprice()){?>
+    <li role="presentation"><a href="#custom-composition" aria-controls="custom-composition" role="tab" data-toggle="tab"><h2>Composition & Care</h2></a></li>
+    <li role="presentation"><a href="#custom-measurments" aria-controls="custom-measurments" role="tab" data-toggle="tab"><h2>Measurements</h2></a></li>
+	<?php }?>
+  </ul>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="custom-details"><?php echo $product->getData('description'); ?></div>
+    <div role="tabpanel" class="tab-pane" id="custom-composition">
+	<div>
+        <span class = "pdp-tab-title" >Composition :</span>
+	<span class = "pdp-tab-content"> <?php echo $product->getData('composition'); ?></span>
+        </div>
+        <div style="margin-top:10px">
+	<span class = "pdp-tab-title" >Care :</span>
+	<span class = "pdp-tab-content"> <?php echo $product->getData('care'); ?></span>
+        </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="custom-measurments">
+	<div class = "pdp-tab-title" >Measurements :</div>
+	<div class = "pdp-tab-content" ><?php echo $product->getData('measurements'); ?></div>
+    </div>
+   </div>
+</div>
+<?php if(!$product->getHideprice()){?>
+<div class="disclaimer">
+	<div class = "pdp-tab-title" >Disclaimer :</div>
+	<div  class = "pdp-tab-content" ><?php echo $product->getData('disclaimer'); ?></div>
+</div>
+<div class="delivery">
+	<!-- <div class = "pdp-tab-title" >Delivery :</div> -->
+	<div class = "pdp-tab-content delivery-text">  DELIVERY: <?php echo $product->getData('delivery'); ?></div>
+</div>
+<?php }?>
+
+<style>
+.white-popup {
+  position: relative;
+  background: #FFF;
+  padding: 20px;
+  width: auto;
+  max-width: 500px;
+  margin: 20px auto;
+}
+#manufacturer .data{margin-bottom:5px;font-size:13px}
+#manufacturer {color:#000}
+#manufacturer label{font-size:15px; color:#000;margin:0px !important;font-weight:600}
+</style>
+
+<div>
+<a class="mnf_info" id="mnf" href="#" style="color:#000"  onclick="openManufacturer()">View manufacturer’s information</a>
+</div>
+<div id="manufacturer" class="white-popup mfp-hide">
+<h4>More Information</h4>
+<div class="data"><label>Product Code:</label> <?php echo $product->getData('sku'); ?></div>
+<div class="data"><label>Manufactured/Packed By:</label> Aashni Ecommerce Private Limited</div>
+<div class="data">Manufactured/Assembled in INDIA</div>
+</div>
+
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function ($) {
+        openManufacturer = function (){
+            $.magnificPopup.open({
+                items: {
+                    src: '#manufacturer',
+                     type: 'inline',
+                },
+
+                removalDelay: 300,
+                mainClass: 'mfp-fade',
+                closeOnBgClick: true,
+                preloader: true,
+                tLoading: ''
+            });
+      }
+    });
+</script>

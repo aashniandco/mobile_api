@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Checkout\Controller\Onepage\Success" type="Mageprince\BuyNow\Controller\Onepage\Success" />
+    <preference for="Magento\Customer\Controller\Account\LoginPost" type="Mageprince\BuyNow\Controller\Login\LoginReloadQuote" />
+    <!-- <preference for="Magento\Checkout\Model\Session" type="Mageprince\BuyNow\Model\Session" /> -->
+    <!-- <type name="Mageprince\BuyNow\Observer\ReloadOriginal">
+        <arguments>
+            <argument name="BuyNowData" xsi:type="object">Mageprince\BuyNow\Model\BuyNowData</argument>
+        </arguments>
+        <arguments>
+            <argument name="Session" xsi:type="object">Magento\Checkout\Model\Session</argument>
+        </arguments>
+        <arguments>
+            <argument name="Cart" xsi:type="object">Magento\Checkout\Model\Cart</argument>
+        </arguments>
+        <arguments>
+            <argument name="QuoteRepository" xsi:type="object">Magento\Quote\Model\QuoteRepository</argument>
+        </arguments>
+    </type> -->
+</config>

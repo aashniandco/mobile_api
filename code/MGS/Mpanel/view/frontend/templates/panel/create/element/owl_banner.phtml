@@ -1,0 +1,390 @@
+<?php $helper = $this->getHelper() ?>
+<?php $params = $this->getParams() ?>
+<?php $exist = false ?>
+<div class="edit-static-form">
+	
+	<div class="row">
+		<div class="col-md-12 builder-title">
+			<h2><?php echo __('OWL Carousel Slider') ?></h2>
+		</div>
+	</div>
+	<form id="section-form" enctype="multipart/form-data" method="POST" action="<?php echo $this->getUrl('mpanel/element/save') ?>" data-hasrequired="<?php echo __('* Required Fields') ?>" data-mage-init='{"validation":{}}'>
+		<input id="block_type" type="hidden" name="type" value="owl_banner">
+		<input id="block_block_name" type="hidden" name="block_name" value="<?php echo $params['block'] ?>">
+		<?php if(isset($params['id'])): ?>
+			<?php 
+				$child =  $this->getModel('MGS\Mpanel\Model\Childs')->load($params['id']);
+				$exist = true;
+				$settings = json_decode($child->getSetting(), true);
+			?>
+			<input type="hidden" name="child_id" value="<?php echo $params['id'] ?>">
+		<?php endif ?>
+		
+		
+		<div class="form-horizontal">
+			<div id="form_tabs" class="tabbable">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a data-toggle="tab" href="#general"><?php echo __('General') ?></a>
+					</li>
+					
+					<li class="">
+						<a id="images-tab-nav" data-toggle="tab" href="#images"><?php echo __('Images') ?></a>
+					</li>
+					
+					<li class="">
+						<a id="slider-tab-nav" data-toggle="tab" href="#slider"><?php echo __('Slider Config') ?></a>
+					</li>
+					
+					<?php if($exist): ?>
+						<li class="">
+							<a id="code-tab-nav" data-toggle="tab" href="#code"><?php echo __('Embed Code') ?></a>
+						</li>
+					<?php endif ?>
+				</ul>
+				<div class="tab-content">
+					<div id="general" class="tab-pane active">
+						<div class="form-group">
+							<label for="col" class="col-sm-4 control-label"><?php echo __('Block col (12 to full)') ?></label>
+							<div class="col-sm-8">
+								<select id="col" class="required-entry input-text" name="col">
+									<?php for($i=12; $i>=1; $i--): ?>
+										<option value="<?php echo $i ?>"<?php if($exist && ($child->getCol()==$i)): ?> selected="selected"<?php endif ?>><?php echo $i ?></option>
+									<?php endfor ?>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="class" class="col-sm-4 control-label"><?php echo __('Custom Class') ?></label>
+							<div class="col-sm-8">
+								<input type="text" id="class" class="input-text" name="class"<?php if($exist): ?> value="<?php echo $child->getClass() ?>"<?php endif ?> />
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="animation" class="col-sm-4 control-label"><?php echo __('Block Animation') ?></label>
+							<div class="col-sm-4">
+								<select onchange="changeAnimationClass(this.value)" id="animation" class="input-text" name="setting[animation]">
+									<option value=""><?php echo __('Choose Animation Effect') ?></option>
+									<?php foreach($helper->getAnimationEffect() as $animation=>$label): ?>
+										<option value="<?php echo $animation ?>"<?php if($exist && ($settings['animation']==$animation)): ?> selected="selected"<?php endif ?>><?php echo $label ?></option>
+									<?php endforeach ?>
+								</select>
+							</div>
+							
+							<div class="col-sm-4 text-center animated<?php if($exist && ($settings['animation']!='')): ?> <?php echo $settings['animation'] ?><?php endif ?>" id="animation-test">Animation Preview</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="animation_delay" class="col-sm-4 control-label"><?php echo __('Animation Delay') ?></label>
+							<div class="col-sm-8">
+								<input type="text" placeholder="ms" id="animation_delay" class="input-text validate-number" name="setting[animation_delay]" <?php if($exist): ?> value="<?php echo $settings['animation_delay'] ?>"<?php endif ?>>
+							</div>
+						</div>
+						
+					</div>
+					
+					
+					<div id="images" class="tab-pane">
+						<?php $images = $helper->getPanelUploadImages('slider') ?>
+						
+							<table class="table table-bordered images-table">
+								<thead>
+									<tr>
+										<th class="td-images"><?php echo __('Image') ?></th>
+										<th class="td-link"><?php echo __('Link') ?></th>
+										<th class="td-add"><?php echo __('Add to Slider') ?></th>
+										<th class="td-remove"><?php echo __('Remove') ?></th>
+									</tr>
+								</thead>
+							</table>
+							<div class="panel-image-list">
+								<table class="table table-bordered" id="panel-images">
+									<tbody id="list-images">
+									<?php if(count($images)>0): ?>
+										<?php foreach($images as $_image): ?>
+											<tr>
+												<td class="a-center td-images">
+													<img src="<?php echo $this->getPanelUploadSrc('slider',$_image) ?>" alt=""/>
+												</td>
+												<td class="td-link">
+													<input type="text" name="setting[links][]" class="input-text"/>
+												</td>
+												<td class="td-add">
+													<input type="checkbox" name="setting[images][]" value="<?php echo $_image ?>"<?php if($exist && isset($settings['images']) && (in_array($_image, $settings['images']))): ?> checked="checked"<?php endif ?>/>
+												</td>
+												<td class="td-remove">
+													<input type="checkbox" name="remove[]" value="<?php echo $_image ?>"/>
+												</td>
+											</tr>
+										<?php endforeach ?>
+									<?php endif ?>
+									</tbody>
+								</table>
+							</div>
+								
+						
+						
+						<div id="upload-container">
+							<div id="list-upload"></div>
+							<button class="btn btn-default" onclick="newImageUpload()" type="button"><span class="fa fa-plus"></span> <?php echo __('Upload new Image') ?></button>
+						</div>
+					</div>
+					
+					<div id="slider" class="tab-pane">
+						<!--div class="form-group">
+							<label for="fullscreen" class="col-sm-4 control-label"><?php //echo __('Full Screen') ?></label>
+							<div class="col-sm-4">
+								<div class="admin__actions-switch" data-role="switcher">
+									<input type="checkbox"<?php //if($exist && $settings['fullscreen']): ?> checked="checked"<?php //endif ?> value="1" name="setting[fullscreen]" id="fullscreen" class="admin__actions-switch-checkbox">
+									<label for="fullscreen" class="admin__actions-switch-label">
+										<span data-text-off="<?php //echo __('No') ?>" data-text-on="<?php //echo __('Yes') ?>" class="admin__actions-switch-text"></span>
+									</label>
+								</div>
+							</div>
+						</div-->
+						
+						<div class="form-group">
+							<label for="effect" class="col-sm-4 control-label"><?php echo __('Effect') ?></label>
+							<div class="col-sm-4">
+								<select id="effect" class="input-text" name="setting[effect]">
+									<option value="1"<?php if($exist && ($settings['effect']==1)): ?> selected="selected"<?php endif ?>><?php echo __('Fade') ?></option>
+									<option value="2"<?php if($exist && ($settings['effect']==2)): ?> selected="selected"<?php endif ?>><?php echo __('Vertical') ?></option>
+									<option value="3"<?php if($exist && ($settings['effect']==3)): ?> selected="selected"<?php endif ?>><?php echo __('In Down') ?></option>
+									<option value="4"<?php if($exist && ($settings['effect']==4)): ?> selected="selected"<?php endif ?>><?php echo __('Left Right') ?></option>
+							</select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="autoplay" class="col-sm-4 control-label"><?php echo __('Auto play') ?></label>
+							<div class="col-sm-4">
+								<div class="admin__actions-switch" data-role="switcher">
+									<input type="checkbox"<?php if($exist && $settings['autoplay']): ?> checked="checked"<?php endif ?> value="1" name="setting[autoplay]" id="autoplay" class="admin__actions-switch-checkbox" onclick="setAutoplay()">
+									<label for="autoplay" class="admin__actions-switch-label">
+										<span data-text-off="<?php echo __('No') ?>" data-text-on="<?php echo __('Yes') ?>" class="admin__actions-switch-text"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group" id="speed-input">
+							<label for="speed" class="col-sm-4 control-label"><?php echo __('Auto play speed') ?></label>
+							<div class="col-sm-4">
+								<input type="text" placeholder="ms" id="speed" class="input-text validate-number" name="setting[speed]" <?php if($exist && isset($settings['speed'])): ?> value="<?php echo $settings['speed'] ?>"<?php endif ?>>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="stop_auto" class="col-sm-4 control-label"><?php echo __('Stop autoplay on mouse hover') ?></label>
+							<div class="col-sm-4">
+								<div class="admin__actions-switch" data-role="switcher">
+									<input type="checkbox"<?php if($exist && $settings['stop_auto']): ?> checked="checked"<?php endif ?> value="1" name="setting[stop_auto]" id="stop_auto" class="admin__actions-switch-checkbox">
+									<label for="stop_auto" class="admin__actions-switch-label">
+										<span data-text-off="<?php echo __('No') ?>" data-text-on="<?php echo __('Yes') ?>" class="admin__actions-switch-text"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="navigation" class="col-sm-4 control-label"><?php echo __('Display navigation') ?></label>
+							<div class="col-sm-4">
+								<div class="admin__actions-switch" data-role="switcher">
+									<input type="checkbox"<?php if($exist && $settings['navigation']): ?> checked="checked"<?php endif ?> value="1" name="setting[navigation]" id="navigation" class="admin__actions-switch-checkbox">
+									<label for="navigation" class="admin__actions-switch-label">
+										<span data-text-off="<?php echo __('No') ?>" data-text-on="<?php echo __('Yes') ?>" class="admin__actions-switch-text"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="pagination" class="col-sm-4 control-label"><?php echo __('Display pagination') ?></label>
+							<div class="col-sm-4">
+								<div class="admin__actions-switch" data-role="switcher">
+									<input type="checkbox"<?php if($exist && $settings['pagination']): ?> checked="checked"<?php endif ?> value="1" name="setting[pagination]" id="pagination" class="admin__actions-switch-checkbox">
+									<label for="pagination" class="admin__actions-switch-label">
+										<span data-text-off="<?php echo __('No') ?>" data-text-on="<?php echo __('Yes') ?>" class="admin__actions-switch-text"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="loop" class="col-sm-4 control-label"><?php echo __('Loop') ?></label>
+							<div class="col-sm-4">
+								<div class="admin__actions-switch" data-role="switcher">
+									<input type="checkbox"<?php if($exist && $settings['loop']): ?> checked="checked"<?php endif ?> value="1" name="setting[loop]" id="loop" class="admin__actions-switch-checkbox">
+									<label for="loop" class="admin__actions-switch-label">
+										<span data-text-off="<?php echo __('No') ?>" data-text-on="<?php echo __('Yes') ?>" class="admin__actions-switch-text"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="rtl" class="col-sm-4 control-label"><?php echo __('Right to Left') ?></label>
+							<div class="col-sm-4">
+								<div class="admin__actions-switch" data-role="switcher">
+									<input type="checkbox"<?php if($exist && $settings['rtl']): ?> checked="checked"<?php endif ?> value="1" name="setting[rtl]" id="rtl" class="admin__actions-switch-checkbox">
+									<label for="rtl" class="admin__actions-switch-label">
+										<span data-text-off="<?php echo __('No') ?>" data-text-on="<?php echo __('Yes') ?>" class="admin__actions-switch-text"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+					<?php if($exist): ?>
+						<div id="code" class="tab-pane">
+							<div class="form-group">
+								<h4 class="col-sm-12"><?php echo __('For CMS:') ?></h4>
+								<div class="col-sm-12">
+									<pre><?php echo $child->getBlockContent() ?></pre>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<h4 class="col-sm-12"><?php echo __('For Layout Update XML:') ?></h4>
+								<div class="col-sm-12">
+									<pre><?php echo $helper->convertToLayoutUpdateXml($child) ?></pre>
+								</div>
+							</div>
+						</div>
+					<?php endif ?>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group">
+					<div class="col-md-12 builder-action">
+						<div class="buttons">
+							<?php if(!$exist): ?>
+								<button type="button" class="btn btn-back" onclick="history.go(-1)"><span><span><?php echo __('Back') ?></span></span></button>
+							<?php endif ?>
+							<input type="submit" value="<?php echo __('Submit') ?>" class="btn btn-primary"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+	require([
+		'jquery',
+	], function(jQuery){
+		(function($) {
+			$(document).ready(function(){
+				setAutoplay();
+			});
+		})(jQuery);
+	});
+	
+	function setAutoplay(){
+		require([
+			'jquery',
+		], function(jQuery){
+			(function($) {
+				if($('#autoplay').prop("checked") == true){
+					$('#speed-input').show();
+				}else{
+					$('#speed-input').hide();
+				}
+			})(jQuery);
+		});
+	}
+
+	var currentAnimate = '';
+	<?php if($exist): ?>
+		currentAnimate = '<?php echo $settings['animation'] ?>';
+	<?php endif ?>
+	
+	function changeAnimationClass(animate){
+		require([
+			'jquery',
+		], function(jQuery){
+			(function($) {
+				if(currentAnimate!=''){
+					$('#animation-test').removeClass(currentAnimate);
+				}
+				$('#animation-test').addClass(animate);
+				currentAnimate = animate;
+			})(jQuery);
+		});
+	}
+	
+	function newImageUpload(){
+		require([
+			'jquery',
+		], function(jQuery){
+			(function($) {
+				if($('#file_upload').length){
+					if($('#upload_button').length){
+						alert('<?php echo __('Please upload selected image first.') ?>');
+					}else{
+						alert('<?php echo __('Please choose file to upload.') ?>');
+					}
+				}else{
+					html = '<div class="form-group"><div class="col-sm-4 choose-file-upload"><input id="file_upload" name="file_upload" type="file" onchange="chooseFileAction(this.id)"><span class="choose-label"><span class="fa fa-folder-o"> </span> &nbsp;<?php echo __('Choose File to Upload') ?></span></div><div class="col-sm-4" id="upload_action"></div></div>';
+					$('#list-upload').html(html);
+				}
+				
+			})(jQuery);
+		});
+	}
+	
+	function chooseFileAction(elId){
+		require([
+			'jquery',
+		], function(jQuery){
+			(function($) {
+				fileName = $('#'+elId).val();
+				arrName = fileName.split(".");
+				extensionName = arrName[arrName.length - 1];
+				extensionName = extensionName.toLowerCase();
+				if((extensionName=='jpg') || (extensionName=='jpeg') || (extensionName=='png') || (extensionName=='gif')){
+					html = fileName + ' <button type="button" class="btn btn-default" id="upload_button" onclick="uploadImage()"><img src="<?php echo $this->getViewFileUrl('MGS_Mpanel::images/small-ajax-loader.gif') ?>" id="upload-loading" style="display:none"/> <span class="fa fa-upload" id="upload-icon"></span> <?php echo __('Upload') ?></button>';
+					$('#upload_action').html(html);
+				}
+			})(jQuery);
+		});
+	}
+	
+	function uploadImage(){
+		require([
+			'jquery',
+		], function(jQuery){
+			(function($) {
+				if($('.alert-image-success').length){
+					$('.alert-image-success').remove();
+				}
+				$('#upload-loading').show();
+				$('#upload-icon').hide();
+				var formData = new FormData();
+				formData.append('file', $('#file_upload')[0].files[0]);
+				$.ajax({
+					url: "<?php echo $this->getUrl('mpanel/post/upload', ['type'=>'slider']) ?>",
+					type: "POST",
+					data: formData,
+					contentType: false,
+					cache: false,
+					processData:false,
+					success: function(data){
+						var result = jQuery.parseJSON(data);
+						if(result.result=='success'){
+							html = '<tr ><td class="a-center td-images"><img src="<?php echo $this->getPanelUploadFolder('slider') ?>'+result.data+'" alt=""><div class="alert alert-success alert-image-success"><?php echo __('The image was successfully uploaded.') ?></div></td><td class="td-link"><input type="text" name="setting[links][]" class="input-text"/></td><td class="td-add"><input type="checkbox" name="setting[images][]" value="'+result.data+'"/></td><td><input name="remove[]" value="'+result.data+'" type="checkbox"/></td></tr>';
+							$('#list-images').append(html);
+							$(".panel-image-list").animate({ scrollTop: $('#list-images').height()}, 300);
+						}else{
+							alert(result.data);
+						}
+						
+						$('#list-upload').html('');
+					}
+				});
+			})(jQuery);
+		});
+	}
+</script>

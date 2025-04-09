@@ -1,0 +1,298 @@
+<?php
+// var_dump($order_data);
+// exit;
+
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+
+/** @var $block \Magento\Sales\Block\Order\Email\Items */
+?>
+<?php $_order = $block->getOrder() ?>
+<?php if ($_order) : ?>
+    <?php $_items = $_order->getAllItems();?>
+    <style>
+        body {
+          margin: 0px;
+          padding: 0px;
+          font-family: "Roboto", sans-serif;
+          box-sizing: border-box;
+        }
+
+        * {
+          box-sizing: border-box;
+          text-decoration: none;
+        }
+        * p,
+        * h1,
+        * h2,
+        * h3,
+        * h4,
+        * h5,
+        * h6 {
+          margin: 0px;
+        }
+         .title{
+         margin-bottom: 30px; 
+         font-size: 32px; 
+         font-weight: 500; 
+         color: #000; 
+         text-align: center; 
+         letter-spacing: 2px;
+         }
+         .sub-title{
+         margin-bottom: 0px;    
+         font-size: 25px; 
+         font-weight: 300; 
+         color: #000; 
+         text-align: center;
+         letter-spacing: 0.6px;
+         }
+         .details{
+         text-align: left;
+         font-size: 20px;
+         }
+         .billing-detalis{
+         font-size: 20px;
+         text-align: left;
+         font-weight: 500;
+         letter-spacing: 1.2px;
+         padding: 0px 10px;
+         }
+         .details-td{
+         padding-bottom: 25px;
+         padding-left: 70px;
+         }
+         .details-td-right{
+         padding-bottom: 25px;
+         padding-right: 70px;
+         }
+         .product-title{
+         text-align: left;
+         font-size: 30px;
+         padding-bottom: 20px;
+         letter-spacing: 0.9px;
+         }
+         .designer-name{
+         text-align: center;
+         font-size: 30px;
+         font-weight: 400;
+         }
+         .info{
+         text-align: center;
+         font-size: 23px; 
+         padding-bottom: 25px; 
+         font-style: italic; 
+         font-weight: 100;
+         }
+         @media(max-width:768px){
+         .title{
+         margin-bottom: 25px; 
+         font-size: 35px; 
+         font-weight: 500; 
+         color: #000; 
+         text-align: center; 
+         letter-spacing: 1px;
+         }
+         .sub-title{
+         margin-bottom: 0px;    
+         font-size: 20px; 
+         font-weight: 300; 
+         color: #000; 
+         text-align: center;
+         }
+         .details{
+         text-align: left;
+         font-size: 16px;
+         padding-right: 10px;
+         }
+         .billing-detalis{
+         font-size: 18px;
+         text-align: left;
+         font-weight: 500;
+         padding: 10px;
+         }
+         .details-td{
+         max-width: 100%;
+         padding-left: 40px;
+         }
+         .details-td-right{
+         max-width: 100%;
+         padding-right: 40px;
+         }
+         .product-title{
+         text-align: left;
+         font-size: 25px;
+         padding-bottom: 20px;
+         letter-spacing: 0.9px;
+         }
+         .designer-name{
+         text-align: center;
+         font-size: 25px;
+         font-weight: 400;
+         }
+         .info{
+         text-align: center;
+         font-size: 20px; 
+         padding-bottom: 25px; 
+         font-style: italic; 
+         font-weight: 100;
+         }
+         }
+         @media(max-width:540px){
+         .title{
+         margin-bottom: 30px; 
+         font-size: 20px; 
+         font-weight: 500; 
+         color: #000; 
+         text-align: center; 
+         letter-spacing: 1px;
+         }
+         .sub-title{
+         margin-bottom: 0px;    
+         font-size: 14px; 
+         font-weight: 300; 
+         color: #000; 
+         text-align: center;
+         max-width: 100%;
+         }
+         .details-td{
+         max-width: 100%;
+         padding-left: 20px;
+         }
+         .details-td-right{
+         max-width: 100%;
+         padding-right: 20px;
+         }
+         .details{
+         text-align: left;
+         font-size: 13px;
+         padding-right: 10px;
+         }
+         .billing-detalis{
+         font-size: 14px;
+         text-align: left;
+         font-weight: 500;
+         padding-right: 10px;
+         }
+         .product-title{
+         text-align: left;
+         font-size: 20px;
+         padding-bottom: 20px;
+         letter-spacing: 0.9px;
+         }
+         .designer-name{
+         text-align: center;
+         font-size: 23px;
+         font-weight: 400;
+         }
+         .info{
+         text-align: center;
+         font-size: 16px; 
+         padding-bottom: 25px; 
+         font-style: italic; 
+         font-weight: 100;
+         }
+         }
+    </style>
+                
+    <table style="border: 1px solid #eaeaea; text-align: center; width:100%; border: 1px solid #eaeaea;" class="email-items">
+        <thead>
+            <tr>
+                <th style="text-align:left; padding: 5px; border-bottom: 1px #eaeaea solid;" class="item-info">
+                    <?= $block->escapeHtml(__('Designer')) ?>
+                </th>
+                <th style="padding: 5px; border-bottom: 1px #eaeaea solid;" class="item-image">
+                    <?= $block->escapeHtml(__('Product Image')) ?>
+                </th>
+                <!--<th class="item-sku">
+                    <?php //$block->escapeHtml(__('Sku')) ?>
+                </th>-->
+                <th style="padding: 5px; border-bottom: 1px #eaeaea solid;" class="item-size">
+                    <?= $block->escapeHtml(__('Size')) ?>
+                </th>
+                <th style="padding: 5px; border-bottom: 1px #eaeaea solid;" class="item-qty">
+                    <?= $block->escapeHtml(__('Qty')) ?>
+                </th>
+                <th style="padding: 5px; border-bottom: 1px #eaeaea solid;" class="item-price">
+                    <?= $block->escapeHtml(__('Unit Price')) ?>
+                </th>
+                <th style="padding: 5px; border-bottom: 1px #eaeaea solid;" class="item-price">
+                    <?php //$block->escapeHtml(__('Total')) ?>
+                </th>
+            </tr>
+        </thead>
+        <?php foreach ($_items as $_item) : ?>
+            <?php if (!$_item->getParentItem()) : ?>
+                <tbody>
+                    <?= $block->getItemHtml($_item) ?>
+                </tbody>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        <tfoot class="order-totals">
+            <?= $block->getChildHtml('order_totals') ?>
+        </tfoot>
+    </table>     
+<?php /* ?><table style="border: 1px solid #eaeaea; text-align: center; width:100%; border: 1px solid #eaeaea;" class="email-items">
+        <thead>
+            <tr>
+                <th style="text-align:left; padding: 5px; border-bottom: 1px #eaeaea solid;" class="item-info">
+                    <?= $block->escapeHtml(__('Description')) ?>
+                </th>
+                <th style="padding: 5px; border-bottom: 1px #eaeaea solid;" class="item-image">
+                    <?= $block->escapeHtml(__('Image')) ?>
+                </th>
+                <!--<th class="item-sku">
+                    <?php //$block->escapeHtml(__('Sku')) ?>
+                </th>-->
+                <th style="padding: 5px; border-bottom: 1px #eaeaea solid;" class="item-size">
+                    <?= $block->escapeHtml(__('Size')) ?>
+                </th>
+                <th style="padding: 5px; border-bottom: 1px #eaeaea solid;" class="item-qty">
+                    <?= $block->escapeHtml(__('Qty')) ?>
+                </th>
+                <th style="padding: 5px; border-bottom: 1px #eaeaea solid;" class="item-price">
+                    <?= $block->escapeHtml(__('Unit Price')) ?>
+                </th>
+                <th style="padding: 5px; border-bottom: 1px #eaeaea solid;" class="item-price">
+                    <?php //$block->escapeHtml(__('Total')) ?>
+                </th>
+            </tr>
+        </thead>
+        <?php foreach ($_items as $_item) : ?>
+            <?php if (!$_item->getParentItem()) : ?>
+                <tbody>
+                    <?= $block->getItemHtml($_item) ?>
+                </tbody>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        <tfoot class="order-totals">
+            <?= $block->getChildHtml('order_totals') ?>
+        </tfoot>
+    </table><?php */ ?>
+    <?php if ($this->helper(\Magento\GiftMessage\Helper\Message::class)
+            ->isMessagesAllowed('order', $_order, $_order->getStore())
+        && $_order->getGiftMessageId()
+    ) : ?>
+        <?php $_giftMessage = $this->helper(\Magento\GiftMessage\Helper\Message::class)
+            ->getGiftMessage($_order->getGiftMessageId()); ?>
+        <?php if ($_giftMessage) : ?>
+            <br />
+            <table class="message-gift">
+                <tr>
+                    <td>
+                        <h3><?= $block->escapeHtml(__('Gift Message for this Order')) ?></h3>
+                        <strong><?= $block->escapeHtml(__('From:')) ?></strong> <?= $block->escapeHtml($_giftMessage->getSender()) ?>
+                        <br /><strong><?= $block->escapeHtml(__('To:')) ?></strong> <?= $block->escapeHtml($_giftMessage->getRecipient()) ?>
+                        <br /><strong><?= $block->escapeHtml(__('Message:')) ?></strong>
+                        <br /><?= $block->escapeHtml($_giftMessage->getMessage()) ?>
+                    </td>
+                </tr>
+            </table>
+        <?php endif; ?>
+    <?php endif; ?>
+<?php endif; ?>
+

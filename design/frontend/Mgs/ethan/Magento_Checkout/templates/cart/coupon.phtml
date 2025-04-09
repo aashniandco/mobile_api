@@ -1,0 +1,60 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+/**
+ * @var $block \Mec\Cartblock\Block\Cartblock
+ */
+/** @var \Magento\Framework\UrlInterface $urlInterface */
+$urlInterface = \Magento\Framework\App\ObjectManager::getInstance()->get('Magento\Framework\UrlInterface');
+?>
+<?php $currency = $block->getCurrentCurrencyCode(); 
+if($currency=='INR')
+    $terms = $block->getBaseUrl().'terms-within-india.html';
+else
+    $terms = $block->getBaseUrl().'terms-worldwide.html' ;
+?>
+<div class="block discount" id="block-discount" data-mage-init='{"collapsible":{"openedState": "active", "active": true, "saveState": false}}'>
+    <div class="title" data-role="title">
+        <strong style='display:none;' id="block-discount-heading" role="heading" aria-level="2"><?php /* @escapeNotVerified */ echo __('Apply coupon code') ?></strong>
+    </div><br/>
+    <div class="content" data-role="content" aria-labelledby="block-discount-heading">
+        <form id="discount-coupon-form"
+              action="<?php /* @escapeNotVerified */ echo $block->getUrl('checkout/cart/couponPost') ?>"
+              method="post"
+              data-mage-init='{"discountCode":{"couponCodeSelector": "#coupon_code",
+                                               "removeCouponSelector": "#remove-coupon",
+                                               "applyButton": "button.action.apply",
+                                               "cancelButton": "button.action.cancel"}}'>
+            <div class="fieldset coupon<?php strlen($block->getCouponCode()) ? ' applied' : ''?>">
+                <input type="hidden" name="remove" id="remove-coupon" value="0" />
+                <div class="field">
+                    <div class="control">
+                        <input type="text" class="input-text" id="coupon_code" name="coupon_code" value="<?php echo $block->escapeHtml($block->getCouponCode()) ?>" placeholder="<?php echo $block->escapeHtml(__('Enter coupon code'));?>" />
+                    </div>
+                </div>
+                <div class="actions-toolbar">
+                    <?php if (!strlen($block->getCouponCode())): ?>
+                    <div class="primary">
+                        <button class="action btn btn-primary apply" type="button" value="<?php /* @escapeNotVerified */ echo __('Apply coupon code') ?>">
+                            <span><?php /* @escapeNotVerified */ echo __('Apply coupon code') ?></span>
+                        </button>
+                    </div>
+                    <?php else: ?>
+                        <div class="primary">
+                            <button  type="button" class="action btn btn-secondary cancel" value="<?php /* @escapeNotVerified */ echo __('Cancel coupon') ?>"><span><?php /* @escapeNotVerified */ echo __('Cancel coupon') ?></span></button>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </form>
+    </div> 
+    <!-- code changes 11-09-2023-->
+    <div class="couponqueries" style=" float: left;">For coupon related queries, Whatsapp us at
+    <a target="_blank" style="color: black; display: inline-block;" href="https://api.whatsapp.com/send?phone=918375036648&text=<?php echo $urlInterface->getCurrentUrl();?>">+91 8375036648</a>
+    </div>
+    <div class="content" id="termsAndCons_proceedtoCheck">By clicking 'Proceed to checkout' you are agreeing to our current <a data-terms-conditions="" href="<?php echo $terms; ?>" target="_blank">Terms and Conditions</a> and  <a href="<?php echo $block->getBaseUrl().'privacy.html'?>" target="_blank">Privacy Policy</a></div>
+</div>

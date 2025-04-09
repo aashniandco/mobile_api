@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    
+    <type name="Fermion\NativeApp\Model\ResourceModel\NativeTokens\Collection\NativeTokenFactory">
+        <arguments>
+            <argument name="NativeTokenFactory" xsi:type="string">Fermion\NativeApp\Model\ResourceModel\NativeTokens\Collection</argument>
+        </arguments>
+    </type>
+    
+    <preference for="Magento\Customer\Model\ResourceModel\CustomerRepository" type="Fermion\NativeApp\Model\ResourceModel\CustomerRepository" />
+    <preference for="Fermion\NativeApp\Api\ForgotPasswordInterface" type="Fermion\NativeApp\Model\Api\ForgotPassword"/>
+    <preference for="Fermion\NativeApp\Api\ForgotPassTokenValidationInterface" type="Fermion\NativeApp\Model\Api\ForgotPassTokenValidation"/>
+    <preference for="Fermion\NativeApp\Api\CustomerSignupInterface" type="Fermion\NativeApp\Model\Api\CustomerSignup"/>
+    <preference for="Fermion\NativeApp\Api\ResetPasswordInterface" type="Fermion\NativeApp\Model\Api\ResetPassword"/>
+    <preference for="Fermion\NativeApp\Api\CustomerSigninInterface" type="Fermion\NativeApp\Model\Api\CustomerSignin"/>
+    <preference for="Fermion\NativeApp\Api\EditCustomerDetailsInterface" type="Fermion\NativeApp\Model\Api\EditCustomerDetails"/>
+    <preference for="Fermion\NativeApp\Api\GoogleSigninInterface" type="Fermion\NativeApp\Model\Api\GoogleSignIn"/>
+    <preference for="Fermion\NativeApp\Api\FacebookSigninInterface" type="Fermion\NativeApp\Model\Api\FacebookSignIn"/>
+    <preference for="Fermion\NativeApp\Api\AppleSigninInterface" type="Fermion\NativeApp\Model\Api\AppleSignIn"/>
+    <preference for="Fermion\NativeApp\Api\FetchUserDetailsInterface" type="Fermion\NativeApp\Model\Api\FetchUserDetails"/>
+    <preference for="Fermion\NativeApp\Api\GetMegamenuInterface" type="Fermion\NativeApp\Model\Api\GetMegamenu"/>
+
+    <preference for="Magento\Cms\Controller\Index\Index" type="Fermion\NativeApp\Controller\Cms\CmsIndex" />
+    <preference for="Magento\Customer\Controller\Account\Login" type="Fermion\NativeApp\Controller\Account\Login"/>
+    <preference for="Magento\Customer\Controller\Account\ForgotPassword" type="Fermion\NativeApp\Controller\Account\ForgotPassword"/>
+    <preference for="Magento\Customer\Controller\Account\Edit" type="Fermion\NativeApp\Controller\Account\Edit"/>
+    <preference for="Magento\Customer\Controller\Account\Create" type="Fermion\NativeApp\Controller\Account\Create"/>
+
+</config>

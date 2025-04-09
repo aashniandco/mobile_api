@@ -1,0 +1,264 @@
+<?php
+error_reporting(E_ALL);  
+ini_set('display_errors','On');
+/*r
+ * @var Mec\Designerpage\Block\Index $block
+ */
+?>
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<?php
+echo $this->getLayout()
+->createBlock('Magento\Cms\Block\Block')
+->setBlockId('designer_page_img')
+->toHtml();
+?>
+<style>
+
+#designer_tab .btn {
+    padding: 5px;
+    border: 0px;
+}
+<?php 
+  if($_SERVER['HTTP_USER_AGENT'] == 'android' || $_SERVER['HTTP_USER_AGENT'] == 'ios'){
+    echo "@media (max-width: 540px) {
+      #designer_tab{
+        display:none;
+      }
+      .designer_filters{
+        text-align:center;
+      }  
+    }";
+  }
+?>
+</style>
+<div id="designer_tab" class="row" style="margin-bottom: 50px; margin-top: 25px;">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <div class="btn-group btn-group-justified designer_a" role="group">
+	       <div class="btn-group" role="group">
+          <div class = "btn" id="0">0-9</div>
+          </div>
+      <div class="btn-group" role="group">
+        <div class = "btn aclass" id="A">A</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="B">B</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="C">C</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="D">D</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="E">E</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="F">F</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="G">G</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="H">H</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="I">I</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="J">J</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="K">K</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="L">L</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="M">M</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="N">N</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="O">O</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="P">P</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="Q">Q</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="R">R</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="S">S</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="T">T</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="U">U</div>
+      </div>
+      <div class="btn-group" role="group">
+	<a href="#V"></a>	
+	<div class = "btn" id="V">V</div>
+		
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="W">W</div>
+
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="X">X</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="Y">Y</div>
+      </div>
+      <div class="btn-group" role="group">
+        <div class = "btn" id="Z">Z</div>
+      </div>
+      <!--<div class="btn-group" role="group">
+        <div class = "btn" id="0-9">0-9</div>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+
+<?php
+
+/*$list =array();
+$a = array();
+                $b = array();
+                $c = array();
+		$d = array();
+		$e = array();
+		$f = array();
+		$g = array();
+		$h = array();
+		$i = array();
+		$j = array();
+		$k = array();
+		$l = array();
+		$m = array();
+		$n = array();
+		$o = array();
+		$p = array();
+		$q = array();
+		$r = array();
+		$s = array();
+		$t = array();
+		$u = array();
+		$v = array();
+		$w = array();
+		$x = array();
+		$y = array();
+		$alpha = array('A','B','C');
+
+ */
+
+		$allDesignerCategories =  $block->getDesignerCategories();
+		$olddesigner="";$temp=1;	?>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~   New Tab ss  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+       
+
+	<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ End Tab ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  <div id = "tabs-1" class="row">
+		<div class="col-sm-2 designer_filters">
+		    <ul>
+              <li><a href = "#alldesigner"><span>A</span>ll </a></li>
+              <li><a href = "#sustainable"><span> S</span>ustainable </a></li>
+              <li><a href = "#bridal_list"><span>B</span>ridal </a></li>
+              <li><a href = "#exclusive_list"><span>E</span>xclusives </a></li>
+	            <li><a href = "#hero_designers"><span>H</span>ero designers </a></li>
+	      </ul> 
+		</div>
+
+
+    <div class="col-sm-10">
+	     <div id = "alldesigner">
+		<! ~~~~~~~~~~~~~~~~ all Designer -- ~~~~~~~~~~~~~~~~ -->
+
+ 
+
+      <div  id="designre_list" class="row">
+             <div class="col-md-3">
+    		        <ul>
+    		        <?php foreach($allDesignerCategories as $subcategory){ ?>
+    		        <?php  $designer= $subcategory->getName();
+    		        $designerchar=mb_substr($subcategory->getName(),0,1);
+    		        //$temp++;
+    		        if($designerchar>='0' && $designerchar <='9')
+    		                {
+    		                $designerchar='0-9';
+    		                }
+    		        if($designerchar != $olddesigner) {
+    		        $temp++;
+                if($designerchar == 'E'){
+                echo '</ul></div><div class="col-md-3"><ul>';
+                }elseif($designerchar == 'N'){
+                echo '</ul></div><div class="col-md-3"><ul>';
+                }elseif($designerchar == 'S'){
+                echo '</ul></div><div class="col-md-3"><ul>';
+                }
+    		        // if($temp % 8==0){
+    		        // echo '</ul></div><div class="col-md-3"><ul>';
+    		        // }
+    		        ?>
+    		        <li>
+    		        <h1 style="color:black;"  id="<?php echo $designerchar; ?>" class = "<?php echo $designerchar; ?>-click" name="<?php echo $designerchar; ?>" >
+    		                <?php echo $designerchar ?>
+    		        </h1>
+    		         </li>
+    		                <?php $olddesigner = $designerchar;
+    		                } ?>
+    		         <li>
+    		                 <a style="color:black;" href="<?php echo $subcategory->getUrl()?>"><?php echo $subcategory->getName() ?></a> </li>
+    		                <?php  }?>
+    		        </ul>
+     	      </div>
+          </div>  
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~ End All designer ~~~~~~~~~~~~~~~~~~~~~~~ -->
+         </div>
+
+         <div id = "sustainable">
+	    <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('Designers-Sustainable')->toHtml();?>
+         </div>
+         <div id = "bridal_list">
+            <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('Designers-Bridal')->toHtml();?>
+         </div>
+
+	       <div id = "exclusive_list">
+            <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('Designers-Exclusive')->toHtml();?>
+         </div>
+	       <div id = "hero_designers">
+            <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('Designers-Hero')->toHtml();?>
+         </div>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~ Tab -----------------------------  -->
+  
+</div>
+
+</div>
+ <script>
+         $(function() {
+            $( "#tabs-1" ).tabs();
+         });
+      </script>
+
+
+
+		<script>
+		  jQuery(document).ready(function() {
+			  jQuery(".btn").click(function() {
+				    jQuery('html,body').animate({
+				       scrollTop: jQuery("."+this.id+"-click").offset().top - 200 }, 2000);
+			  });
+		  });
+	</script>
+

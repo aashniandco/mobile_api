@@ -1,0 +1,308 @@
+<home>
+	<section>
+		<name><![CDATA[block1]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[["12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12"]]]></mobile_cols>
+		<block_class><![CDATA[[""]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[29]]></padding_top>
+		<padding_bottom><![CDATA[50]]></padding_bottom>
+		<block_position><![CDATA[1]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block2]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[6,6]]></block_cols>
+		<tablet_cols><![CDATA[["12","12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12","12"]]]></mobile_cols>
+		<block_class><![CDATA[["",""]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[]]></padding_top>
+		<padding_bottom><![CDATA[]]></padding_bottom>
+		<block_position><![CDATA[2]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block12]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[5,7]]></block_cols>
+		<tablet_cols><![CDATA[["12","12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12","12"]]]></mobile_cols>
+		<block_class><![CDATA[["",""]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[1]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[45]]></padding_top>
+		<padding_bottom><![CDATA[30]]></padding_bottom>
+		<block_position><![CDATA[4]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block13]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[]]></tablet_cols>
+		<mobile_cols><![CDATA[]]></mobile_cols>
+		<block_class><![CDATA[]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[]]></background_repeat>
+		<background_cover><![CDATA[]]></background_cover>
+		<parallax><![CDATA[]]></parallax>
+		<fullwidth><![CDATA[]]></fullwidth>
+		<padding_top><![CDATA[]]></padding_top>
+		<padding_bottom><![CDATA[]]></padding_bottom>
+		<block_position><![CDATA[5]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block14]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[["12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12"]]]></mobile_cols>
+		<block_class><![CDATA[[""]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[75]]></padding_top>
+		<padding_bottom><![CDATA[45]]></padding_bottom>
+		<block_position><![CDATA[6]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block15]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[]]></tablet_cols>
+		<mobile_cols><![CDATA[]]></mobile_cols>
+		<block_class><![CDATA[]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[]]></background_repeat>
+		<background_cover><![CDATA[]]></background_cover>
+		<parallax><![CDATA[]]></parallax>
+		<fullwidth><![CDATA[]]></fullwidth>
+		<padding_top><![CDATA[]]></padding_top>
+		<padding_bottom><![CDATA[]]></padding_bottom>
+		<block_position><![CDATA[7]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block16]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[["12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12"]]]></mobile_cols>
+		<block_class><![CDATA[[""]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[87]]></padding_top>
+		<padding_bottom><![CDATA[80]]></padding_bottom>
+		<block_position><![CDATA[8]]></block_position>
+	</section>
+	<block>
+		<block_name><![CDATA[block1-0]]></block_name>
+		<type><![CDATA[owl_banner]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":"","links":["","",""],"images":["home_1_sider_1.jpg","home_1_sider_2.jpg","home_1_sider_3.jpg"],"effect":"1","autoplay":"1","speed":"6000","stop_auto":"1","navigation":"1","pagination":"1","loop":"1","fullscreen":0,"rtl":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[col-xs-12]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Widget\OwlCarousel" images="home_1_sider_1.jpg,home_1_sider_2.jpg,home_1_sider_3.jpg" links=",," fullscreen="0" autoplay="1" stop_auto="1" navigation="1" pagination="1" loop="1" rtl="0" speed="6000" effect="1" template="widget/owl_slider.phtml"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block2-0]]></block_name>
+		<type><![CDATA[promo_banner]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":"","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","banner_id":"ethan_banner_jackets_for_women"}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[margin-bottom30]]></class>
+		<block_content><![CDATA[{{widget type="MGS\Promobanners\Block\Widget\Banner" banner_id="ethan_banner_jackets_for_women" template="banner.phtml"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block2-0]]></block_name>
+		<type><![CDATA[promo_banner]]></type>
+		<position><![CDATA[2]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":"","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","banner_id":"ethan_banner_jean_for_women"}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[margin-bottom30]]></class>
+		<block_content><![CDATA[{{widget type="MGS\Promobanners\Block\Widget\Banner" banner_id="ethan_banner_jean_for_women" template="banner.phtml"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block2-1]]></block_name>
+		<type><![CDATA[promo_banner]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":"","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","banner_id":"ethan_banner_season_on_sale"}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[margin-bottom30]]></class>
+		<block_content><![CDATA[{{widget type="MGS\Promobanners\Block\Widget\Banner" banner_id="ethan_banner_season_on_sale" template="banner.phtml"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block2-1]]></block_name>
+		<type><![CDATA[promo_banner]]></type>
+		<position><![CDATA[2]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":"","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","banner_id":"ethan_banner_real_for_men"}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[margin-bottom30]]></class>
+		<block_content><![CDATA[{{widget type="MGS\Promobanners\Block\Widget\Banner" banner_id="ethan_banner_real_for_men" template="banner.phtml"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block13-0]]></block_name>
+		<type><![CDATA[static]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":""}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[<div class="border-banner">
+<div class="text text-center">
+<h4>New Collection 2017</h4>
+<div class="playfair margin-bottom10" style="font-size: 36px;">Hot &amp; Trendy Clothes</div>
+<p class="margin-bottom40">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse consequat orci sed ultricies</p>
+<div><a class="btn btn-primary" href="#">Shop Now</a></div>
+</div>
+<div class="images"><img class="img-responsive" src="{{media url="wysiwyg/home_1_banner_5.jpg"}}" alt="" /></div>
+</div>]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block15-0]]></block_name>
+		<type><![CDATA[latest_posts]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"Latest From Blogs","additional_content":"","animation":"","animation_delay":"","post_category":["2"],"number_of_posts":"5","items":"2","template":"default.phtml","show_thumbnail":"1","show_short_content":"1","limit_characters_short_content":"115","view_as":"1","number_row":"1","navigation":"1","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","autoplay":0,"stop_auto":0,"pagination":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[widget-post-v2 navigation-top title-v2]]></class>
+		<block_content><![CDATA[{{widget type="MGS\Blog\Block\Widget\Latest" mgs_panel_title="Latest From Blogs" post_category="2" number_of_posts="5" items="2" show_thumbnail="1" mgs_panel_note="" template="widget/default.phtml" show_short_content="1" limit_characters_short_content="115" view_as="owl_carousel" autoplay="0" stop_auto="0" navigation="1" pagination="0" number_row="1"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block16-0]]></block_name>
+		<type><![CDATA[static]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":""}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[<!-- Don't remve class "newsletter-home" -->
+<div class="newsletter-home">
+<h3>Join Our Newsletter</h3>
+<p>Sign up for our newsletter and get <span class="color-theme">20%</span> off your next order. Pretty sweet, we know.</p>
+<div>{{block class="Magento\Newsletter\Block\Subscribe" name="static.newsletter" template="Magento_Newsletter::subscribe.phtml"}}</div>
+</div>]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block12-1]]></block_name>
+		<type><![CDATA[new_products]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"Latest Products","additional_content":"","animation":"","animation_delay":"","limit":"12","perrow":"3","numbercol":"3","percol":"2","template":"grid.phtml","ratio":"5","use_slider":"1","number_row":"2","navigation":"1","category_id":["32"],"text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","autoplay":0,"stop_auto":0,"pagination":0,"use_tabs":0,"loadmore":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[navigation-top]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Products\NewProducts" mgs_panel_title="Latest Products" mgs_panel_note="" limit="12" ratio="5" category_ids="32" use_slider="1" loadmore="0" template="products/new/grid.phtml" perrow="3" autoplay="0" stop_auto="0" navigation="1" pagination="0" number_row="2"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block14-0]]></block_name>
+		<type><![CDATA[attribute_products]]></type>
+		<position><![CDATA[2]]></position>
+		<setting><![CDATA[{"title":"Featured Products","additional_content":"","animation":"","animation_delay":"","attribute":"featured","limit":"12","perrow":"1","numbercol":"3","percol":"2","template":"list.phtml","ratio":"4","use_slider":"1","number_row":"1","navigation":"1","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","autoplay":0,"stop_auto":0,"pagination":0,"use_tabs":0,"loadmore":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[navigation-top title-v2]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Products\Attributes" mgs_panel_title="Featured Products" mgs_panel_note="" limit="12" ratio="4" category_ids="" attribute="featured" use_slider="1" loadmore="0" template="products/attribute/list.phtml" numbercol="3" percol="2" autoplay="0" stop_auto="0" navigation="1" pagination="0" number_row="1"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block12-0]]></block_name>
+		<type><![CDATA[deals]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"Deal Of The Day","additional_content":"","animation":"","animation_delay":"","limit":"2","perrow":"1","template":"grid.phtml","ratio":"4","use_slider":"1","number_row":"1","navigation":"1","category_id":["46"],"text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","autoplay":0,"stop_auto":0,"pagination":0,"use_tabs":0,"loadmore":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[navigation-top]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Products\Deals" mgs_panel_title="Deal Of The Day" mgs_panel_note="" limit="2" perrow="1" ratio="4" category_ids="46" use_slider="1" loadmore="0" template="products/deals/grid.phtml" autoplay="0" stop_auto="0" navigation="1" pagination="0" number_row="1"}}]]></block_content>
+	</block>
+	<promo_banner>
+		<item>
+			<title><![CDATA[Ethan Banner Jackets For Men]]></title>
+			<filename><![CDATA[/e/t/ethan_home1_promobanner1.jpg]]></filename>
+			<url><![CDATA[#]]></url>
+			<button><![CDATA[]]></button>
+			<text_align><![CDATA[top-left]]></text_align>
+			<content><![CDATA[<div class="padding-left10 padding-top15">
+<h4>Jackets For Men</h4>
+<em>New Trend 2017</em>
+</div>]]></content>
+			<effect><![CDATA[zoom]]></effect>
+			<custom_class><![CDATA[]]></custom_class>
+			<status><![CDATA[1]]></status>
+			<identifier><![CDATA[ethan_banner_jackets_for_women]]></identifier>
+		</item>
+		<item>
+			<title><![CDATA[Ethan Banner Jean For Women]]></title>
+			<filename><![CDATA[/e/t/ethan_home1_promobanner3.jpg]]></filename>
+			<url><![CDATA[#]]></url>
+			<button><![CDATA[]]></button>
+			<text_align><![CDATA[top-left]]></text_align>
+			<content><![CDATA[<div class="padding-left10 padding-top15">
+<h4>Jean For Women</h4>
+<em>Save Up 35%</em>
+</div>]]></content>
+			<effect><![CDATA[zoom]]></effect>
+			<custom_class><![CDATA[]]></custom_class>
+			<status><![CDATA[1]]></status>
+			<identifier><![CDATA[ethan_banner_jean_for_women]]></identifier>
+		</item>
+		<item>
+			<title><![CDATA[Ethan Banner Season On Sale]]></title>
+			<filename><![CDATA[/e/t/ethan_home1_promobanner2_1.jpg]]></filename>
+			<url><![CDATA[#]]></url>
+			<button><![CDATA[]]></button>
+			<text_align><![CDATA[top-left]]></text_align>
+			<content><![CDATA[<div class="padding-left10 padding-top15">
+<h4>Season On Sale</h4>
+<em>Women's Fashion</em>
+</div>]]></content>
+			<effect><![CDATA[zoom]]></effect>
+			<custom_class><![CDATA[]]></custom_class>
+			<status><![CDATA[1]]></status>
+			<identifier><![CDATA[ethan_banner_season_on_sale]]></identifier>
+		</item>
+		<item>
+			<title><![CDATA[Ethan Banner Real For Men]]></title>
+			<filename><![CDATA[/e/t/ethan_home1_promobanner4.jpg]]></filename>
+			<url><![CDATA[#]]></url>
+			<button><![CDATA[]]></button>
+			<text_align><![CDATA[top-left]]></text_align>
+			<content><![CDATA[<div class="padding-left10 padding-top15">
+<h4>Real For Men</h4>
+<em>The Trending</em>
+</div>]]></content>
+			<effect><![CDATA[zoom]]></effect>
+			<custom_class><![CDATA[]]></custom_class>
+			<status><![CDATA[1]]></status>
+			<identifier><![CDATA[ethan_banner_real_for_men]]></identifier>
+		</item>
+	</promo_banner>
+	<theme_setting>
+		<general>
+			<footer>footer_1</footer>
+		</general>
+	</theme_setting>
+
+</home>

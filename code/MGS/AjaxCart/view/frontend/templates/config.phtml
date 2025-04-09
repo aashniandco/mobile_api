@@ -1,0 +1,11 @@
+<?php
+/* @var $block \MGS\AjaxCart\Block\Source\Config */
+?>
+<script>
+    require([
+        'jquery',
+        'MGS_AjaxCart/js/config'
+    ], function($, mgsConfig) {
+        mgsConfig.setOptions(<?php /* @noEscape */ echo $block->getOptions() ?>);
+    });
+</script>

@@ -1,0 +1,137 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+body {
+margin: 0px;
+padding: 0px;
+font-family: "Roboto", sans-serif;
+box-sizing: border-box;
+width: 100%;
+}
+
+* {
+box-sizing: border-box;
+text-decoration: none;
+}
+* p,
+* h1,
+* h2,
+* h3,
+* h4,
+* h5,
+* h6 {
+margin: 0px;
+}
+.ma-wrapper{
+    max-width:480px;
+    margin: 50px auto;
+}
+.form-wrapper .login-header .login-title{
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: 400;
+    color: #111;
+}
+.login-content{
+    padding: 24px 0;
+}
+.input-wrap{
+    margin: 0 0 24px;
+}
+.label{
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #000;
+    letter-spacing: .14px;
+
+}
+.input{
+    border-radius: 2px;
+    background-color: #fff;
+    border: 1px solid #cbcbcb;
+    padding: 8px 40px 8px 12px;
+    width: 100%;
+    height: 40px;
+}
+.password-input{
+    position: relative;
+}
+.pass-input{
+    border-radius: 2px;
+    background-color: #fff;
+    border: 1px solid #cbcbcb;
+    padding: 8px 40px 8px 48px;
+    width: 100%;
+    height: 40px;
+}
+.password-input i{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-left: 12px ;
+    font-size: 20px;
+    color: #414141;
+}
+.forgot-password{
+    margin: 0 0 32px;
+}
+.forgot-password .forgot-password-link{
+   color: #656565; 
+   font-size: 14px;
+   line-height: 18px;
+   font-weight: 400;
+}
+.sign-in{
+    width: 100%;
+}
+.sign-in .sign-in-button{
+    text-align: center;
+    border: 1px solid #111;
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 10px 16px;
+    background-color: #111;
+    width: 100%;
+    color: #ffffff; 
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+}
+.login-footer{
+    border-top: 1px solid #e5e5e5;
+    margin: 48px 0 0;
+}
+.login-footer-title{
+    padding: 24px 0;
+    text-align: center;
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 400;
+    color: #111;
+}
+.create-account{
+    margin: 0 0 24px;
+}
+.create-account-link{
+    text-align: center;
+    border: 1px solid #111;
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 10px 48px;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+    color: #414141;
+    width: 100%;
+    display: block;
+}
+
+@media(max-width:540px){
+    .form-wrapper{
+        padding: 0 32px 16px;
+    }
+}

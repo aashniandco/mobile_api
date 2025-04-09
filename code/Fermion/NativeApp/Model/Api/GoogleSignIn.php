@@ -1,0 +1,123 @@
+<?php 
+
+namespace Fermion\NativeApp\Model\Api;
+
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Fermion\NativeApp\Helper\AppNativeHelper;
+use Magento\Framework\Math\Random;
+use Fermion\NativeApp\Model\NativeTokens;
+use Fermion\NativeApp\Model\ResourceModel\NativeTokens as NativeTokensResource;
+use Magento\Store\Model\StoreManagerInterface;
+
+class GoogleSignIn implements \Fermion\NativeApp\Api\GoogleSigninInterface
+{
+
+	/**
+     * @var CustomerRepositoryInterface
+     */
+    private $customerRepository;
+
+    /**
+     * @var Fermion\NativeApp\Helper\AppNativeHelper
+     */
+    private $helper;
+
+    /**
+     * @var Random
+     */
+    private $mathRandom;
+
+    /**
+     * @var Fermion\NativeApp\Model\NativeTokens
+     */
+    private $nativeTokens;
+
+    /**
+     * @var Fermion\NativeApp\Model\ResourceModel\NativeTokens
+     */
+    private $nativeTokensResource;
+
+    /**
+     * @var Magento\Store\Model\StoreManagerInterface
+     */
+	private $storeManager;
+
+
+	public function __construct(
+		CustomerRepositoryInterface $customerRepository,
+		AppNativeHelper $helper,
+		Random $mathRandom,
+		NativeTokens $nativeTokens,
+		NativeTokensResource $nativeTokensResource,
+		StoreManagerInterface $storeManager
+	){
+		$this->customerRepository = $customerRepository;
+		$this->helper = $helper;
+		$this->mathRandom = $mathRandom;
+		$this->nativeTokens = $nativeTokens;
+		$this->nativeTokensResource = $nativeTokensResource;
+		$this->storeManager = $storeManager;
+	}
+
+	public function signInWithGoogle($customerDetails)
+	{
+		$requestJson = json_encode($customerDetails);
+        $this->helper->validateRequests('/rest/V1/app_google_signin', $requestJson);
+
+		try{
+			if(isset($customerDetails['email'])){
+				try {
+		            $customer = $this->customerRepository->get($customerDetails['email']);
+		            $token = $this->mathRandom->getUniqueHash();
+			    	$data = ['token' => $token, 'customer_id' => $customer->getId()];
+			    	$NativeTokensModel = $this->nativeTokens;
+			    	$NativeTokensModel->setData($data);
+			    	$this->nativeTokensResource->save($NativeTokensModel);
+
+			    	$customer_name = $customer->getFirstname()." ".$customer->getLastname();
+
+			    	if(!isset($customerDetails['social_id'])){
+			    		$this->helper->sendResponse(400, "Bad Request", "", "UNABLE_TO_PROCESS", "Please provide social id");
+			    	}
+			    	$socialSigninData = $this->helper->getDataforSocailSignedInUsers($customerDetails['social_id']);
+			    	$password = ($socialSigninData['password_fake_email'] != null || $socialSigninData['password_fake_email'] != "") ? $socialSigninData['password_fake_email'] : "";
+
+			    	$baseUrl = $this->storeManager->getStore()->getBaseUrl();
+			        $redirectUrl = $baseUrl."?token=".$token;
+			        $dataArray = ["redirect_url" => $redirectUrl, "user_id" => $customer->getId(), "name" => $customer_name, "email" => $customer->getEmail(), "created_at" => date("Y/m/d h:i:sa"), "password" => $password];
+			        $this->helper->sendResponse(200, "Success", $dataArray);
+		        } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+		        	$pass = $this->getRandomPassword();
+		        	$customerDetails['password'] = $pass;
+		        	$customerDetails['password_confirmation'] = $pass;
+	            	$this->helper->signUpCustomer($customerDetails, 'googleplus');
+		        }
+			}
+			else{
+				$this->helper->sendResponse(400, "Bad Request", "", "UNABLE_TO_PROCESS", "Please provide email id");
+			}
+		}
+		catch(Exception $e){
+			$this->helper->sendResponse(400, "Bad Request", "", "UNABLE_TO_PROCESS", $e->getMessage());
+		}
+	}
+
+    protected function getRandomPassword(){
+    	$letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	    $numbers = "0123456789";
+	    $specialChars = "!@#$%^&*()_-=+;:,.?";
+
+	    $password = $numbers[rand(0, strlen($numbers) - 1)] 
+	              . $specialChars[rand(0, strlen($specialChars) - 1)];
+
+	    $remainingChars = $letters . $numbers . $specialChars;
+	    $remainingLength = 6;
+
+	    for ($i = 0; $i < $remainingLength; $i++) {
+	        $password .= $remainingChars[rand(0, strlen($remainingChars) - 1)];
+	    }
+
+	    $password = str_shuffle($password);
+        return $password;
+    }
+}

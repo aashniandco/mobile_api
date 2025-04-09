@@ -1,0 +1,93 @@
+<?php
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+/** @var \MageWorx\GiftCards\Block\Account\Cardlist $block */
+?>
+<?php $_giftcards = $block->getGiftcards(); ?>
+<?php if ($_giftcards && count($_giftcards)): ?>
+    <div class="table-wrapper orders-history">
+    <h2><?php echo __('Gift Cards List');?></h2>
+        <table class="data table table-order-items history" id="my-giftcards-table">
+            <caption class="table-caption"><?php /* @escapeNotVerified */ echo __('Gift Cards') ?></caption>
+            <thead>
+                <tr>
+                    <th scope="col" class="col id"><?php /* @escapeNotVerified */ echo __('Gift Card') ?></th>
+                    <th scope="col" class="col id"><?php /* @escapeNotVerified */ echo __('Order #') ?></th>
+                    <th scope="col" class="col status"><?php /* @escapeNotVerified */ echo __('Card Type') ?></th>
+                    <th scope="col" class="col date"><?php /* @escapeNotVerified */ echo __('Date') ?></th>
+                    <th scope="col" class="col total"><?php /* @escapeNotVerified */ echo __('Amount') ?></th>
+                    <th scope="col" class="col total"><?php /* @escapeNotVerified */ echo __('Balance') ?></th>
+                    <th scope="col" class="col status"><?php /* @escapeNotVerified */ echo __('Status') ?></th>
+                    <th scope="col" class="col actions">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($_giftcards as $_giftcard): ?>
+                    <tr>
+                        <td data-th="<?php echo $block->escapeHtml(__('Gift Card #')) ?>" class="col id"><?php /* @escapeNotVerified */ echo $_giftcard->getCardCode() ?></td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Order #')) ?>" class="col id"><?php /* @escapeNotVerified */ echo $block->getRealOrderId($_giftcard->getOrderId()) ?></td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Card Type')) ?>" class="col status"><?= $block->escapeHtml(__($_giftcard->getCardTypeLabel())) ?></td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Date')) ?>" class="col date"><?php /* @escapeNotVerified */ echo $block->formatDate($_giftcard->getCreatedTime()) ?></td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Amount')) ?>" class="col total"><?php /* @escapeNotVerified */ echo $block->formatPrice($_giftcard->getCardAmount(), $_giftcard->getCardCurrency()) ?></td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Balance')) ?>" class="col total"><?php /* @escapeNotVerified */ echo $block->formatPrice($_giftcard->getCardBalance(), $_giftcard->getCardCurrency()) ?></td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Status')) ?>" class="col status"><?= $block->escapeHtml(__($_giftcard->getCardStatusLabel())) ?></td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                            <a href="<?php /* @escapeNotVerified */ echo $block->getViewUrl($_giftcard->getOrderId()) ?>" class="action view">
+                                <span><?php /* @escapeNotVerified */ echo __('View Order') ?></span>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($block->getPagerHtml()): ?>
+        <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+    <?php endif ?>
+<?php else: ?>
+    <div class="message info empty"><span><?php /* @escapeNotVerified */ echo __('You have no Gift Cards.'); ?></span></div>
+<?php endif ?>
+
+<?php $orders = $block->getOrders(); ?>
+<?php if ($orders && count($orders)): ?>
+    <div class="table-wrapper orders-history">
+    <h2><?php echo __('Gift Cards Statistic');?></h2>
+        <table class="data table table-order-items history" id="my-giftcards-order-table">
+            <caption class="table-caption"><?php /* @escapeNotVerified */ echo __('Gift Cards Statistic') ?></caption>
+            <thead>
+                <tr>
+                    <th scope="col" class="col id"><?php /* @escapeNotVerified */ echo __('Gift Card') ?></th>
+                    <th scope="col" class="col id"><?php /* @escapeNotVerified */ echo __('Order #') ?></th>
+                    <th scope="col" class="col date"><?php /* @escapeNotVerified */ echo __('Date') ?></th>
+                    <th scope="col" class="col total"><?php /* @escapeNotVerified */ echo __('Amount') ?></th>
+                    <th scope="col" class="col actions">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php /** @var \MageWorx\GiftCards\Model\Order $order */
+                foreach ($orders as $order): ?>
+                    <tr>
+                        <td data-th="<?php echo $block->escapeHtml(__('Gift Card #')) ?>" class="col id"><?php /* @escapeNotVerified */ echo $order->getCardCode() ?></td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Order #')) ?>" class="col id"><?php /* @escapeNotVerified */ echo $order->getOrderIncrementId() ?></td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Date')) ?>" class="col date"><?php /* @escapeNotVerified */ echo $block->formatDate($order->getCreatedTime()) ?></td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Amount')) ?>" class="col total"><?php /* @escapeNotVerified */ echo $block->formatPrice($order->getDiscounted(), $order->getBaseCurrencyCode()) ?></td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                            <a href="<?php /* @escapeNotVerified */ echo $block->getViewUrl($order->getOrderId()) ?>" class="action view">
+                                <span><?php /* @escapeNotVerified */ echo __('View Order') ?></span>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <?php if ($block->getOrdersPagerHtml()): ?>
+        <div class="order-products-toolbar toolbar bottom"><?php echo $block->getOrdersPagerHtml(); ?></div>
+    <?php endif ?>
+
+<?php else: ?>
+    <div class="message info empty"><span><?php /* @escapeNotVerified */ echo __('You have no orders.'); ?></span></div>
+<?php endif ?>

@@ -1,0 +1,217 @@
+<?php
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Framework\View\Element\Template */
+/** @var $helper \Magento\Search\Helper\Data */
+?>
+
+
+<?php $helper = $this->helper('Magento\Search\Helper\Data');
+// print_r($helper);
+ ?>
+
+
+<?php $mpanelHelper = $this->helper('MGS\Mpanel\Helper\Data');
+// print_r($mpanelHelper);?>
+
+<?php $enableCategories = $mpanelHelper->getStoreConfig('mpanel/catalogsearch/show_categories');
+// print_r($enableCategories);die;	 ?>
+
+<?php if($enableCategories){ $categories = $mpanelHelper->getCategories(); } ?>
+
+<?php 
+$utm_url = "&";
+		$utm_url_set = false;
+    	if (isset($_GET['utm_source']) || isset($_GET['utm_medium']) || isset($_GET['utm_campaign']) || isset($_GET['utm_content'])) {
+
+        	$params = array();
+    		
+    		if (isset($_GET['utm_source']) && !empty($_GET['utm_source'])) {
+        		$utm_source = rawurlencode($_GET['utm_source']);
+        		$params[] = "utm_source=" . $utm_source;
+    		}
+
+    		if (isset($_GET['utm_medium']) && !empty($_GET['utm_medium'])) {
+        		$utm_medium = rawurlencode($_GET['utm_medium']);
+        		$params[] = "utm_medium=" . $utm_medium;
+    		}
+
+    		if (isset($_GET['utm_campaign']) && !empty($_GET['utm_campaign'])) {
+        		$utm_campaign = rawurlencode($_GET['utm_campaign']);
+        		$params[] = "utm_campaign=" . $utm_campaign;
+    		}
+
+    		if (isset($_GET['utm_content']) && !empty($_GET['utm_content'])) {
+        		$utm_content = rawurlencode($_GET['utm_content']);
+        		$params[] = "utm_content=" . $utm_content;
+    		}
+
+    		if (!empty($params)) {
+        		$utm_url .= implode("&", $params);
+        		$utm_url_set = true;
+    		}
+    	}
+    ?>
+
+<div class="search-form <?php if($enableCategories): ?>select-search<?php endif;?>">
+	<div class="form-search">
+		<form class="form minisearch" id="search_mini_form" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>">
+			<?php if($enableCategories): ?>
+				<?php $currentCategory = ""; ?>
+				<?php $currentCategoryId = ""; ?>
+				<?php 
+				// print_r($categories);
+				foreach ($categories as $category) {
+						foreach ($category as $key => $value) {
+							// print_r($value);die;
+							if ($key == 'label') { $categoryName = $value; }
+							if ($key == 'value') { $categoryId = $value; }
+						}
+						if ($mpanelHelper->getCurrentlySelectedCategoryId() == $categoryId){
+							$currentCategory = $categoryName;
+							$currentCategoryId = $categoryId;
+							// print_r($currentCategoryId);die("here");
+							break;
+						}
+					} ?>
+				<input type="hidden" name="cat" id="cat" value="<?php echo $currentCategoryId; ?>"/>
+				<div class="search-select">
+					<div class="dropdown">
+						<button id="toggleCatSearch" class="search-toggle dropdown-toggle" type="button" data-toggle="dropdown">
+							<span id="cat-active-name" class="search-cat-active">
+								<?php if($currentCategory != ""): ?>
+									<?php echo $currentCategory ?>
+								<?php else: ?>
+									<?php echo __('All Categories'); ?>
+								<?php endif ?>
+							</span>
+							<i class="fa fa-angle-down" aria-hidden="true"></i>
+						</button>
+						<ul id="select-cat-dropdown" class="dropdown-menu">
+							<li class="parent">
+								<a href="javascript:void(0);" onclick="setSearchCatValue('', '<?php echo __('All Categories') ?>');"><?php echo __('All Categories') ?></a>
+							</li>
+							<?php
+								foreach ($categories as $category) {
+									foreach ($category as $key => $value) {
+										if ($key == 'label') {
+											$categoryName = $value;
+										}
+										if ($key == 'value') {
+											$categoryId = $value;
+										}
+										if ($key == 'level') {
+											$categoryLevel = $value;
+										}
+									}
+									?>
+									<li class="<?php if($categoryLevel < 3): ?>parent<?php endif ?> level<?php echo $categoryLevel ?> <?php if ($mpanelHelper->getCurrentlySelectedCategoryId() == $categoryId): ?>active<?php endif; ?>">
+										<a href="javascript:void(0);" onclick="setSearchCatValue('<?php echo $categoryId; ?>', '<?php echo $categoryName; ?>');"><?php echo $categoryName; ?></a>
+									</li>
+									<?php
+								}
+							?>
+						</ul>
+					</div>
+				</div>
+			<?php endif; ?>
+			<input id="search-form1" style="display: none;"
+			   data-mage-init='{"quickSearch":{
+					"formSelector":"#search_mini_form",
+					"url":"<?php /* @escapeNotVerified */ echo $block->getUrl('search/ajax/suggest'); ?>",
+					"destinationSelector":"#search_autocomplete"}
+			   }'
+			   type="text"
+			   name="<?php /* @escapeNotVerified */ echo $helper->getQueryParamName() ?>"
+			   value="<?php /* @escapeNotVerified */ echo $helper->getEscapedQueryText() ?>"
+			   class="input-text form-control"
+			   maxlength="<?php /* @escapeNotVerified */ echo $helper->getMaxQueryLength();?>"
+			   placeholder="<?php echo __('Search') ?>"
+			   role="combobox"
+			   aria-expanded="false"
+			   aria-haspopup="false"
+			   aria-autocomplete="both"
+			   autocomplete="off"/>
+				
+			<button type="button" id="mobileSearchPop" title="<?php echo $block->escapeHtml(__('Search')) ?>" class="button" onclick>
+				<i class="fa fa-search"></i>
+			</button>	   
+
+			<!-- <div id="search_autocomplete" class="search-autocomplete" style="display: none;"></div> -->
+			<div id="search-autocomplete_custom" class="search-block-content" style="display: none;"></div>
+			<?php echo $block->getChildHtml() ?>
+
+		</form>
+	</div>
+	<div class="actions-search">
+		<button class="action-search" onclick="showHideFormSearch()">
+			<span class="show-search"><span><?php echo __('Search') ?></span><i class="fa fa-search"></i></span>
+			<span class="hide-search"><?php echo __('x') ?></span>
+		</button>
+	</div>
+</div>
+
+<script type="text/javascript">
+	<?php if($enableCategories): ?>
+		function setSearchCatValue(id,name){
+			require([
+			'jquery'
+			], function(jQuery){
+				(function($) {
+					$('#cat').val(id);
+					$('#cat-active-name').html(name);
+				})(jQuery);
+			});
+		}
+	<?php endif ?>
+	function showHideFormSearch(){
+		require([
+		'jquery'
+		], function(jQuery){
+			(function($) {
+				$('.actions-search .action-search').toggleClass('on-show');
+				$('.search-form .form-search').toggleClass('on-show');
+				$('.search-form').toggleClass('active');
+				if($('.header').hasClass('header3')){
+					var $widthContent = $('.header.header3 .middle-content').width() - $('.header.header3 .middle-content .logo').width() - $('.header.header3 .middle-content .middle-header-right-content').width();
+					$('.header.header3 .search-form .form-search').width($widthContent);
+				}
+				if($('.header').hasClass('header9')){
+					var $widthContent = $('.header.header9 .middle-content').width() - $('.header.header9 .middle-content .logo').width() - $('.header.header9 .middle-content .middle-header-right-content').width();
+					$('.header.header9 .search-form .form-search').width($widthContent);
+				}
+				setTimeout(focusSearchField, 500);
+			})(jQuery);
+		});
+	}
+	function focusSearchField(){
+		require([
+		'jquery'
+		], function(jQuery){
+			(function($) {
+				$('#search_mini_form input#search').focus();
+			})(jQuery);
+		});
+	}
+	require([
+		'jquery'
+	], function(jQuery){
+		(function($) {
+			$(window).resize(function(){
+				if($('.header').hasClass('header3')){
+					var $widthContent = $('.header.header3 .middle-content').width() - $('.header.header3 .middle-content .logo').width() - $('.header.header3 .middle-content .middle-header-right-content').width();
+					$('.header.header3 .search-form .form-search').width($widthContent);
+				}
+				if($('.header').hasClass('header9')){
+					var $widthContent = $('.header.header9 .middle-content').width() - $('.header.header9 .middle-content .logo').width() - $('.header.header9 .middle-content .middle-header-right-content').width();
+					$('.header.header9 .search-form .form-search').width($widthContent);
+				}
+			});
+		})(jQuery);
+	});
+</script>

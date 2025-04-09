@@ -1,0 +1,182 @@
+<?php
+/** @var \Fermion\LoyaltyPoint\Block\Account\AccountLoyalty $block */
+?>
+<?php $loyaltydata = $block->getLoyaltyData(); ?>
+<style type="text/css">
+	.loyalty-point.details h2{
+		margin-bottom: 20px;
+	} 
+	table.loyalty-customer-detail, table.coupon-table{
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    table.loyalty-customer-detail th, table.loyalty-customer-detail td, table.coupon-table th, table.coupon-table td{
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+	.loyalty-point.details .exclusive-loyalty-days-off{
+		margin-top: 20px;
+	}
+	.loyalty-point.details .exclusive-loyalty-days-off .days-off-selection{
+		margin-top: 10px;
+	}
+	.loyalty-point.details .exclusive-loyalty-days-off .days-off-selection input.day-off-one,.loyalty-point.details .exclusive-loyalty-days-off .days-off-selection input.day-off-two{
+		height: 30px;
+	}
+	.exclusive-loyalty-days-off .selected-discount-days{
+		margin-bottom: 10px;
+	}
+	.days-off-selection .date-selection-error{
+		display: none;
+		color: red;
+	}
+	.error-msg-loyalty{
+		display: none;
+		color: red;
+	}
+    #select-order-modal-button, .discount-date-btn{
+        padding: 3px 10px;
+        color: white;
+        background-color: black;
+    }
+</style>
+<div class="loyalty-point details">
+	<h2>My Loyalty Points</h2>
+	<div class="error-msg-loyalty"></div>
+	<?php if($loyaltydata['hasLoyaltyPoints']): ?>
+		<?php $discount = $loyaltydata['discount']; ?>
+		<table class="loyalty-point loyalty-customer-detail">
+			<tbody>
+				<tr>
+					<th>Loyalty Level</th>
+					<th>Total Loyalty Points</th>
+				</tr>
+				<tr>
+					<td data-th="level" class="col level"><?= $loyaltydata['level'] ?></td>
+					<td data-th="points" class="col points"><?= $loyaltydata['loyalty_points'] ?></td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="exclusive-loyalty-days-off">
+			<?php if(isset($loyaltydata['discount_coupons'])) : ?>
+				<div class="discount-coupon-section">
+					<table class="coupon-table">
+						<tbody>
+							<tr>
+								<th>Date</th>
+								<th>Coupons Applicable</th>
+							</tr>
+							<?php foreach ($loyaltydata['discount_coupons'] as $key => $value) { ?>
+								<tr>
+									<td><?= $value['dates'][$key]; ?></td>
+									<td><?= $value['coupons'][$key]; ?></td>
+								</tr>
+							<?php } ?>
+						</tbody>
+					</table>
+				</div>
+			<?php endif; ?>
+			<?php if(!$loyaltydata['level_has_coupon']): ?>
+				<?php if($loyaltydata['level'] == 1): ?>
+					<h7>Congratulations! You are eligible for a <?= $discount ?> discount on any one day of your choice.</h7>
+					<div class="days-off-selection">
+						<span>Select a date for <?= $discount ?> discount:</span>
+						<span>
+							<input type="date" name="day-off-one" class="day-off-one">
+							<input type="hidden" name="discount-level" class="discount-level" value="1">
+							<input type="hidden" name="discount-percent" class="discount-percent" value="<?= str_replace("%", "", $discount) ?>">
+						</span>
+						<span><button type="button" class="discount-date-btn">Set</button></span>
+						<span class="date-selection-error">select a date</span>
+					</div>
+				<?php else: ?>
+					<h7>Congratulations! You are eligible for a <?= $discount ?> discount on any two days of your choice.</h7>
+					<div class="days-off-selection">
+						<span>Select two dates for <?= $discount ?> discount:</span>
+						<span>
+							<input type="date" name="day-off-one" class="day-off-one">
+							<input type="date" name="day-off-two" class="day-off-two">
+							<input type="hidden" name="discount-level" class="discount-level" value="<?= $loyaltydata['level']; ?>">
+							<input type="hidden" name="discount-percent" class="discount-percent" value="<?= str_replace("%", "", $discount) ?>">
+						</span>
+						<span><button type="button" class="discount-date-btn">Set</button></span>
+						<span class="date-selection-error">select dates</span>
+					</div>
+				<?php endif; ?>
+			<?php endif; ?>
+		</div>
+	<?php else: ?>
+		<div class="No-Loyalty Message-class">
+			<p>Order and get in the Inner Circle to get Loyalty benefits</p>
+			<p>To know more about the Inner Circle, visit <a href="https://orders.aashniandco.com/innercircle">The Inner Circle</a>.</p>
+		</div>
+	<?php endif;?>
+</div>
+<?php if(isset($loyaltydata['double_points_flag']) && !$loyaltydata['double_points_flag'] && isset($loyaltydata['level']) && $loyaltydata['level'] == 1) : ?>
+<div class="select-order-btn-body">
+    <span>You can now get 2 loyalty points per 1000/- Rs for any two orders.</span>
+    <button id="select-order-modal-button" data-mage-init='{"Fermion_LoyaltyPoint/js/selectordermodal": {}}'>
+        View all Orders
+    </button>
+    <span> and select two orders to get double loyalty points</span>
+</div>
+<?php endif; ?>
+<script>
+	require(
+		["jquery"],
+		function($){
+			jQuery('body').on('click', '.discount-date-btn', function(){
+				var date1 = jQuery('input.day-off-one').val(),
+				date2 = jQuery('input.day-off-two').val(),
+				discount = jQuery('input.discount-percent').val(),
+				level = jQuery('input.discount-level').val();
+				if(level == 1) {
+					if(date1 == null || date1 == ''){
+						jQuery('.date-selection-error').show();
+					}
+					else{
+						var data = {
+							'date_one' : date1,
+							'level' : "1",
+							'discount' : discount
+						}
+						setDates(data);
+					}
+				}
+				else{
+					if(date1 == null || date1 == '' || date2 == null || date2 == ''){
+						jQuery('.date-selection-error').show();
+					}
+					else{
+						var data = {
+							'date_one' : date1,
+							'date_two' : date2,
+							'level' : level,
+							'discount' : discount
+						}
+						setDates(data);
+					}
+				}
+			});
+
+
+			function setDates(data) {
+				$('#mgs-ajax-loading').show();
+				jQuery('.date-selection-error').hide();
+				jQuery.ajax({
+					url:"/loyaltypoint/account/orderloyalty",
+					data: data,
+					type: 'POST',
+					success: function(response){
+						$('#mgs-ajax-loading').hide();
+						resp = JSON.parse(response);
+						if(resp.success){
+							location.reload();
+						}
+					}
+				});
+			}
+		})
+</script>

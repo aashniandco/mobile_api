@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_submit_all_after">
+        <observer name="mageworx_giftcards" instance="MageWorx\GiftCards\Observer\CheckoutSubmitAllAfterObserver" />
+    </event>
+    <event name="sales_model_service_quote_submit_success">
+        <observer name="mageworx_giftcards_quote_submit_success" instance="MageWorx\GiftCards\Observer\CheckoutSubmitAllAfterObserver" />
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="mageworx_giftcards_sales_order_save_after" instance="MageWorx\GiftCards\Observer\Adminhtml\SalesOrderSaveAfterObserver" />
+    </event>
+    <event name="order_cancel_after">
+        <observer name="mageworx_giftcards_return_card_balance_after_order_cancel" instance="MageWorx\GiftCards\Observer\ReturnCardBalanceAfterOrderCancelObserver"/>
+    </event>
+    <event name ="mageworx_giftcards_expired">
+        <observer name="mageworx_giftcards_expired_emails" instance="MageWorx\GiftCards\Observer\SendExpiredEmails" />
+    </event>
+    <event name ="mageworx_giftcards_expiration_alert">
+        <observer name="mageworx_giftcards_expiration_alert_emails" instance="MageWorx\GiftCards\Observer\SendExpirationAlertEmails" />
+    </event>
+    <event name ="mageworx_giftcards_send_using_delivery_date">
+        <observer name="mageworx_giftcards_send_email_on_delivery_date" instance="MageWorx\GiftCards\Observer\SendEmailOnDeliveryDateObserver"/>
+    </event>
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="mageworx_giftcards_quote_submit_before" instance="MageWorx\GiftCards\Observer\SalesModelServiceQuoteSubmitBeforeObserver" />
+    </event>
+    <event name="payment_cart_collect_items_and_amounts">
+        <observer name="mageworx_giftcards_payment_cart_collect" instance="MageWorx\GiftCards\Observer\AddGiftCardItem" />
+    </event>
+</config>

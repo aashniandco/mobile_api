@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- <type name="Magento\Checkout\Block\Checkout\LayoutProcessor">
+        <plugin name="pagelayout_checkout_address_fields_order" type="Fermion\Pagelayout\Plugin\Checkout\Block\LayoutProcessor" />
+    </type> -->
+    <!-- <preference for="Magento\Checkout\Block\Checkout\LayoutProcessor" type="Fermion\Pagelayout\Block\Checkout\LayoutProcessor" /> -->
+    <preference for="Magento\Checkout\Model\Cart\ImageProvider" type="Fermion\Pagelayout\Model\Cart\ImageProvider" />
+    <preference for="Magento\OfflinePayments\Model\Cashondelivery" type="Fermion\Pagelayout\Model\Cashondelivery" />
+    <preference for="Fermion\Pagelayout\Api\SalesOrderDetailsInterface" type="Fermion\Pagelayout\Model\Api\SalesOrderDetails"/>
+</config>

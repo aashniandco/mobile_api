@@ -1,0 +1,158 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "Your %store_name order confirmation #%order_id" order_id=$order.increment_id  store_name=$store.frontend_name}} @-->
+<!--@vars {
+"var formattedBillingAddress|raw":"Billing Address",
+"var order_data.email_customer_note|escape|nl2br":"Email Order Note",
+"var order.billing_address.name":"Guest Customer Name",
+"var created_at_formatted":"Order Created At (datetime)",
+"var order.increment_id":"Order Id",
+"layout handle=\"sales_email_order_items\" order=$order":"Order Items Grid",
+"var payment_html|raw":"Payment Details",
+"var formattedShippingAddress|raw":"Shipping Address",
+"var order.shipping_description":"Shipping Description",
+"var shipping_msg":"Shipping message",
+"var store.frontend_name":"Store Frontend Name",
+"var store_phone":"Store Phone",
+"var store_email":"Store Email",
+"var store_hours":"Store Hours",
+"var order_data.is_not_virtual":"Order Type",
+"var order":"Order"
+} @-->
+
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Raleway:400,300,500,600,500italic);
+    @import url(https://fonts.googleapis.com/css?family=Prata);
+    @import url(https://fonts.googleapis.com/css?family=Lato:400,300,700);
+    .lato {
+        font-family: 'Lato', sans-serif !important;
+    }
+    .raleway {
+        font-family:Arial, Helvetica, sans-serif; color:#000;
+    }
+    .prata {
+        font-family: 'Prata', serif !important;  color:#000;
+    }
+    .dess{
+    }
+    .desstt{
+    }
+    .desstt td{ font-size:14px; font-weight:700; border-bottom:1px #ccc solid;color:#000;
+    }
+    .dess h3{ font-family: 'Raleway', sans-serif !important; font-size:14px; font-weight:600; margin:0px; padding:0px;color:#000;
+    }
+    .dess h4{ font-family: 'Raleway', sans-serif !important; font-size:14px; font-weight:600; margin:0px; padding:5px 0px; text-transform:uppercase;
+    }
+    .dess h5{ font-family: 'Lato', sans-serif !important; font-size:14px; font-weight:400; margin:0px; padding:5px 0px;color:#000;
+    }
+    .dess p{ font-family: 'Raleway', sans-serif !important; font-size:12px; font-weight:400; margin:0px; padding:0px; color:#000;
+    }
+    .grand-total, .grand_total {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #000 !important;
+    }
+    .white-space {white-space: nowrap;}
+.order_details table{ width:100%;  border-bottom:1px solid #eaeaea;}
+.order_details table thead tr th {border-bottom:1px solid #eaeaea;
+    padding: 5px 5px;
+}
+.order_details table thead tr th:first-child {
+   text-align: left;
+}
+.order_details tfoot tr th, td {
+    border-top: 1px #eaeaea solid;
+}
+.order_details tfoot tr th{
+text-align:right;
+}
+.customer_address td {
+    border-top: 0px #eaeaea solid;
+}
+
+</style>
+<div style="width:750px; color:#000; margin:0px auto;">
+    <div style="width:100%; float:left; border:1px #fff solid;">
+        <div style="width:100%; float:left;">
+            <h1 style="margin:0px; text-align:center; padding:0px;">
+                <img  src="{{media url='logo/logo_email.png'}}" alt="" />
+            </h1>
+        </div>
+        <div class="raleway"   style="width:100%; border-top:1px #ccc solid; margin-top:10px; padding-bottom:25px;  float:left;">
+            <table width="100%" border="0" align="center" cellpadding="5" cellspacing="5">
+                <tr>
+                    <td style="font-size:14px; font-weight:700;" align="center" valign="middle">
+						{{trans 'Order Number <span class="no-link">#%increment_id</span>' increment_id=$order.increment_id |raw}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="raleway"   style="width:100%; padding-top:20px; float:left;">
+            <h1 class="prata" style="margin:0px;  text-align:center; font-size:16px; padding:0px;font-weight:100">
+                Dear  {{trans "%customer_name," customer_name=$order_data.customer_name}}:
+            </h1>
+            <p style="font-size:14px; text-align:center;">
+				 {{trans "Here is a summary of your order. You may wish to save this email for your reference."}}
+            </p>
+        </div>
+        <div class="raleway"   style="width:100%; padding-top:20px; float:left;">
+            <div class="order_details"  style="border:1px #ccc solid; padding:10px 10px;" >
+			{{layout handle="sales_email_order_items" order=$order area="frontend"}}
+            </div>
+        </div>
+        <div class="raleway"   style="width:100%; border-bottom:1px #ccc solid; padding-top:20px; float:left;">
+            <table style="text-align:center;" width="100%" border="0" cellspacing="5" cellpadding="0">
+                <tr>
+                    <td style="text-align: center;" class="dess" align="center" valign="middle">
+                        <h4> Your Shipping Address </h4>
+                    </td>
+
+                    <td style="text-align:center;" class="dess" align="center" valign="middle">
+                        <h4> Your Invoice/Billing Address </h4>
+                    </td>
+
+                    <td style="text-align:center;" class="dess" align="center" valign="top">
+                        <h4>Payment Method</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="dess" align="center" valign="middle">
+                        <h5 style="text-align:center; margin-top:0px; padding-top:0px;">
+                            {{var formattedShippingAddress|raw}}
+                        </h5>
+                    </td>
+
+                    <td class="dess" align="center" valign="middle">
+                          <h5 style="text-align:center; margin-top:0px; padding-top:0px;">
+						    {{var formattedBillingAddress|raw}}
+						  </h5>
+                    </td>
+
+                    <td class="dess" align="center" valign="top">
+                          <h5 style="text-align:center; margin-top:0px; padding-top:0px;">
+						  {{var payment_html|raw}}
+						  </h5>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="raleway"   style="width:100%; padding-top:20px; float:left;">
+	    <p style="font-size: 14px; color: #222; text-align: center; margin-bottom:20px;">
+                Please note that delivery times are extended due to the onset of COVID 19 Once your package ships we will send an email with a link to track your order.
+            </p>
+        </div>
+        <div class="raleway"   style="width:100%; padding-top:0px; padding-bottom:20px; float:left;">
+            <style type="text/css">
+                @import url('https://fonts.googleapis.com/css2?family=Prata&display=swap');
+            </style>
+            <p style="margin: 0px; text-transform: uppercase; font-weight: 300; font-size: 16px; text-align: center; padding: 0px;">
+                THANK YOU FOR SHOPPING AT AASHNI + CO
+            </p>
+        </div>
+    </div>
+</div>
+

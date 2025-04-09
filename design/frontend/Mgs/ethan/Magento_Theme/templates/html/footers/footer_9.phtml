@@ -1,0 +1,58 @@
+<?php $helper = $this->helper('MGS\Mpanel\Helper\Data') ?>
+<?php $canUsePanel = $helper->acceptToUsePanel() ?>
+<?php $block = $this->getBlock() ?>
+<div class="footer-container">
+	<div class="middle-footer">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-custom-5 col-sm-4 col-xs-6 col-xxs-full first">
+					<!-- Static block: footer_contact_us -->
+					<div class="block-middle-item">
+						<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_contact_us')->setCanUsePanel($canUsePanel)->toHtml() ?>
+					</div>
+				</div>
+				<div class="col-md-custom-5 col-sm-4 col-xs-6">
+					<div class="block-middle-item">
+					<!-- Static block: footer_block_quick_link -->
+						<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_quick_link')->setCanUsePanel($canUsePanel)->toHtml() ?>
+					</div>
+				</div>
+				<div class="col-md-custom-5 col-sm-4 col-xs-6">
+					<!-- Static block: footer_block_our_policy -->
+					<div class="block-middle-item">
+						<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_our_policy')->setCanUsePanel($canUsePanel)->toHtml() ?>
+					</div>
+				</div>
+				<div class="col-md-custom-5 col-sm-4 col-xs-6 col-xxs-full">
+					<!-- Static block: footer_block_product_tag -->
+					<div class="block-middle-item">
+						<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_product_tag')->setCanUsePanel($canUsePanel)->toHtml() ?>
+					</div>
+				</div>
+				<div class="col-md-custom-5 col-sm-4 col-xs-12 last">
+					<!-- Static block: footer_block_instagram -->
+					<div class="block-middle-item">
+						<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_instagram')->setCanUsePanel($canUsePanel)->toHtml() ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bottom-footer">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-right">
+					<!-- Static block: footer_block_social -->
+					<div class="block-middle-item">
+					<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_social')->setCanUsePanel($canUsePanel)->toHtml() ?>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+					<div class="block-middle-item">
+						<address><?php /* @escapeNotVerified */ echo $block->getCopyright() ?></address>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

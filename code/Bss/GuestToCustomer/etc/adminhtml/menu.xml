@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * BSS Commerce Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://bsscommerce.com/Bss-Commerce-License.txt
+ *
+ * @category   BSS
+ * @package    Bss_GuestToCustomer
+ * @author     Extension Team
+ * @copyright  Copyright (c) 2017-2018 BSS Commerce Co. ( http://bsscommerce.com )
+ * @license    http://bsscommerce.com/Bss-Commerce-License.txt
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Bss_GuestToCustomer::main" title="Guests" module="Bss_GuestToCustomer" sortOrder="999" parent="Magento_Customer::customer" resource="Bss_GuestToCustomer::main"/>
+        <add id="Bss_GuestToCustomer::guest" title="Guests Management" action="bss_guest_to_customer/guest/index" module="Bss_GuestToCustomer" sortOrder="3" parent="Bss_GuestToCustomer::main" resource="Bss_GuestToCustomer::main"/>
+    </menu>
+</config>

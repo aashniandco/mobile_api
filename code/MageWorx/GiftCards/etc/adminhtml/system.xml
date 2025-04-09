@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="mageworx" translate="label" sortOrder="2010">
+            <label>MageWorx</label>
+        </tab>
+        <section id="mageworx_giftcards" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Gift Cards</label>
+            <tab>mageworx</tab>
+            <resource>MageWorx_GiftCards::config_giftcards</resource>
+            <group id="main" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Gift Cards Defaults:</label>
+                <field id="show_in_shopping_cart" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show on Shopping Cart Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="expand_gift_card_block" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Expand Gift Card Block</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="show_in_shopping_cart">1</field>
+                    </depends>
+                </field>
+                <field id="apply_to" translate="label comment" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Apply to Shipping & Tax]]></label>
+                    <source_model>MageWorx\GiftCards\Model\Source\ApplyToTotalAmounts</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <comment><![CDATA[This setting allows you to define if you want to cover shipping & tax with gift cards.]]></comment>
+                </field>
+                <field id="orderstatus" translate="label" type="multiselect" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Activate Gift Card on Order Status</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                    <can_be_empty>0</can_be_empty>
+                </field>
+                <field id="add_code_to_product" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Add Gift Card code to Order Item</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="email" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Gift Cards Email Options:</label>
+                <field id="giftcards_picture" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use Default Gift Card Picture for Email</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Set "No" for use product picture.</comment>
+                </field>
+                <field id="orderstatus" translate="label" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order Statuses for emailing Gift Card</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                    <can_be_empty>0</can_be_empty>
+                </field>
+                <field id="email_template" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Template for Email Gift Cards</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="print_template" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Template for Print Gift Cards</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="offline_template" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Template for Offline Gift Cards</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="expired_template" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Template for Expired Gift Cards</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <comment>
+                        <![CDATA[This template will be sent to the customers when the gift card is expired.]]>
+                    </comment>
+                </field>
+                <field id="expiration_alert_template" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Template for Gift Cards Expiration Alert</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <comment>
+                        <![CDATA[This template will be sent to the customers to notify the customers the gift cards will be expired soon.
+                        The number of days is set in the setting "Expiration Alert".]]>
+                    </comment>
+                </field>
+                <field id="expiration_alert" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Expiration Alert</label>
+                    <comment>
+                        <![CDATA[This setting specifies a number of days the customers will be notified before their gift cards are expired.]]>
+                    </comment>
+                </field>
+            </group>
+            <group id="product" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label><![CDATA[Gift Card Product:]]></label>
+                <field id="amount_display_mode" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Amount Display Mode]]></label>
+                    <comment><![CDATA[This setting defines the layout of the gift card amount on the front-end.]]></comment>
+                    <source_model>MageWorx\GiftCards\Model\Source\AmountDisplayMode</source_model>
+                </field>
+                <field id="amount_placeholder" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Custom Amount Placeholder]]></label>
+                    <comment>
+                        <![CDATA[This setting defines the placeholder for the custom value field on the front-end.]]>
+                    </comment>
+                </field>
+                <field id="from_name_placeholder" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label><![CDATA["From Name" Placeholder]]></label>
+                    <comment>
+                        <![CDATA[This setting defines the placeholder for the "From Name" field on the front-end.]]>
+                    </comment>
+                </field>
+                <field id="to_name_placeholder" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label><![CDATA["To Name" Placeholder]]></label>
+                    <comment>
+                        <![CDATA[This setting defines the placeholder for the "To Name" field on the front-end.]]>
+                    </comment>
+                </field>
+                <field id="to_email_placeholder" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label><![CDATA["To Email" Placeholder]]></label>
+                    <comment>
+                        <![CDATA[This setting defines the placeholder for the "To Email" field on the front-end.]]>
+                    </comment>
+                </field>
+                <field id="message_placeholder" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label><![CDATA["Message" Placeholder]]></label>
+                    <comment>
+                        <![CDATA[This setting defines the placeholder for the "Message" field on the front-end.]]>
+                    </comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

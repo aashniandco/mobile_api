@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @var Mec\Designerpage\Block\Index $block
+ */
+?>
+<?php 
+$allDesignerCategories =  $block->getDesignerCategories();?>
+  <div class="col-md-3">
+  <ul>
+	<?php foreach($allDesignerCategories as $subcategory) { ?>
+	<li> <a href="<?php echo $subcategory->getUrl()?>"><?php echo $subcategory->getName() ?></a> </li>
+	<?php }?>
+  </ul> 
+  </div>

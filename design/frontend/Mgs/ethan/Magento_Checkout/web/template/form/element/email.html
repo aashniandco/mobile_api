@@ -1,0 +1,177 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!-- ko ifnot: isCustomerLoggedIn() -->
+
+<!-- ko foreach: getRegion('before-login-form') -->
+<!-- ko template: getTemplate() --><!-- /ko -->
+<!-- /ko -->
+<style>
+#checkout-login-area .login-or{
+   display:none;
+}
+#checkout-login-msg{
+ color:green;
+ font-size:20px;
+ font-weight:bold;
+ text-align:center;
+ min-height:20px;
+}
+
+#customer-register-button-link{
+ padding: 5px;
+ display: block;
+ margin-top: 10px;
+ width: 100% !important;
+ background: #000 !important;
+ border: 0px !important;
+ border-radius:0px;
+text-align: center;
+}
+#customer-register-button-link .register-text{
+ color: #fff !important;
+ font-size: 15px;
+ font-weight: 400;
+}
+.clear_all{ clear:both; width:100%;}
+@media only screen and (max-width: 619px) {
+  #add_button_login_byclass {
+    margin-top: 5px !important;
+  }
+}
+</style>
+    <div id="checkout-login-msg">         
+    </div>
+    <div id="checkout-login-area">
+        <div class="col-md-6 border-right">	
+	
+	
+        
+	<div class="field">
+            <label class="note" style="font-weight: 500; font-size: 17px; font-style: normal">
+                   <span data-bind="i18n: 'Create An Account'"></span>
+            </label>
+            <div>
+		<a href="#" id="customer-register-button-link" class="customer-register-link"><span class="register-text" >Register</span></a>
+	    </div>
+         </div>
+
+         <!-- <div class="field class-sociallogin">
+             <label class="note" style="font-weight: 500; font-size: 17px; font-style: normal">
+                   <span data-bind="i18n: 'Checkout With Social Login'"></span>
+             </label>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="checkout-social-login-popup"></div>
+                        </div>
+ 
+		</div>
+        </div> -->
+
+
+	<div class="clear_all"> </div>
+         <!-- 2 social login -->
+
+           <div class="checkout_newuserform">
+               <form class="form form-login" data-role="email-with-possible-login"
+                     data-bind="submit:login">
+               <fieldset id="customer-email-fieldset" class="fieldset" data-bind="blockLoader: isLoading">
+                       <div class="field">
+                       <label style="font-weight: 500; font-size: 17px; font-style: normal" class="note">
+                           <span data-bind="i18n: 'Checkout as guest?'"></span>
+                       </label>
+                       </div>
+                       <div class="field required">
+                       <label class="label" for="customer-email">
+                           <span data-bind="i18n: 'Email Address'"></span>
+                       </label>
+                       <div class="control">
+                           <input class="input-text"
+                                  type="email"
+                                  data-bind="
+                                textInput: email,
+                                hasFocus: emailFocused"
+                                  name="username"
+                                  data-validate="{required:true, 'validate-email':true}"
+                                  id="customer-email" />
+                           <!-- ko template: 'ui/form/element/helper/tooltip' --><!-- /ko -->
+                       </div>
+                   </div>
+
+                   <!--Hidden fields -->
+                   <fieldset class="fieldset hidden-fields" id="hide_me" data-bind="fadeVisible: isPasswordVisible">
+                       <div class="field">
+                           <label class="label" for="customer-password">
+                               <span data-bind="i18n: 'Password'"></span>
+                           </label>
+                           <div class="control">
+                               <input class="input-text"
+                                      placeholder="optional"
+                                      type="password"
+                                      name="password"
+                                      id="customer-password"
+                                      data-validate="{required:true}" autocomplete="off"/>
+                               <span class="note" data-bind="i18n: 'You already have an account with us.'"></span>
+                           </div>
+
+                       </div>
+                       <!-- ko foreach: getRegion('additional-login-form-fields') -->
+                       <!-- ko template: getTemplate() --><!-- /ko -->
+                       <!-- /ko -->
+                       <div class="actions-toolbar">
+                           <input name="context" type="hidden" value="checkout" />
+                           <div class="primary margin-bottom10">
+                               <button type="submit" class="action login btn btn-primary" data-action="checkout-method-login"><span data-bind="i18n: 'Login'"></span></button><span>OR</span><a onclick="hideFields()" class="action login btn btn-primary" data-action="checkout-method-login"><span>Continue as guest</span></a>
+                           </div>
+                           <div class="secondary">
+                               <a class="action remind" data-bind="attr: { href: forgotPasswordUrl }">
+                                   <span data-bind="i18n: 'Forgot Your Password?'"></span>
+                               </a>
+                           </div>
+                       </div>
+                   </fieldset>
+                   <!--Hidden fields -->
+               </fieldset>
+               </form>
+           </div>
+        </div>
+        <div class="col-md-6 l-border">
+            <form data-role="login" id="custom_login_checkout" onsubmit="return false"  name="custom_login_checkout" method="post">
+            
+		 <div id="text_newuser"><span> Existing user? </span>  </div>
+	
+		<div class="fieldset">
+                    <div class="field field-email required">
+                        <label class="label" for="login-email"><span data-bind="i18n: 'Email Address'">Email Address</span></label>
+                        <div class="control">
+                            <input type="email" class="input-text" id="checkout-login-email" name="username"  data-validate="{required:true, 'validate-email':true}" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="field field-password required">
+                        <label for="login-password" class="label"><span>Password</span></label>
+                        <div class="control">
+                            <input type="password" class="input-text" id="checkout-login-password" name="password" data-validate="{required:true}" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+                <div class="actions-toolbar">
+                    <input name="context" type="hidden" value="checkout">
+                    <div class="primary margin-bottom10">
+                        <button type="submit" onclick="foo()"  class="action action-login btn btn-primary secondary">
+                            <span>Sign In</span></button>
+                    </div>
+                    <div class="secondary">
+                        <a class="action action-remind" onclick="goToForgetPassword()">
+                            <span data-bind="i18n: 'Forgot Your Password?'">Forgot Your Password?</span>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<!-- /ko -->
+

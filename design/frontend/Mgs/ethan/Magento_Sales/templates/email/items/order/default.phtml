@@ -1,0 +1,94 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+
+/** @var $block \Magento\Sales\Block\Order\Email\Items\DefaultItems */
+
+/** @var $_item \Magento\Sales\Model\Order\Item */
+$_item = $block->getItem();
+$_order = $_item->getOrder();
+$productId = $_item->getProductId(); //this is child product id
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$product = $objectManager->create('Magento\ConfigurableProduct\Model\Product\Type\Configurable')->getParentIdsByChild($productId);
+if(isset($product[0])){
+    //this is parent product id..
+    $parentId = $product[0];
+}else{
+    $parentId = $productId;
+}
+$_product = $objectManager->create('Magento\Catalog\Model\Product')->load($parentId);
+$imageHelper  = $objectManager->get('\Magento\Catalog\Helper\Image');
+$image_url = $imageHelper->init($_product, 'product_page_image_small')->setImageFile($_product->getImage())->resize(100, 150)->getUrl();
+
+$product_item=$_item->getProductOptions();
+if ($_item->getproduct_type() == 'mageworx_giftcards') {
+    $storeManager = \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Store\Model\StoreManagerInterface::class);
+    $mediaUrl = $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+    $imageBaseUrl = $mediaUrl . 'catalog/product';
+    $images = isset($product_item['info_buyRequest']['image_url']) ? $product_item['info_buyRequest']['image_url'] : '';
+    $imageUrl = $imageBaseUrl.$images;
+}else{
+    $imageUrl = $imageHelper->init($_product, 'product_page_image_small')->setImageFile($_product->getImage())->resize(100, 150)->getUrl();
+}
+
+$unitprice = $_product->getPrice();
+?>
+<tr>
+    <td valign="center" style="padding: 10px 5px 0px 5px; text-align: left;" class="col description">
+        <p style="font-weight: bold; margin:0px;" class="product-name"><?= $block->escapeHtml($_item->getName()) ?></p>
+        <p class="product-name"><?= $block->escapeHtml($_item->getData('short_description')) ?></p>
+    </td>
+    <td valign="center" style="padding: 10px 5px 0px 5px;" class="col image">
+        <img src="<?php echo $imageUrl; ?>" alt="No Image" width="100px" />
+    </td>
+    <!--<td class="col sku">
+        <p style="margin:0px;" class="sku"><?php //$block->escapeHtml($block->getSku($_item)) ?></p>
+    </td>-->
+    <td style="padding: 10px 5px 0px 5px;" valign="center" class="col item-info<?= ($block->getItemOptions() ? ' has-extra' : '') ?>">
+        <?php if ($block->getItemOptions()) : ?>
+            <dl style="margin:0px; padding:0px;" class="item-options">
+                <?php foreach ($block->getItemOptions() as $option) : ?>
+                    <p style="margin:0px">
+                        <?= /* @noEscape */  nl2br($block->escapeHtml($option['value'])) ?>
+                    </p>
+                <?php endforeach; ?>
+            </dl>
+        <?php endif; ?>
+        <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+        <?php if ($addInfoBlock) :?>
+            <?= $addInfoBlock->setItem($_item)->toHtml() ?>
+        <?php endif; ?>
+    </td>
+    <td valign="center" style="padding: 10px 5px 0px 5px;" class="col item-qty"><?= (float) $_item->getQtyOrdered() ?></td>
+    <td valign="center" class="col item-price">
+        <?= /* @noEscape */ $block->getItemPrice($_item) ?>
+    </td>
+    <td style="padding: 10px 5px 0px 5px;" valign="center" class="col item-price">
+        <?php //echo ($unitprice*$_item->getQtyOrdered()) ?>
+    </td>
+</tr>
+<?php if ($_item->getGiftMessageId()
+    && $_giftMessage = $this->helper(\Magento\GiftMessage\Helper\Message::class)
+        ->getGiftMessage($_item->getGiftMessageId())
+) : ?>
+    <tr>
+        <td style="border-top: 1px #eaeaea solid;"  colspan="3" class="item-extra">
+            <table class="message-gift">
+                <tr>
+                    <td>
+                        <h3><?= $block->escapeHtml(__('Gift Message')) ?></h3>
+                        <strong><?= $block->escapeHtml(__('From:')) ?></strong> <?= $block->escapeHtml($_giftMessage->getSender()) ?>
+                        <br /><strong><?= $block->escapeHtml(__('To:')) ?></strong> <?= $block->escapeHtml($_giftMessage->getRecipient()) ?>
+                        <br /><strong><?= $block->escapeHtml(__('Message:')) ?></strong>
+                        <br /><?= $block->escapeHtml($_giftMessage->getMessage()) ?>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+<?php endif; ?>
+

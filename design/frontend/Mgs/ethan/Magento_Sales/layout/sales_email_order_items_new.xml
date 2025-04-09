@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- This adds a custom block to the email template -->
+        <referenceBlock name="order_new_items">
+            <block class="Magento\Framework\View\Element\Template" name="bestseller_products_block" template="Magento_Sales::email/bestseller.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,210 @@
+<?php $helper = $this->helper('MGS\Mpanel\Helper\Data') ?>
+<?php $canUsePanel = $helper->acceptToUsePanel() ?>
+<?php $block = $this->getBlock() ?>
+
+
+
+<?php
+$objectManagerCms = \Magento\Framework\App\ObjectManager::getInstance();
+$cmsPage = $objectManagerCms->get('\Magento\Cms\Model\Page');
+
+$identifier=$cmsPage->getIdentifier(); //Current CMS Page Identifier
+//print_r($identifier);
+//var_dump($identifier);
+//echo "$identifier"."::identifier_slide";
+//echo "<br>";
+//print_r(get_class_methods($identifier));die("xyz");
+
+$id=$cmsPage->getID(); //Current CMS Page ID
+//var_dump($id);
+//echo "$id"."ida";
+//echo "<br>";
+//var_dump($id)."abc";die('mithi');
+/** @var \Magento\Framework\UrlInterface $urlInterface */
+$urlInterface = \Magento\Framework\App\ObjectManager::getInstance()->get('Magento\Framework\UrlInterface');
+?>
+
+
+<!-- slider Script for home page  footer_1.phtml -->
+<script type="text/javascript">
+    require([
+      'jquery',
+      'mgs/owlcarousel'
+    ], function(jQuery){
+      (function($) {
+        $("#mgs-slidess2").owlCarousel({
+          items: 1,
+          rtl: false,
+          loop: true,
+          nav: true,
+          dots: false,
+          autoplayTimeout: 3000,
+          autoplay: true,
+          autoplayHoverPause: true,
+          animateOut: 'fadeOut',
+          animateIn: 'fadeIn',
+          navText: ["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"]
+        });
+      })(jQuery);
+    });
+  </script>
+     
+<!-- <script type="text/javascript">
+    require([
+      'jquery',
+      'mgs/owlcarousel'
+    ], function(jQuery){
+      (function($) {
+        $("#designer").owlCarousel({
+          responsive:{
+            0:{
+              items:1, 
+            },
+            600:{
+              items:3, 
+            },
+            1000:{
+              items:4, 
+            }
+          }, 
+           loop:true, 
+          nav:true,
+          center:true,
+              margin:10,
+          dots: true,
+          autoplayTimeout: 3000,
+          autoplay: true,
+          autoplayHoverPause: true, 
+          navText: ["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"]
+        });
+      })(jQuery);
+    });
+    
+     
+  </script> -->
+    
+    
+    <script type="text/javascript">
+    require([
+      'jquery',
+      'mgs/owlcarousel'
+    ], function(jQuery){
+      (function($) {
+        $("#shopbystyle").owlCarousel({
+          responsive:{
+            0:{
+              items:1, 
+            },
+            600:{
+              items:3, 
+            },
+            1000:{
+              items:4, 
+            }
+          }, 
+           loop:true, 
+          nav:true,
+          center:true,
+              margin:10,
+          dots: true,
+          autoplayTimeout: 3000,
+          autoplay: true,
+          autoplayHoverPause: true, 
+          navText: ["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"]
+        });
+      })(jQuery);
+    });
+    
+     </script>
+
+ <style>
+  .bold_text:hover
+  {
+    font-weight: bold;
+  }
+ </style> 
+
+
+<div class="footer-container">
+  <div class="top-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <!-- Static block: footer_block_instagram -->
+          <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_instagram')->setCanUsePanel($canUsePanel)->toHtml() ?>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<?php
+ if($_SERVER['HTTP_USER_AGENT'] != 'android' || $_SERVER['HTTP_USER_AGENT'] != 'ios') : ?>
+  <div class="bottom-footer">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12" style="background-color: white; margin-top: 20px;">
+          <!-- Static block: footer_block_contextual -->
+          <?php 
+          $catId = $this->getRequest()->getParam('id');
+
+          $category = $objectManagerCms->create('Magento\Catalog\Model\Category')->load($catId);
+          $con_footer = $category->getData("contextual_footer");
+
+          if(isset($_GET['atest']) && $_GET['atest']=='sitest') {
+            echo $catId.'Category Id';die;
+          }
+          if($identifier=='home' && $id==2){
+            //error_log("STEP 1 Aniket");
+            echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_contextual')->setCanUsePanel($canUsePanel)->toHtml();
+          }
+          elseif ($this->getRequest()->getFullActionName() == "catalog_category_view" OR $this->getRequest()->getFullActionName() == "pagelayout_listing_index") {
+            echo $con_footer;
+          }
+
+          echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_otherpages')->setCanUsePanel($canUsePanel)->toHtml();
+          ?>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php endif; ?>
+
+  <div class="middle-footer">
+    <div class="container">
+      <div class="row one">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 contact-us-footer">
+          <!-- Static block: footer_contact_us -->
+          <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_contact_us')->setCanUsePanel($canUsePanel)->toHtml() ?>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 quick-link-footer">
+          <!-- Static block: footer_block_quick_link -->
+          <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_quick_link')->setCanUsePanel($canUsePanel)->toHtml() ?>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 policy-footer">
+          <!-- Static block: footer_block_our_policy -->
+          <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_our_policy')->setCanUsePanel($canUsePanel)->toHtml() ?>
+        </div>
+      </div>
+      <div class="row two">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-right">
+          <!-- Static block: footer_block_social -->
+          <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_social')->setCanUsePanel($canUsePanel)->toHtml() ?>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <address><?php /* @escapeNotVerified */ echo $block->getCopyright() ?></address>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile_whatsup">
+      <a target="_blank" href="https://api.whatsapp.com/send?phone=918375036648&text=<?php echo $urlInterface->getCurrentUrl();?> Hello Aashni + Co ! I have a question I would like to ask.">
+        <img src="https://aashniandco.com/pub/media/logo/whatsapp.svg" alt="whatsapp-logo" style="width: 50px;height: 50px;float: right;margin-bottom: 0px;"/>
+      </a>
+    </div>
+
+
+</div>
+
+
+

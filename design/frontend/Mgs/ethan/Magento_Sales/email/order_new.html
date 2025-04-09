@@ -1,0 +1,297 @@
+ <!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "Your %store_name order confirmation #%order_id" order_id=$order.increment_id  store_name=$store.frontend_name}} @-->
+<!--@vars {
+"var formattedBillingAddress|raw":"Billing Address",
+"var order_data.email_customer_note|escape|nl2br":"Email Order Note",
+"var order.increment_id":"Order Id",
+"layout handle=\"sales_email_order_items\" order=$order area=\"frontend\"":"Order Items Grid",
+"var payment_html|raw":"Payment Details",
+"var formattedShippingAddress|raw":"Shipping Address",
+"var order.shipping_description":"Shipping Description",
+"var shipping_msg":"Shipping message",
+"var created_at_formatted":"Order Created At (datetime)",
+"var store.frontend_name":"Store Frontend Name",
+"var store_phone":"Store Phone",
+"var store_email":"Store Email",
+"var store_hours":"Store Hours",
+"var this.getUrl($store,'customer/account/',[_nosid:1])":"Customer Account URL",
+"var order_data.is_not_virtual":"Order Type",
+"var order":"Order",
+"var order_data.customer_name":"Customer Name"
+} @-->
+ <body style="font-family: 'Roboto', sans-serif; padding: 0; margin: 0; box-sizing: border-box;">
+     <div class="order-confirmation-page-wrapper" style="width: 100%;">
+         <table align="center" border="0" cellspacing="0" width="100%" cellpadding="0" style="max-width: 740px; width: 100%; margin: 0 auto;">
+             <tbody>
+                 <tr>
+                     <td>
+                         <table cellspacing="0" cellpadding="0" border="0" width="100%" style="padding: 15px;">
+                             <thead>
+                                 <tr>
+                                     <td>
+                                          <div style="width:100%; float:left;">
+                                             <h1 style="margin:0px; text-align:center; padding:0px;">
+                                                 <img  src="{{media url='logo/logo_email.png'}}" alt="" />
+                                             </h1>
+                                          </div>
+                                          <div class="order-summary-wrap">
+                                             <div class="title" style="text-align: center;">
+                                                 <span style="border-right: 1px solid #000; padding-right: 10px; display: inline-block; font-size: 20px; letter-spacing: 0.3px;">MUMBAI</span>
+                                                 <span style="display: inline-block; padding-left: 10px; font-size: 20px; letter-spacing: 0.3px;"> LONDON</span>
+                                             </div>
+                                         </div>
+                                     </td>
+                                 </tr>
+                             </thead>
+                         </table>
+                         <table cellspacing="0" cellpadding="0" border="0" width="100%" style="padding: 15px; padding-top: 20px; padding-bottom: 40px;">
+                             <tbody>
+<!--                                  <tr>
+                                     <td colspan="1" style="">
+                                         <p style="margin: 0px; text-align: left;"><img src="https://orders.aashniandco.com/pub/media/order_mail/BIKANER.jpg" alt="BIKANER" style="width: 100%; display: block;" /></p>
+                                     </td>
+                                 </tr> -->
+                             </tbody>
+                         </table>
+                         <table cellspacing="0" cellpadding="0" border="0" width="100%" style="padding: 15px; padding-bottom: 20px;">
+                             <tbody>
+                                 <tr>
+                                     <td>
+                                         <p style="margin: 0px; margin-bottom: 10px; font-size: 21px; font-weight: 500; color: #000; text-align: center;">Dear {{trans "%customer_name," customer_name=$order_data.customer_name}}</p>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td>
+                                         <p class="sub-title" style="margin: 0px; font-weight: 400; font-weight: 400; font-size: 22px; color: #000; text-align: center;">Your order is confirmed!</p>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td>
+                                         <p class="sub-title" style="margin: 0px; font-weight: 400; margin-bottom: 0px; font-size: 20px; color: #000; text-align: center; letter-spacing: 0.6px;">
+                                             Please note order no. and the details below:
+                                         </p>
+                                     </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                         <table cellspacing="0" cellpadding="0" border="0" width="100%" style="padding: 15px; padding-bottom: 30px;">
+                             <tbody style="max-width: 350px;display: flex;text-align: center;width: 100%;margin: 0 auto;flex-direction: column;align-items: center;">
+                                 <tr>
+                                        <td colspan="1">
+                                            <p style="margin: 0px; text-align: center; display: flex;  align-items: baseline;">
+                                                <span style="letter-spacing: 0.6px; margin-bottom: 0px; font-size: 18px; font-weight: 500; color: #000; padding-right: 15px; display: inline-block;"> Order Number</span> 
+                                            </p>
+                                        </td>
+                                        <td colspan="1">
+                                            <p style="margin: 0px; text-align: center; display: flex;  align-items: baseline;">
+                                                <span style="margin-bottom: 0px; font-size: 16px; font-weight: 400; color: #000; text-align: left; display: inline-block;">{{trans '<span class="no-link">%increment_id</span>' increment_id=$order.increment_id |raw}}</span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="1">
+                                            <p style="margin: 0px; text-align: center; display: flex;  align-items: baseline;">
+                                                <span style="letter-spacing: 0.6px; margin-bottom: 0px; font-size: 18px; font-weight: 500; color: #000; padding-right: 20px; display: inline-block;"> Date Ordered</span>
+                                            </p>
+                                        </td>
+                                        <td colspan="1">
+                                            <p style="margin: 0px; text-align: center; display: flex;  align-items: baseline;">
+                                                <span style="margin-bottom: 0px; font-size: 16px; font-weight: 400; color: #000; text-align: left; display: inline-block;">{{var created_at_formatted|raw}}</span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                             </tbody>
+                         </table>
+                         <div class="raleway"   style="width:100%; padding-top:20px; float:left;">
+                              <div class="order_details"  style="border:1px #ccc solid; padding:10px 10px ;">                
+                              {{layout handle="sales_email_order_items" order=$order area="frontend"}}
+                              </div>
+                          </div>
+                         <table cellspacing="0" cellpadding="0" border="0" width="100%" style="padding-top: 40px; padding-bottom: 55px; margin: 0px;">
+                             <thead>
+                                 <tr>
+                                     <td colspan="1">
+                                         <p class="billing-detalis" style="padding-bottom: 40px; font-weight: 500; font-size: 15px; text-align: left; letter-spacing: 1.2px; padding: 0px 10px; margin: 0px; padding-bottom: 30px;">
+                                             Your Shipping Address
+                                         </p>
+                                     </td>
+                                     <td colspan="1">
+                                         <p
+                                             class="billing-detalis"
+                                             style="padding-bottom: 40px; font-weight: 500; font-size: 15px; text-align: left; font-weight: 500; letter-spacing: 1.2px; padding: 0px 10px; margin: 0px; padding-bottom: 30px;"
+                                         >
+                                             Your Invoice/Billing Address
+                                         </p>
+                                     </td>
+                                     <td colspan="1">
+                                         <p class="billing-detalis" style="padding-bottom: 40px; font-weight: 500; font-size: 15px; text-align: left; letter-spacing: 1.2px; padding: 0px 10px; margin: 0px; padding-bottom: 30px;">
+                                             Payment Method
+                                         </p>
+                                     </td>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                 <tr>
+                                     <td colspan="1">
+                                         <p class="billing-detalis" style="font-size: 15px; text-align: left; font-weight: 500; letter-spacing: 1.2px; padding: 0px 10px; margin: 0px;">{{var formattedShippingAddress|raw}}</p>
+                                     </td>
+                                     <td colspan="1">
+                                         <p class="billing-detalis" style="font-size: 15px; text-align: left; font-weight: 500; letter-spacing: 1.2px; padding: 0px 10px; margin: 0px;">{{var formattedBillingAddress|raw}}</p>
+                                     </td>
+                                     <td colspan="1">
+                                         <p class="billing-detalis" style="font-size: 15px; text-align: left; font-weight: 500; letter-spacing: 1.2px; padding: 0px 10px; margin: 0px;">{{var payment_html|raw}}</p>
+                                     </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                         <table cellspacing="0" cellpadding="0" border="0" width="100%" style="padding: 15px; padding-top: 15px;">
+                             <tbody>
+                                 <tr>
+                                     <td>
+                                         <p class="title" style=" text-align: center; padding: 10px; background-color: #dbdbdb; font-weight: 500; letter-spacing: 1px; margin-bottom: 0px; margin-top: 0px; font-size: 25px; font-weight: 500; color: #000;">
+                                             DISCOVER OUR DESIGNER CURATION
+                                         </p>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td>
+                                         <p class="sub-title" style="margin-bottom: 0px; font-size: 19px; font-weight: 300; color: #000; letter-spacing: 0.6px; text-align: left; padding: 20px 0px; margin: 0;">
+                                             The latest South Asian luxury Fashion by the most sought-after designers.
+                                         </p>
+                                     </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                         <table cellspacing="0" cellpadding="0" border="0" width="100%" style="padding: 15px; padding-top: 20px; padding-bottom: 20px;">
+                             <tbody>
+                                 <tr>
+                                     <td colspan="1" style="width: 50%;">
+                                         <p style="text-align: left; padding-bottom: 25px; margin: 0px;"><img src="https://orders.aashniandco.com/pub/media/order_mail/Haute Couture 1.jpg" alt="Haute Couture" style="width: 100%; display: block;" /></p>
+                                     </td>
+                                     <td colspan="1" style="width: 50%; padding-bottom: 25px; padding-left: 20px;" class="details-td">
+                                         <p class="product-title" style="text-align: left; font-size: 21px; padding-bottom: 20px; letter-spacing: 0.9px; margin: 0px;">HAUTE COUTURE</p>
+                                         <p class="sub-title" style="text-align: left; max-width: 280px; margin: 0; font-size: 16px; font-weight: 300; color: #000; letter-spacing: 0.6px;">
+                                             We bring you exclusive designs showcasing the grandeur of traditionali craftsmanship and meticulous detailing.
+                                         </p>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td colspan="1" style="width: 50%; padding-bottom: 25px; padding-right: 20px;" class="details-td-right">
+                                         <p class="product-title" style="text-align: left; font-size: 21px; padding-bottom: 20px; letter-spacing: 0.9px; margin: 0px;">LUXURY PRET</p>
+                                         <p class="sub-title" style="text-align: left; max-width: 280px; margin: 0; font-size: 16px; font-weight: 300; color: #000; letter-spacing: 0.6px;">
+                                             Stylish and versatile, our ready-to-wear collection is a wardrobe staple, catering to everyone's discernible taste.
+                                         </p>
+                                     </td>
+                                     <td colspan="1" style="width: 50%;">
+                                         <p style="text-align: left; margin: 0; padding-bottom: 25px;"><img src="https://orders.aashniandco.com/pub/media/order_mail/Luxury Pret 2.jpg" alt="" style="width: 100%; display: block;" /></p>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td colspan="1" style="width: 50%;">
+                                         <p style="text-align: left; padding-bottom: 25px; margin: 0;"><img src="https://orders.aashniandco.com/pub/media/order_mail/RTS _ Nadima Saqib (7).jpg" alt="" style="width: 100%; display: block;" /></p>
+                                     </td>
+                                     <td colspan="1" style="width: 50%; padding-bottom: 25px; padding-left: 20px;" class="details-td">
+                                         <p class="product-title" style="text-align: left; font-size: 21px; padding-bottom: 20px; letter-spacing: 0.9px; margin: 0px;">READY TO SHIP</p>
+                                         <p class="sub-title" style="text-align: left; max-width: 280px; margin: 0; font-size: 16px; font-weight: 300; color: #000; letter-spacing: 0.6px;">
+                                             Last-minute occasion? We got you covered! Get designer outfits & accessories shipped in just 24 - 72 hours.
+                                         </p>
+                                     </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+
+                         {{block class="Magento\Cms\Block\Block" block_id="bestseller_email_block"}}
+
+                         <table cellspacing="0" cellpadding="0" border="0" width="100%" style="padding: 15px; padding-top: 20px; padding-bottom: 30px;">
+                             <tbody>
+                                 <tr>
+                                     <td colspan="3">
+                                         <p class="title" style="margin: 0px; margin-bottom: 30px; font-size: 25px; font-weight: 500; color: #000; text-align: center; letter-spacing: 1px;">MORE REASONS TO LOVE AASHNI + CO</p>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td colspan="1" style="padding: 10px;">
+                                         <p style="text-align: center; padding: 10px;">
+                                             <img src="https://orders.aashniandco.com/pub/media/order_mail/air-freight.png" alt="" style="width: auto;" />
+                                         </p>
+                                         <p class="sub-title" style="text-align: center; max-width: 200px; margin: 0 auto; font-size: 21px; font-weight: 300; color: #000;">
+                                             International Shipping
+                                         </p>
+                                     </td>
+                                     <td colspan="1" style="padding: 10px;">
+                                         <p style="text-align: center; padding: 10px;">
+                                             <img src="https://orders.aashniandco.com/pub/media/order_mail/air-freight.png" alt="" style="width: auto;" />
+                                         </p>
+                                         <p class="sub-title" style="text-align: center; max-width: 200px; margin: 0 auto; font-size: 21px; font-weight: 300; color: #000;">
+                                             Styling Consultation
+                                         </p>
+                                     </td>
+                                     <td colspan="1" style="padding: 10px;">
+                                         <p style="text-align: center; padding: 10px;">
+                                             <img src="https://orders.aashniandco.com/pub/media/order_mail/air-freight.png" alt="" style="width: auto;" />
+                                         </p>
+                                         <p class="sub-title" style="text-align: center; max-width: 200px; margin: 0 auto; font-size: 21px; font-weight: 300; color: #000;">
+                                             Store Shopping
+                                         </p>
+                                     </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                         <table cellspacing="0" cellpadding="0" border="0" width="100%" style="padding: 15px; padding-top: 15px;">
+                             <tbody>
+                                 <tr>
+                                     <td colspan="1">
+                                         <p class="title" style="margin: 0; margin-bottom: 30px; font-size: 25px; font-weight: 500; color: #000; text-align: center; letter-spacing: 1px;">FOLLOW US</p>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td colspan="1" style="padding: 30px 0px; text-align: center;">
+                                         <p style="text-align: center; padding: 5px; display: inline-block; margin: 0;">
+                                             <img src="https://orders.aashniandco.com/pub/media/order_mail/facebook.png" alt="" style="width: 80%;" />
+                                         </p>
+                                         <p style="text-align: center; padding: 5px; display: inline-block; margin: 0;">
+                                             <img src="https://orders.aashniandco.com/pub/media/order_mail/instagram.png" alt="" style="width: 80%;" />
+                                         </p>
+                                         <p style="text-align: center; padding: 5px; display: inline-block; margin: 0;">
+                                             <img src="https://orders.aashniandco.com/pub/media/order_mail/pinterest-logo.png" alt="" style="width: 80%;" />
+                                         </p>
+                                         <p style="text-align: center; padding: 5px; display: inline-block; margin: 0;">
+                                             <img src="https://orders.aashniandco.com/pub/media/order_mail/whatsapp.png" alt="" style="width: 80%;" />
+                                         </p>
+                                         <p style="text-align: center; padding: 5px; display: inline-block; margin: 0;">
+                                             <img src="https://orders.aashniandco.com/pub/media/order_mail/linkedin.png" alt="" style="width: 80%;" />
+                                         </p>
+                                         <p style="text-align: center; padding: 5px; display: inline-block; margin: 0;">
+                                             <img src="https://orders.aashniandco.com/pub/media/order_mail/twitter.png" alt="" style="width: 80%;" />
+                                         </p>
+                                     </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                         <table cellspacing="0" cellpadding="0" border="0" width="100%" style="padding: 20px; padding-top: 20px;">
+                             <tbody>
+                                 <tr>
+                                     <td colspan="1">
+                                         <p class="title" style="margin: 0; margin-bottom: 20px; font-size: 25px; font-weight: 500; color: #000; text-align: center; letter-spacing: 1px;">CUSTOMER CARE SUPPORT</p>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td colspan="1" style="text-align: center;">
+                                         <p class="sub-title" style="text-align: center; max-width: 490px; margin: 0 auto; font-size: 18px; font-weight: 300; color: #000; letter-spacing: 0.6px;">
+                                             For all order-related queries contact us at customercare@aashniandco.com or (+91) 8375036648 10:00 am to 6:30 pm IST (Monday to Friday) 10:00 am to 3:00 pm IST (Saturday)
+                                         </p>
+                                     </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                     </td>
+                 </tr>
+             </tbody>
+         </table>
+     </div>
+ </body>

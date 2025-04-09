@@ -1,0 +1,21 @@
+po_date    >>> auto
+po_number  >>> text
+gst_number >>> fixed
+vendor     >>> text
+vendor_code >>> text system >>> pending
+merchandiser_details >> textarea
+ship_to >>> txtarea fixed
+order_increment_id >>> text auto
+serial_no>>> text 
+sku >>> text auto 
+description >>> textarea auto >>> pending
+qty >>> text auto >>> pending
+price >>> text 
+delivery_date >>> text order date + 5 days pending
+total>>> auto
+special_instruction >>> text area
+Measurements >>> textarea system >>> pending
+Product image >>> system >>> pending
+Authorised signatory- Fixed text.
+
+

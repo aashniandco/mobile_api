@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Sales:etc/sales.xsd">
+    <section name="quote">
+        <group name="totals">
+            <item name="mageworx_giftcards" instance="MageWorx\GiftCards\Model\Quote\Discount" sort_order="470">
+                <renderer name="frontend" instance="MageWorx\GiftCards\Block\Checkout\GiftCards"/>
+            </item>
+        </group>
+    </section>
+
+    <order>
+        <available_product_type name="mageworx_giftcards"/>
+    </order>
+
+    <section name="order_invoice">
+        <group name="totals">
+            <item name="mageworx_giftcards_invoice" instance="MageWorx\GiftCards\Model\Total\Invoice\GiftCards" sort_order="340"/>
+        </group>
+    </section>
+
+    <section name="order_creditmemo">
+        <group name="totals">
+            <item name="mageworx_giftcards_creditmemo" instance="MageWorx\GiftCards\Model\Total\Creditmemo\GiftCards" sort_order="390"/>
+        </group>
+    </section>
+</config>

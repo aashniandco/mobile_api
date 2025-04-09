@@ -1,0 +1,35 @@
+<h2>Stripe Invoice </h2><hr>
+<?php 
+ 
+if($block->checkIfEnabled()=='true' && $block->checkPermission()=='true') {
+
+if($block->getBillingCountryId()!='IN'){
+
+if($block->checkIfInvoiceCreated()==0) { ?>
+   <br/>  
+<form action="<?= $block->getFormAction(); ?>" method="post">
+    <input type="hidden" name="form_key" value="<?= $block->getFormKey(); ?>" />
+    <input type="hidden" name="order_id" value="<?= $block->getOrderId(); ?>" id="order_id" />
+    <button type="submit" onclick="this.style.display='none';" class="action-default">Submit</button>
+</form>
+<?php 
+}
+else 
+{
+   echo 'Invoice has been already created and  '.$block->checkInvoiceStatus($block->getOrderId()) ;
+
+}
+
+}
+else { 
+  echo  'Stripe invoice is for International order only' ; 
+}
+} 
+else
+{
+ echo "<b>Either module is not enabled or you don't have access. kindly contact administrator</b>" ;
+}
+?>
+<br/>
+<br/>
+<br/>

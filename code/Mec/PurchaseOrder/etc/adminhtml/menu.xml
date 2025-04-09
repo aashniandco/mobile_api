@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+	<!--<menu>
+		<add id="Mec::top_level" title="Mec" module="Mec_PurchaseOrder" sortOrder="9999" resource="Magento_Backend::content"/>
+		<add id="Mec_PurchaseOrder::mec_purchaseorder_purchase_order" title="purchase order" module="Mec_PurchaseOrder" sortOrder="9999" resource="Magento_Backend::content" parent="Mec::top_level" action="mec_purchaseorder/purchaseorder/index"/>
+	</menu>-->
+</config>

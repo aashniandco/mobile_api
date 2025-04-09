@@ -1,0 +1,67 @@
+<!--@subject {{trans "%store_name  Gift Card for You!"  store_name=$store.getFrontendName()}}@-->
+<style>
+    tbody tr{
+        display: flex;
+        justify-content: center;
+    }
+</style>
+<span style="text-align:center;">{{template config_path="design/email/header_template"}}</span>
+<div style="text-align:center; font-weight:bold;">Congratulations!</div>
+<table style="width:100%; text-align: center; padding: 0 60px;">
+    <tr class="email-intro">
+        <td>
+            {{depend email-to}} <p class="greeting" style="text-align: left;">{{trans "%customer_name" customer_name=$email-to}},</p>{{/depend}}
+            <p>
+                {{trans "You have received a %amount Gift Card" amount=$amount |raw}} {{depend email-from}} {{trans " from %email-from" email-from=$email-from}} {{/depend}} {{trans 'for online luxury shopping at <a href="%store_url" style="color: black; font-weight: bold; text-decoration: none;">' store_url=$this.getUrl($store,'/',[_nosid:1]) |raw}} {{trans "%store_name </a>" store_name=$store.getFrontendName() |raw}}.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td class="a-center">
+		<center><img width="70%" src="{{var picture|raw}}" /></center>
+	</td>
+    </tr>
+    <tr class="email-information">
+	<td>
+        <br />
+        <center>
+            {{depend email-message}} {{trans "Message: "}}{{var email-message |nl2br}}<br /><br />{{/depend}}
+
+            {{trans "Gift card value:"}}{{var amount |raw}}<br />
+
+            <p style="border: 1px solid; border-radius: 8px; padding: 5px 5px">
+                <strong>{{trans "Gift card claim code: %code" code=$code}}</strong>
+            </p>
+            <br />
+        </center>
+
+                <!-- {{depend email-to}} {{trans "To: %email-to" email-to=$email-to}}<br />{{/depend}}
+                {{depend email-from}} {{trans "From: %email-from" email-from=$email-from}}<br />{{/depend}}
+                {{depend email-message}} {{trans "Message: "}}{{var email-message |nl2br}}<br />{{/depend}} -->
+            <br />
+            For any coupon related query, contact us at customercare@aashniandco.com or (+91) 8375036648.
+	        
+		
+	</td>
+    </tr>
+    <tr class="email-information" style="justify-content: left; text-align: left;">
+        <td>
+            <p>How to redeem the Gift Card?</p>
+            <p> 1. Start shopping: Browse through and select any product at <a href="https://aashniandco.com">aashniandco.com</a> </p>
+            <p> 2. Checkout process: Add the unique code of the gift card during checkout to redeem it </p>
+            <p> 3. Activation status: To check your gift card balance or activation status, please visit <a href="https://aashniandco.com/gift-card-status">giftcard status page</a></p>
+        </td>
+    </tr>
+    <tr class="email-information" style="justify-content:left; text-align: left;">
+	   <td>
+            <p>T&C:</p>
+            <p> 1. The gift card can be redeemed online only. </p>
+            <p> 2. Valid till one year from the date of issue. </p>
+                <!-- {{trans 'If you have questions about your order, you can email us at <a href="mailto:%store_email">%store_email</a>' store_email=$store_email |raw}}{{depend store_phone}} {{trans 'or call us at <a href="tel:%store_phone">%store_phone</a>' store_phone=$store_phone |raw}}{{/depend}}. -->
+            
+	   </td>
+    </tr>
+</table>
+<div style="text-align: center; margin-top: 10px;">	
+Thank you, Aashni + Co !
+</div>

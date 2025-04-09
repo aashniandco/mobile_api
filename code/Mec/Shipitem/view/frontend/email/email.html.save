@@ -1,0 +1,64 @@
+<!--@subject Status update for the {{var SKU}} #{{var orderid}}  @-->
+
+<div class="status" style="border:1px #ccc solid; width:700px;  font-family:Arial, Helvetica, sans-serif;">
+<style>
+.status p{font-family:Arial, Helvetica, sans-serif; font-size:14px;}
+</style>
+<table style=" font-family:Arial, Helvetica, sans-serif; color:#333;"  width="100%" border="0" align="center" cellpadding="10" cellspacing="10">
+  <tr>
+    <td align="center" valign="middle"><img src="https://dk55vp5kgeshq.cloudfront.net/media/wysiwyg/magenthemes/mtcosmetic/logo/logo_1_1.png" style="width:250px;"/></td>
+  </tr>
+  <tr>
+    <td align="center" valign="middle">
+<div style="margin:5px 0px;">
+
+<a style=" font-family:'Times New Roman', Times, serif; font-size:14px; margin:0px 7px; color:#000; text-decoration:none;" href="https://orders.aashniandco.com/new-in.html"> NEW IN   </a>
+<a style=" font-family:'Times New Roman', Times, serif; font-size:14px; margin:0px 7px; color:#000; text-decoration:none;" href="https://orders.aashniandco.com/designer/"> DESIGNERS   </a>
+<a style=" font-family:'Times New Roman', Times, serif; font-size:14px; margin:0px 7px; color:#000; text-decoration:none;" href="https://orders.aashniandco.com/clothing.html"> WOMEN   </a>
+<a style=" font-family:'Times New Roman', Times, serif; font-size:14px; margin:0px 7px; color:#000; text-decoration:none;" href="https://orders.aashniandco.com/accessories.html"> ACCESSORIES   </a>
+<a style=" font-family:'Times New Roman', Times, serif; font-size:14px; margin:0px 7px; color:#000; text-decoration:none;" href="https://orders.aashniandco.com/men.html"> MEN   </a>
+<a style=" font-family:'Times New Roman', Times, serif; font-size:14px; margin:0px 7px; color:#000; text-decoration:none;" href="https://orders.aashniandco.com/kids-wear.html"> KIDS   </a>
+<a style=" font-family:'Times New Roman', Times, serif; font-size:14px; margin:0px 7px; color:#000; text-decoration:none;" href="https://orders.aashniandco.com/homeware.html"> HOMEWARE   </a>
+</div>
+
+
+   </td>
+  </tr>
+    <td align="left" valign="top"><p style="margin:0px; padding:0px; font-size:14px;">Dear <strong>{{var name}}</strong>,</p>
+      <p style="margin:10px 0px 10px 0px ; padding:0px; font-size:14px;"> The status of your {{var prodname}} {{var SKU}} has been updated, please find the below details: </p></td>
+  <tr>
+    <td align="left" valign="top">
+    <table style="font-family:'Arial, Helvetica, sans-serif;"  width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="width:50%" align="left" valign="top">
+		<div style="text-align:center; width: 100%; font-family:Arial, Helvetica, sans-serif;">
+              <img src="{{var imgurl}}" style="width:70%; height:auto; position: relative; overflow: scroll;"/>
+		<div style="width:100%; clear:both;"> </div>
+              <h2 style="font-family:Arial, Helvetica, sans-serif; font-size:16px; font-weight:600; margin:0px; padding:20px 0px 5px 0px ; text-align:center;"> {{var prodname}}</h2>
+              <p style="margin:0px; padding:0px;text-align:center;"> {{var sdesc}} </p>
+            </div>
+	</td>
+          <td style="width:50%" align="left" valign="top"><div style=" padding-left:15px; font-family:'Arial, Helvetica, sans-serif;">
+              <p style="margin-top:50px; margin-bottom: 5px;"><strong>Current Status: </strong> {{var Status}} </p>
+              <p style="margin-bottom: 5px;"><strong>Estimated Date of Quality Control: </strong> {{var qcdate}} </p>
+              <p style=" margin-bottom: 5px;"><strong>Estimated Date of Shipping: </strong> {{var shippeddate}} </p>
+              <p style="margin-bottom: 5px;"> <strong>Estimated Date of Custom Clearance: </strong> {{var ccdate}} </p>
+              <p><strong>Estimated Date of Delivery: </strong> {{var deldate}} </p>
+            </div>
+            <p style=" font-family:Arial, Helvetica, sans-serif;">You can also check the status by logging <br>
+in to    <a style="font-size:14px; text-decoration:none;" href="https://orders.aashniandco.com/customer/account/"><strong>MY ACCOUNT</strong> </a></p>
+            </div>
+            </td>
+        </tr>
+      </table>
+      </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><p style="text-align:center; padding:10px; line-height:20px; font-family:Arial, Helvetica, sans-serif;"> Please note, estimated dates may vary due to shipping practice, location, items ordered, etc..
+        
+        For any queries, please contact customercare@aashniandco.com / +91-8375036648<br>
+        Thank You, AASHNI + CO </p></td>
+  </tr>
+</table>
+<div>
+

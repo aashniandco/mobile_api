@@ -1,0 +1,65 @@
+<?php
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+/**
+ * @var \MageWorx\GiftCards\Block\Adminhtml\Order\Create\Form\GiftCards $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<div class="admin__field field-activate-giftcards">
+    <label class="admin__field-label">
+        <span><?= $block->escapeHtml(__('Gift Cards')) ?></span>
+    </label>
+    <div class="admin__field-control">
+
+        <input type="text" class="admin__control-text" id="giftcard" value="" name="giftcard"/>
+        <?= $block->getButtonHtml(__('Activate'), 'order.activateMwGiftCard($F(\'giftcard\'))') ?>
+
+        <?php foreach ($block->getGiftCards() as $card): ?>
+            <p class="activated-giftcard" id="giftcard-<?= $block->escapeHtmlAttr($card) ?>">
+                <span><?= $block->escapeHtml($card) ?></span>
+                <a href="#" title="<?= $block->escapeHtmlAttr(__('Remove')) ?>" class="action-remove">
+                    <span><?= $block->escapeHtml(__('Remove')) ?></span>\
+                </a>
+            </p>
+            <?= /* @noEscape */ $secureRenderer->renderEventListenerAsTag(
+                'onclick',
+                "order.removeMwGiftCard('" . $block->escapeJs($card) . "');event.preventDefault();",
+                '#giftcard-' . $card . ' a.action-remove'
+            );
+            ?>
+        <?php endforeach; ?>
+
+        <?php $scriptString = <<<script
+            require([
+                "jquery",
+                'Magento_Ui/js/modal/alert',
+                'mage/translate',
+                "Magento_Sales/order/create/form"
+            ], function($, alert) {
+                order.activateMwGiftCard = function (code) {
+                    if (!code) {
+                        alert({
+                            content: $.mage.__('Please enter a Gift Card!')
+                        });
+                    } else {
+                        var data = {};
+                        data['mw_giftcard'] = code;
+                        order.loadArea(['totals', 'billing_method', 'items'], true, data);
+                    }
+                };
+
+                order.removeMwGiftCard = function (code) {
+                    var data = {};
+                    data['mw_giftcard_remove'] = code;
+                    order.loadArea(['totals', 'billing_method', 'items'], true, data);
+                };
+            });
+script;
+        ?>
+        <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+    </div>
+</div>

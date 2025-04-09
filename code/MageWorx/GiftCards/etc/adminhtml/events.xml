@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_creditmemo_refund">
+        <observer name="mageworx_giftcards_sales_order_creditmemo_refund" instance="MageWorx\GiftCards\Observer\Adminhtml\SalesOrderCreditmemoRefundObserver" />
+    </event>
+    <event name="adminhtml_sales_order_create_process_data">
+        <observer name="mageworx_giftcards_add_giftcards_to_order" instance="MageWorx\GiftCards\Observer\Adminhtml\AddGiftCardsToOrderObserver"/>
+    </event>
+    <event name="catalog_product_save_before">
+        <observer name="mageworx_giftcards_additional_price_modifier" instance="MageWorx\GiftCards\Observer\Adminhtml\CatalogProductAdditionalPriceModifier"/>
+        <observer name="mageworx_giftcards_set_default_product_image" instance="MageWorx\GiftCards\Observer\Adminhtml\SetDefaultProductImageObserver"/>
+    </event>
+</config>

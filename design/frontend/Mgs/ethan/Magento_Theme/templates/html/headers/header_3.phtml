@@ -1,0 +1,86 @@
+<?php $block = $this->getBlock() ?>
+
+<?php $helper = $this->helper('MGS\Mpanel\Helper\Data') ?>
+<?php $canUsePanel = $helper->acceptToUsePanel() ?>
+
+<?php $objectManager = \Magento\Framework\App\ObjectManager::getInstance(); ?>
+<?php $customerSession = $objectManager->create('Magento\Customer\Model\Session'); ?>
+<?php $customerUrl = $objectManager->create('Magento\Customer\Model\Url'); ?>
+
+<?php $topLeftBlock = $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('header_3_top_left_service')->setCanUsePanel($canUsePanel)->toHtml(); ?>
+
+<?php $topRightBlock = $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('header_3_top_right_link')->setCanUsePanel($canUsePanel)->toHtml(); ?>
+
+<div class="top-header-content">
+	<div class="container-fluid">
+	
+		<!-- Static block: header_3_top_left_service -->
+		<?php if($topLeftBlock): ?>
+			<div class="top-custom-link">
+				<?php echo $topLeftBlock; ?>
+			</div>
+		<?php endif ?>
+		
+		<?php echo $block->getChildHtml('currency') ?>
+		
+		<?php echo $block->getChildHtml('store_language') ?>
+		
+		<!-- Static block: header_3_top_right_link -->
+		<?php if($topRightBlock): ?>
+			<div class="top-custom-link pull-right hidden-sm hidden-xs">
+				<?php echo $topRightBlock; ?>
+			</div>
+		<?php endif ?>
+	</div>
+</div>
+<div class="middle-header-content">
+	<div class="container-fluid">
+		<div class="middle-content">
+			<?php echo $block->getChildHtml('logo') ?>
+			<div class="megamenu-content<?php if($block->getChildHtml('megamenu')!=''): ?> mgs-menu<?php else: ?> mgt-menu<?php endif ?>">
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#main-Menucontent"><?php echo __('Menu'); ?></a></li>
+					<li><a data-toggle="tab" href="#main-Accountcontent"><?php echo __('My Account'); ?></a></li>
+				</ul>
+				<div class="tab-content">
+					<div id="main-Menucontent" class="tab-pane active">
+						<?php if($block->getChildHtml('megamenu')!=''): ?>
+							<?php echo $block->getChildHtml('megamenu') ?>
+						<?php else: ?>
+							<?php echo $block->getChildHtml('catalog.topnav') ?>
+						<?php endif ?>
+					</div>
+					<div id="main-Accountcontent" class="tab-pane">
+						<?php echo $block->getChildHtml('top.links') ?>
+						<?php if($topLeftBlock || $topRightBlock): ?>
+							<div class="top-custom-link">
+								<?php if($topLeftBlock): ?>
+									<?php echo $topLeftBlock; ?>
+								<?php endif ?>
+								<?php if($topRightBlock): ?>
+									<?php echo $topRightBlock; ?>
+								<?php endif ?>
+							</div>
+						<?php endif ?>
+					</div>
+				</div>
+			</div>
+			<div class="middle-header-right-content">
+				<div class="content">
+					<button class="action nav-toggle visible-sm visible-xs"><span class="fa fa-bars" aria-hidden="true"></span></button>
+					<?php echo $block->getChildHtml('top.search') ?>
+					<div class="login-custom-link">
+						<?php if($customerSession->isLoggedIn()): ?>
+							<a href="<?php echo $customerUrl->getAccountUrl(); ?>"><span class="fa fa-user" aria-hidden="true"></span><span class="text"><?php echo $customerSession->getCustomer()->getName(); ?></span></a>
+							<a class="logout-link" href="<?php echo $customerUrl->getLogoutUrl(); ?>"><span class="fa fa-sign-out" aria-hidden="true"></span><?php echo __('Logout'); ?></a>
+						<?php else: ?>
+							<a href="<?php echo $customerUrl->getLoginUrl(); ?>"><span class="fa fa-user" aria-hidden="true"></span><span class="text"><?php echo __('Login'); ?><span> <span class="or"><?php echo __('or'); ?></span> </span><?php echo __('Register'); ?></span></a>
+						<?php endif ?>
+					</div>
+					<?php echo $block->getChildHtml('minicart') ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<button class="action close-nav-button"><span class="fa fa-times" aria-hidden="true"></span></button>

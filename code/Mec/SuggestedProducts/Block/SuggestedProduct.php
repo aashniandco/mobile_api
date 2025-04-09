@@ -1,0 +1,211 @@
+<?php
+namespace Mec\SuggestedProducts\Block;
+use Magento\Catalog\Block\Product\ListProduct;
+use Magento\Framework\App\ResourceConnection;
+//use Magento\Framework\App\Action\Action;
+class SuggestedProduct extends \Magento\Framework\View\Element\Template{
+
+        //const PARAM_NAME_BASE64_URL = 'r64';
+        //const PARAM_NAME_URL_ENCODED = 'uenc';
+	protected $_resourceFactory;
+	protected $_productCollectionFactory;
+	protected $_imageHelper;
+	protected $_cartHelper;
+	protected $product;
+	protected $_layout;
+	protected $session;
+	protected $_customer;
+	protected $resourceConnection;
+	protected $_registry;
+        protected $_productRepository;
+
+	public function __construct(
+	\Magento\Catalog\Block\Product\Context $context,
+	\Magento\Reports\Model\ResourceModel\Report\Collection\Factory $resourceFactory,
+	\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
+	\Magento\Catalog\Model\Product $product,
+	\Magento\Catalog\Block\Product\ListProduct $listProductBlock,
+	\Magento\Framework\View\LayoutInterface $layout,
+	\Magento\Framework\Session\SessionManagerInterface $session,
+	\Magento\Customer\Model\Session $customer,
+	ResourceConnection $resourceConnection,
+	\Magento\Framework\Registry $registry,
+        \Magento\Catalog\Model\ProductRepository $productRepository,
+	array $data = []
+	) {
+		$this->_resourceFactory = $resourceFactory;
+		$this->_productCollectionFactory = $productCollectionFactory;
+		$this->product = $product;
+		$this->_layout = $layout;
+		$this->session = $session;
+		$this->_customer = $customer;
+		$this->resourceConnection = $resourceConnection;
+		$this->_registry = $registry;
+                $this->_productRepository = $productRepository;
+		$this->_imageHelper = $context->getImageHelper();
+		$this->_cartHelper = $context->getCartHelper();
+		$this->listProductBlock = $listProductBlock;
+		parent::__construct($context, $data);
+	}
+	public function imageHelperObj(){
+		return $this->_imageHelper;
+	}
+	public function getProduct($id){		
+		return $this->product->load($id);
+	}
+
+        public function getProductById($id)
+	{
+		return $this->_productRepository->getById($id);
+	}
+
+	public function getCurrentProduct(){        
+        return $this->_registry->registry('current_product');
+        }
+
+	/**
+	To get related product collection
+	*/ 
+	public function getRelatedProducts(){ 
+       	$currentProduct = $this->getCurrentProduct(); 
+        $relatedProducts = $currentProduct->getRelatedProducts();
+        return $relatedProducts;
+	}
+
+
+        /**
+	To get product collection By Designer
+	 */
+	public function getRelatedProductsByDesigner(){
+		$currentProduct = $this->getCurrentProduct();
+		$typeArr = $currentProduct->getData('patterns');
+		$type='';
+		if(gettype($typeArr)=='array'){
+			$type = $typeArr[0];
+		}else{
+			$type = $typeArr;
+
+		}
+		$designerArr = $currentProduct->getData('designer');
+		$designer='';
+		if(gettype($designerArr)=='array'){
+			$designer = $designerArr[0];
+		}else{
+			$designer = $designerArr;
+
+		}
+
+		$collection = $this->_productCollectionFactory->create();
+		$collection->addAttributeToSelect('*');
+		$collection->addAttributeToFilter('designer',$designer);
+		//$collection->addAttributeToFilter('patterns',$type);
+		$collection->addAttributeToFilter('type_id', ['eq' => 'configurable']);
+		$collection->addAttributeToFilter('status',\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
+		$collection->setPageSize(10);
+		return $collection;
+	}
+
+	/**
+	To get product collection
+	*/     
+    public function getProductCollectionByCategories(){
+		//$categories=array();
+		//$categories = [4,5,6,7,12,13];
+                //$categories = [4];
+		$currentProduct = $this->getCurrentProduct();
+                $sku = $currentProduct->getSku();
+		//$own_categories = $currentProduct->getCategoryIds();
+		//$own_cat_array = explode(",",$own_categories);
+		//$all_categories = array_merge($categories,$own_categories);
+		//$unique_categories = array_unique($all_categories);
+		$typeArr = $currentProduct->getData('patterns');
+                
+		$type='';
+		if(gettype($typeArr)=='array'){
+		 $type = $typeArr[0];
+		}else{
+		 $type = $typeArr;
+                 
+		}
+
+		$collection = $this->_productCollectionFactory->create();
+		$collection->addAttributeToSelect('*');
+		//$collection->addCategoriesFilter(['in' => $unique_categories]);
+		$collection->addAttributeToFilter('patterns',$type);
+		$collection->addAttributeToFilter('type_id', ['eq' => 'configurable']);
+		$collection->addAttributeToFilter('status',\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
+		$collection->setPageSize(10);
+		return $collection;
+	}
+
+	public function getRecentlyViewedProducts(){ 
+
+		$connection = $this->resourceConnection->getConnection();
+		$tableName = $connection->getTableName('mec_suggested_products_recently_viewed');
+		$visitor = $this->session->getVisitorData();
+		$visitor_id = $visitor['visitor_id'];
+		$customer = $this->_customer;
+		$customer_id = $customer->getId();
+        $visited_products =array();
+		if(!empty($visitor_id)) {
+			$sql = "SELECT * FROM $tableName WHERE visitor_id = '$visitor_id' ORDER BY created_at DESC LIMIT 1,10";
+			$result = $connection->fetchAll($sql);
+			foreach ($result as $item){
+				$visited_products[] = $item['product_id'];
+			}
+		}
+
+		if(!empty($customer_id)) {
+			$sql = "SELECT * FROM $tableName WHERE customer_id = '$customer_id' ORDER BY created_at DESC LIMIT 1,10";
+			$result = $connection->fetchAll($sql);
+			foreach ($result as $item){
+				$visited_products[] = $item['product_id'];
+			}
+		}
+        return $visited_products;
+	}
+
+	public function getSuggestedProduct(){
+		$resourceCollection = $this->_resourceFactory->create('Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection');
+		$resourceCollection->setPageSize(10);
+		return $resourceCollection;
+	}
+
+	public function getAddToCartPostParams($product){
+		return $this->listProductBlock->getAddToCartPostParams($product);
+	}
+
+	public function getAddToCartUrl($product, $additional = [])
+	{
+		return $this->_cartHelper->getAddUrl($product, $additional);
+	}
+
+	public function getProductPriceHtml(
+		\Magento\Catalog\Model\Product $product,
+		$priceType = null,
+		$renderZone = \Magento\Framework\Pricing\Render::ZONE_ITEM_LIST,
+		array $arguments = []
+	) {
+	if (!isset($arguments['zone'])) {
+		$arguments['zone'] = $renderZone;
+	}
+	$arguments['zone'] = isset($arguments['zone'])? $arguments['zone']: $renderZone;
+	$arguments['price_id'] = isset($arguments['price_id'])? $arguments['price_id']
+	: 'old-price-' . $product->getId() . '-' . $priceType;
+
+	$arguments['include_container'] = isset($arguments['include_container'])? $arguments['include_container']: true;
+	$arguments['display_minimal_price'] = isset($arguments['display_minimal_price'])? $arguments['display_minimal_price']:true;
+	$priceRender = $this->getLayout()->getBlock('product.price.render.default');
+	$price = '';
+	if ($priceRender) {
+		$price = $priceRender->render(
+		\Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE,
+		$product,
+		$arguments
+		);
+	}
+		return $price;
+	}
+
+
+}

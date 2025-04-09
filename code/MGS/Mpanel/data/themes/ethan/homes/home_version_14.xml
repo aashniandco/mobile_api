@@ -1,0 +1,314 @@
+<home>
+	<section>
+		<name><![CDATA[block109]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[["12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12"]]]></mobile_cols>
+		<block_class><![CDATA[[""]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[1]]></fullwidth>
+		<padding_top><![CDATA[]]></padding_top>
+		<padding_bottom><![CDATA[]]></padding_bottom>
+		<block_position><![CDATA[0]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block110]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[["12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12"]]]></mobile_cols>
+		<block_class><![CDATA[[""]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[]]></padding_top>
+		<padding_bottom><![CDATA[80]]></padding_bottom>
+		<block_position><![CDATA[2]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block111]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[["12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12"]]]></mobile_cols>
+		<block_class><![CDATA[[""]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[/b/g/bg_banner_home_4_1.jpg]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[]]></padding_top>
+		<padding_bottom><![CDATA[]]></padding_bottom>
+		<block_position><![CDATA[3]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block112]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[4,4,4]]></block_cols>
+		<tablet_cols><![CDATA[["4","4","4"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12","12","12"]]]></mobile_cols>
+		<block_class><![CDATA[["","",""]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[80]]></padding_top>
+		<padding_bottom><![CDATA[50]]></padding_bottom>
+		<block_position><![CDATA[4]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block113]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[]]></tablet_cols>
+		<mobile_cols><![CDATA[]]></mobile_cols>
+		<block_class><![CDATA[]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[]]></background_repeat>
+		<background_cover><![CDATA[]]></background_cover>
+		<parallax><![CDATA[]]></parallax>
+		<fullwidth><![CDATA[]]></fullwidth>
+		<padding_top><![CDATA[]]></padding_top>
+		<padding_bottom><![CDATA[]]></padding_bottom>
+		<block_position><![CDATA[5]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block114]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[12]]></block_cols>
+		<tablet_cols><![CDATA[["12"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["12"]]]></mobile_cols>
+		<block_class><![CDATA[[""]]]></block_class>
+		<class><![CDATA[]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[1]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[0]]></fullwidth>
+		<padding_top><![CDATA[88]]></padding_top>
+		<padding_bottom><![CDATA[80]]></padding_bottom>
+		<block_position><![CDATA[6]]></block_position>
+	</section>
+	<section>
+		<name><![CDATA[block115]]></name>
+		<theme_name><![CDATA[]]></theme_name>
+		<block_cols><![CDATA[3,3,3,3]]></block_cols>
+		<tablet_cols><![CDATA[["6","6","6","6"]]]></tablet_cols>
+		<mobile_cols><![CDATA[["6","6","6","6"]]]></mobile_cols>
+		<block_class><![CDATA[["col-500-full margin-bottom20","col-500-full margin-bottom20","col-500-full margin-bottom20","col-500-full margin-bottom20"]]]></block_class>
+		<class><![CDATA[padding-left30 padding-right30]]></class>
+		<background><![CDATA[]]></background>
+		<background_image><![CDATA[]]></background_image>
+		<background_repeat><![CDATA[0]]></background_repeat>
+		<background_cover><![CDATA[0]]></background_cover>
+		<parallax><![CDATA[0]]></parallax>
+		<fullwidth><![CDATA[1]]></fullwidth>
+		<padding_top><![CDATA[30]]></padding_top>
+		<padding_bottom><![CDATA[56]]></padding_bottom>
+		<block_position><![CDATA[1]]></block_position>
+	</section>
+	<block>
+		<block_name><![CDATA[block109-0]]></block_name>
+		<type><![CDATA[owl_banner]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":"","links":["","","","","","","","","","","","","","","","","","","","","","","","",""],"images":["slider12_1_.jpg","slider12_2_.jpg","slider12_3_.jpg"],"effect":"1","speed":"","fullscreen":0,"autoplay":0,"stop_auto":0,"navigation":0,"pagination":0,"loop":0,"rtl":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Widget\OwlCarousel" images="slider12_1_.jpg,slider12_2_.jpg,slider12_3_.jpg" links=",,,,,,,,,,,,,,,,,,,,,,,," fullscreen="0" autoplay="0" stop_auto="0" navigation="0" pagination="0" loop="0" rtl="0" speed="" effect="1" template="widget/owl_slider.phtml"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block110-0]]></block_name>
+		<type><![CDATA[attribute_products]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"Featured Products","additional_content":"Lorem ipsum dolor sit amete, consectetur adipisicing sed do ","animation":"","animation_delay":"","attribute":"featured","limit":"8","perrow":"4","numbercol":"1","percol":"","template":"grid.phtml","ratio":"4","loadmore":"1","number_row":"1","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","use_slider":0,"autoplay":0,"stop_auto":0,"navigation":0,"pagination":0,"use_tabs":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[title-v3]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Products\Attributes" mgs_panel_title="Featured Products" mgs_panel_note="Lorem ipsum dolor sit amete, consectetur adipisicing sed do " limit="8" ratio="4" category_ids="" attribute="featured" use_slider="0" loadmore="1" template="products/attribute/grid.phtml" perrow="4"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block111-0]]></block_name>
+		<type><![CDATA[static]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":""}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[<div class="banner-full home14">
+<div class="text-center text-colour-white">
+<h3>New Collection 2017</h3>
+<div class="playfair">Hot &amp; Trendy Clothes</div>
+<a class="btn btn-default" href="#">Shop Now</a></div>
+</div>]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block112-0]]></block_name>
+		<type><![CDATA[new_products]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"New In","additional_content":"","animation":"","animation_delay":"","limit":"3","perrow":"1","numbercol":"1","percol":"3","template":"list.phtml","ratio":"4","number_row":"1","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","use_slider":0,"autoplay":0,"stop_auto":0,"navigation":0,"pagination":0,"use_tabs":0,"loadmore":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[title-v5]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Products\NewProducts" mgs_panel_title="New In" mgs_panel_note="" limit="3" ratio="4" category_ids="" use_slider="0" loadmore="0" template="products/new/list.phtml" numbercol="1" percol="3"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block112-1]]></block_name>
+		<type><![CDATA[attribute_products]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"Special","additional_content":"","animation":"","animation_delay":"","attribute":"special","limit":"3","perrow":"1","numbercol":"1","percol":"3","template":"list.phtml","ratio":"4","number_row":"1","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","use_slider":0,"autoplay":0,"stop_auto":0,"navigation":0,"pagination":0,"use_tabs":0,"loadmore":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[title-v5]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Products\Attributes" mgs_panel_title="Special" mgs_panel_note="" limit="3" ratio="4" category_ids="" attribute="special" use_slider="0" loadmore="0" template="products/attribute/list.phtml" numbercol="1" percol="3"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block112-2]]></block_name>
+		<type><![CDATA[rate]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"Most View","additional_content":"","animation":"","animation_delay":"","limit":"3","perrow":"1","numbercol":"1","percol":"3","template":"list.phtml","ratio":"4","number_row":"1","text_colour":"","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","use_slider":0,"autoplay":0,"stop_auto":0,"navigation":0,"pagination":0,"use_tabs":0,"loadmore":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[title-v5]]></class>
+		<block_content><![CDATA[{{block class="MGS\Mpanel\Block\Products\Rate" mgs_panel_title="Most View" mgs_panel_note="" limit="3" ratio="4" category_ids="" use_slider="0" loadmore="0" template="products/rate/list.phtml" numbercol="1" percol="3"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block113-0]]></block_name>
+		<type><![CDATA[testimonial]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"title":"What's Client Say?","additional_content":"","animation":"","animation_delay":"","limit":"3","perrow":"1","template":"center_content","use_slider":"1","pagination":"1","show_avatar":0,"autoplay":0,"stop_auto":0,"navigation":0}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[is-border]]></class>
+		<block_content><![CDATA[{{block class="MGS\Testimonial\Block\Testimonial" mgs_panel_title="What&#39;s Client Say?" mgs_panel_note="" testimonials_count="3" perrow="1" show_avatar="0" use_slider="1" template_mode="center_content" template="grid.phtml" autoplay="0" stop_auto="0" navigation="0" pagination="1"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block114-0]]></block_name>
+		<type><![CDATA[static]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":""}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[<!-- Don't remve class "newsletter-home" -->
+<div class="newsletter-home">
+<h3>Join Our Newsletter</h3>
+<p>Sign up for our newsletter and get <span class="color-theme">20%</span> off your next order. Pretty sweet, we know.</p>
+<div>{{block class="Magento\Newsletter\Block\Subscribe" name="static.newsletter" template="Magento_Newsletter::subscribe.phtml"}}</div>
+</div>]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block115-0]]></block_name>
+		<type><![CDATA[promo_banner]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":"","text_colour":"text-colour-white","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","banner_id":"home14-winter-collection"}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[{{widget type="MGS\Promobanners\Block\Widget\Banner" banner_id="home14-winter-collection" template="banner.phtml"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block115-1]]></block_name>
+		<type><![CDATA[promo_banner]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":"","text_colour":"text-colour-white","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","banner_id":"home14-accessories"}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[{{widget type="MGS\Promobanners\Block\Widget\Banner" banner_id="home14-accessories" template="banner.phtml"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block115-2]]></block_name>
+		<type><![CDATA[promo_banner]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":"","text_colour":"text-colour-white","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","banner_id":"home14-season-on-sale"}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[{{widget type="MGS\Promobanners\Block\Widget\Banner" banner_id="home14-season-on-sale" template="banner.phtml"}}]]></block_content>
+	</block>
+	<block>
+		<block_name><![CDATA[block115-3]]></block_name>
+		<type><![CDATA[promo_banner]]></type>
+		<position><![CDATA[1]]></position>
+		<setting><![CDATA[{"animation":"","animation_delay":"","text_colour":"text-colour-white","link_colour":"","link_hover_colour":"","button_colour":"","button_hover_colour":"","button_text_colour":"","button_text_hover_colour":"","button_border_colour":"","button_border_hover_colour":"","banner_id":"home14-real-for-men"}]]></setting>
+		<col><![CDATA[12]]></col>
+		<class><![CDATA[]]></class>
+		<block_content><![CDATA[{{widget type="MGS\Promobanners\Block\Widget\Banner" banner_id="home14-real-for-men" template="banner.phtml"}}]]></block_content>
+	</block>
+	<promo_banner>
+		<item>
+			<title><![CDATA[Home 14 Winter Collection]]></title>
+			<filename><![CDATA[/b/a/banner14_1__1.jpg]]></filename>
+			<url><![CDATA[]]></url>
+			<button><![CDATA[]]></button>
+			<text_align><![CDATA[bottom-left]]></text_align>
+			<content><![CDATA[<div class="banner-text"><div class="banner-home14">
+<div class="playfair">Winter Collection</div>
+<span>New Trend 2017</span>
+</div></div>]]></content>
+			<effect><![CDATA[zoom]]></effect>
+			<custom_class><![CDATA[]]></custom_class>
+			<status><![CDATA[1]]></status>
+			<identifier><![CDATA[home14-winter-collection]]></identifier>
+		</item>
+		<item>
+			<title><![CDATA[Home 14 Accessories]]></title>
+			<filename><![CDATA[/b/a/banner14_2_.jpg]]></filename>
+			<url><![CDATA[]]></url>
+			<button><![CDATA[]]></button>
+			<text_align><![CDATA[bottom-left]]></text_align>
+			<content><![CDATA[<div class="banner-home14" >
+<div class="playfair">Accessories</div>
+<span>Save Up 35%</span>
+</div>]]></content>
+			<effect><![CDATA[zoom]]></effect>
+			<custom_class><![CDATA[]]></custom_class>
+			<status><![CDATA[1]]></status>
+			<identifier><![CDATA[home14-accessories]]></identifier>
+		</item>
+		<item>
+			<title><![CDATA[Home 14 Season On Sale]]></title>
+			<filename><![CDATA[/b/a/banner14_3_.jpg]]></filename>
+			<url><![CDATA[]]></url>
+			<button><![CDATA[]]></button>
+			<text_align><![CDATA[bottom-left]]></text_align>
+			<content><![CDATA[<div class="banner-home14" >
+<div class="playfair">Season On Sale</div>
+<span>Women's Fashion</span>
+</div>]]></content>
+			<effect><![CDATA[zoom]]></effect>
+			<custom_class><![CDATA[]]></custom_class>
+			<status><![CDATA[1]]></status>
+			<identifier><![CDATA[home14-season-on-sale]]></identifier>
+		</item>
+		<item>
+			<title><![CDATA[Home 14 Real For Men]]></title>
+			<filename><![CDATA[/b/a/banner14_4_.jpg]]></filename>
+			<url><![CDATA[]]></url>
+			<button><![CDATA[]]></button>
+			<text_align><![CDATA[bottom-left]]></text_align>
+			<content><![CDATA[<div class="banner-home14" >
+<div class="playfair">Real For Men</div>
+<span>The Trendding</span>
+</div>]]></content>
+			<effect><![CDATA[zoom]]></effect>
+			<custom_class><![CDATA[]]></custom_class>
+			<status><![CDATA[1]]></status>
+			<identifier><![CDATA[home14-real-for-men]]></identifier>
+		</item>
+	</promo_banner>
+	<theme_setting>
+		<general>
+			<header>header_3</header>
+		</general>
+	</theme_setting>
+
+</home>

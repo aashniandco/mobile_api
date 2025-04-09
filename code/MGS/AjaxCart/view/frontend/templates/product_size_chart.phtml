@@ -1,0 +1,13 @@
+<?php $product = $block->getProduct(); 
+//$patterns = $product->getData('patterns');
+$patterns = $product->getAttributeText('patterns');
+if(!empty($patterns)){
+$new_url = preg_replace('/[^A-Za-z0-9\-]/', '', $patterns);
+$sizeUrlMagento = $block->getUrl().'pub/size/'.strtolower($new_url).'.html';
+//$content = file_get_contents($sizeUrlMagento);
+?>
+ 
+<div class="size-chart" style="padding-top:10px">
+	<div  class="size-chart-content <?php echo strtolower($new_url); ?>" ><?php// echo $content; ?></div>
+</div>
+<?php }?>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    <extension_attributes for="Magento\Quote\Api\Data\TotalSegmentInterface">
+        <attribute code="front_options" type="string"/>
+    </extension_attributes>
+    <extension_attributes for="Magento\Sales\Api\Data\OrderInterface">
+        <attribute code="mageworx_giftcards_details" type="MageWorx\GiftCards\Api\Data\GiftCardDetailsInterface[]" />
+        <attribute code="mageworx_giftcards_description" type="string" />
+        <attribute code="mageworx_giftcards_amount" type="float" />
+        <attribute code="base_mageworx_giftcards_amount" type="float" />
+    </extension_attributes>
+
+    <extension_attributes for="Magento\Quote\Api\Data\ProductOptionInterface">
+        <attribute code="mageworx_giftcard_item_option" type="MageWorx\GiftCards\Api\Data\GiftCardOptionInterface" />
+    </extension_attributes>
+    <extension_attributes for="Magento\Catalog\Api\Data\ProductOptionInterface">
+        <attribute code="mageworx_giftcard_item_option" type="MageWorx\GiftCards\Api\Data\GiftCardOptionInterface" />
+    </extension_attributes>
+</config>

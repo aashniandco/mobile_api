@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1column">
+    <head>
+        <link src="Fermion_LoyaltyPoint::css/loyalty.css"/>
+        <!-- <link src="Fermion_Pagelayout::js/canvasjs.min.js"/> -->
+      <!--   <link src="Fermion_Pagelayout::js/loyalty.js"/> -->
+        <title>Loyalty Points</title>
+    </head>
+       <referenceContainer name="content">
+        <block class="Magento\Customer\Block\Account\Dashboard\Info"
+               name="custom.account" as="custom.account" template="Fermion_LoyaltyPoint::loyaltypoint.phtml" cacheable="false"/>
+       </referenceContainer>
+</page>

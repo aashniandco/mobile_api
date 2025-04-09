@@ -1,0 +1,15 @@
+<script type="text/javascript">
+    requirejs(['jquery', 'mgs_quickview'],
+            function ($, quickview) {
+                $(document).ready(function () {
+            $(document).on("click",".mgs-quickview",function(){
+			//$('.mgs-quickview').bind('click', function () {
+				console.log("----------------------------------bind click-----------------");
+                        var prodUrl = $(this).attr('data-quickview-url');
+                        if (prodUrl.length) {
+                            quickview.displayContent(prodUrl);
+                        }
+                    });
+                });
+            });
+</script>

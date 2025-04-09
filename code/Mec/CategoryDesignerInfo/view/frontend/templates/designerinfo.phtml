@@ -1,0 +1,26 @@
+<div class="row designer_listprofile">
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
+$catbgimg = $category->getData('designer_image');
+$catinfo = $category->getData('designer_information');
+if(isset($_GET['otest'])){
+                 echo $catbgimg;die;
+            }
+  if(!empty($catbgimg)){
+     if($catbgimg!='' && $catinfo!=''){
+
+?>
+<div class="col-sm-4">
+<?php echo '<img class="designer-info-image" style="width: 100%;" src="' . $catbgimg . '" />'; ?>
+</div>
+<div class="col-sm-8">
+<?php echo $catinfo; ?>
+<div class="news-designer"><?php echo $this->getLayout()
+	->createBlock('Magento\Cms\Block\Block')
+	->setBlockId('newsletter_all')
+	->toHtml(); ?>
+</div>
+</div>
+<?php } } ?>
+</div>

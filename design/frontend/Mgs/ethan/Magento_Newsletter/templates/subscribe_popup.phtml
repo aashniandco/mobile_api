@@ -1,0 +1,223 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+/** @var \Magento\Framework\UrlInterface $urlInterface */
+$urlInterface = \Magento\Framework\App\ObjectManager::getInstance()->get('Magento\Framework\UrlInterface');
+
+?>
+<!-- 
+<div class="black-bg" id="newsletter-plot-cookies" style="display: none;">
+            <div class="accept-popup-slot">
+                <div class="accept-request">
+                    <div class="request-plot">
+                        <div class="content">
+                            <p class="paragraph">This website requires cookies to provide all of its features. For more information on what data is contained in the cookies,please see our Privacy Policy page. To accept cookies from this site.Please click the Allow button below.</p>
+                            <div class="btn-block">
+                                <a href="" class="reject-all">Reject All</a>
+                                <a href="" class="accept-all">Accept All</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>          
+        </div> -->
+
+<div class="block newsletter">
+    <div class="content">
+        <form class="form subscribe"
+            novalidate
+            action="<?php /* @escapeNotVerified */ echo $block->getFormActionUrl() ?>"
+            method="post"
+            data-mage-init='{"validation": {"errorClass": "mage-error"}}'
+            id="newsletter-popup-validate-detail">
+            <div class="field form-group newsletter">
+                <div class="control">
+                    <input name="email" type="email" id="newsletter-popup-email"
+                                placeholder="<?php /* @escapeNotVerified */ echo __('Enter your email address') ?>"
+                                data-validate="{required:true, 'validate-email':true}"/>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="action subscribe btn btn-primary" title="<?php /* @escapeNotVerified */ echo __('Subscribe') ?>" type="submit">
+                    <span><?php /* @escapeNotVerified */ echo __('Subscribe') ?></span>
+                </button>
+            </div>
+            <div class="checkbox chec-box-plot">
+            <!-- <div class="checkbox"> -->
+
+                <label for="dont_show">
+                    <input id="dont_show" onclick="dontShowPopup('dont_show')" type="checkbox">
+                    <?php echo __("Don't show this popup again");  ?>
+                </label>
+            </div>
+            <!-- code changes 11-09-2023-->
+            <!-- <div class="popupqueries"> -->
+                <!-- For styling assistance & customizations, Whatsapp us at  -->
+                <!-- <a target="_blank" href="https://api.whatsapp.com/send?phone=918375036648&text=<?php //echo $urlInterface->getCurrentUrl();?>">+91 8375036648</a> -->
+            <!-- </div> -->
+        </form>
+    </div>
+</div>
+
+<style>
+.popupqueries
+{
+    font-size: 11px;
+}
+.popupqueries a
+{
+    color: white;
+}
+ .black-bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+/*    background-color: rgba(255, 255, 255, .6);*/
+    background-color: rgba(0, 0, 0, .6);
+    left: 0;
+    top: 0;
+    overflow: auto;
+    visibility: visible;
+    transition: all .3s ease
+}
+
+.accept-popup-slot {
+    bottom: 0;
+    left: 0;
+    min-width: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    visibility: visible;
+    z-index: 999
+}
+
+.accept-popup-slot .accept-request {
+    width: 100%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 5rem auto;
+    position: relative;
+    height: auto;
+    flex-direction: column;
+    box-sizing: border-box;
+    left: 0;
+    top: 45%;
+    position: absolute;
+    right: 0;
+    max-width: 780px;
+    padding: 2px;
+    border-radius: 2px;
+    background-color: #fff;
+}
+
+.accept-popup-slot .accept-request .request-plot {
+    max-height: 400px;
+    width: 100%;
+    float: left;
+    padding: 55px 60px 42px;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 2px;
+}
+
+.accept-popup-slot .accept-request .request-plot .content {
+    width: 100%;
+    float: left
+}
+
+.accept-popup-slot .accept-request .request-plot .content .paragraph {
+    width: 100%;
+    float: left;
+    font-size: 18px;
+    color: #000;
+    margin: 0;
+    line-height: 28px;
+    margin-bottom: 45px;
+    font-weight: 300;
+}
+.accept-popup-slot .accept-request .request-plot .content .paragraph a.policy-link {
+ display: inline-block;
+ font-size: 18px;
+ color: #000;
+ margin: 0;
+ font-weight: 600;
+ padding-left: 4px;
+ border-bottom: 1px solid #000;
+}
+
+.accept-popup-slot .accept-request .request-plot .content .btn-block {
+    width: 100%;
+    float: left
+}
+
+.accept-popup-slot .accept-request .request-plot .content .btn-block .reject-all {
+   float: left;
+ padding: 15px 20px;
+ width: 150px;
+ color: #fff;
+ text-align: center;
+ background-color: #000;
+ font-size: 18px;
+ margin: 0;
+ line-height: 25px;
+ margin-bottom: 22px;
+ font-weight: 300;
+}
+
+.accept-popup-slot .accept-request .request-plot .content .btn-block .accept-all {
+    float: right;
+    padding: 15px 20px;
+ width: 150px;
+ color: #fff;
+ text-align: center;
+ background-color: #000;
+ font-size: 18px;
+ margin: 0;
+ line-height: 25px;
+ margin-bottom: 22px;
+ font-weight: 300;
+}   
+@media (max-width:480px){
+
+    .accept-popup-slot .accept-request {
+        width: 96%;
+    }
+    .accept-popup-slot .accept-request .request-plot {
+        padding: 55px 15px 42px;
+    }
+}
+
+</style>
+
+
+
+<!-- <script>
+
+ jQuery(document).ready(function(){
+    console.log("ready");
+    return false;    
+    $('#newsletter-plot-cookies').css('display','block');
+  });
+
+  $('.reject-all').click(function(){
+    $('#newsletter-plot-cookies').css('display','none');
+  });
+
+    $('.accept-all').click(function(){
+    $('#newsletter-plot-cookies').css('display','none');
+  });
+
+</script>
+ -->
+
+
+

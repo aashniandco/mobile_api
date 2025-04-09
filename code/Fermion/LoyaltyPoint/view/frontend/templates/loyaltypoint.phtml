@@ -1,0 +1,936 @@
+<?php 
+/** @var \Magento\Customer\Block\Account\Dashboard\Info $block */
+?>
+<?php
+    $loyalty_data = $block->getloyaltyData();
+    $resp = $block->getOrderData();
+    $customer = $block->getCustomer();
+    $dob = $customer->getDob();
+?>
+<div class="wrap">
+    <div class="loyalty-plot">
+        <div class="loyalty-block">
+            <div class="loyalty-slot">
+                <div class="chart_plot">
+                    <div class="head-wrap">
+                        <div class="title">Welcome back <?= $block->escapeHtml($block->getName()) ?></div>
+                        <?php if($loyalty_data['hasLoyaltyPoints']) : 
+                            if($loyalty_data['level'] == 1): ?>
+                                <div class="sub-title">Patron</div>
+                            <?php elseif($loyalty_data['level'] == 2): ?>
+                                <div class="sub-title">Ambassador</div>
+                            <?php elseif($loyalty_data['level'] == 3): ?>
+                                <div class="sub-title">Maestro</div>
+                            <?php elseif($loyalty_data['level'] == 4): ?>
+                                <div class="sub-title">Connoisseur</div>
+                            <?php else: ?>
+                                <div class="sub-title">0</div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="chart-wrap">
+                        <!-- <div id="pieChart" style="height: 360px; width: 100%;"></div> -->
+                        <div class="donut-head">
+                            <div class="donut-title">MY INNER CIRCLE POINTS</div>
+                            <div class="donut-subtitle">1 loyalty point = INR ₹1000 spent</div>
+                        </div>
+                        <div id="donutText">
+                            <div class="donutSubTextOne"><?= $loyalty_data['hasLoyaltyPoints'] ? $loyalty_data['loyalty_points'] : "0"; ?></div>
+                            <div class="donutSubTextTwo">Points</div>
+                        </div>
+                        <div id="donutChart"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="loyalty-slot">
+                <div class="account-section">
+                    <?php if($loyalty_data['hasLoyaltyPoints']) : ?>
+                        <?php if($loyalty_data['level'] == 1) : ?>
+                            <div class="content-plot">
+                                <div class="head">
+                                    <div class="level-title">Check out your level perks, loyalty points and bespoke rewards that you’ve earned so far.</div>
+                                </div>
+                                <div class="acc-content-wrap">
+                                    <div class="accordion-container">
+                                        <div class="set">
+                                            <a>
+                                                One exclusive rewards
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">Each year, we'll curate one reward for you ranging from exclusive offers to early sale alerts.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Birthday reward
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">
+                                                    A token of joy for your birthday.
+                                                    <?php if(empty($dob)): ?>
+                                                        <br>
+                                                        Set you Birthdate: 
+                                                        <input type="date" class="set-birthdate" name="set-birthdate"/>
+                                                        <i class="fa fa-info dob_error_icon" style="display: none"></i>
+                                                        <button type="button" class="set-birthdate-btn">SET</button>
+                                                    <?php else: ?>
+                                                        <br>Your Birthdate: <?= $dob; ?>
+                                                        <br>
+                                                        <?php
+                                                        $date = date($dob);
+                                                        $month = date('m', strtotime($date));
+
+                                                        $currentDate = new DateTime(); 
+                                                        $curr_month = $currentDate->format('m');
+                                                        ?>
+                                                        <?php if(isset($loyalty_data['birthday_coupon']) && $curr_month == $month): ?>
+                                                            <div class="birthday-coupon-table">
+                                                                <table class="coupon-table">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <th>Coupon</th>
+                                                                            <th>Discount</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><?= $loyalty_data['birthday_coupon']['coupon']; ?></td>
+                                                                            <td><?= $loyalty_data['birthday_coupon']['discount']; ?>%</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        <?php else: ?>
+                                                            <?php if(!$loyalty_data['has_birthday_coupon']): ?>
+                                                                <?php if($curr_month == $month): ?>
+                                                                    <button class="birthday-coupon-btn" id="birthday-coupon-btn">Claim Birthday coupon</button>
+                                                                    <input type="hidden" name="cust_birthdate" class="cust_birthdate" value="<?= $dob; ?>">
+                                                                    <input type="hidden" name="cust_loyalty_level" class="cust_loyalty_level" value="<?= $loyalty_data['level'];?>">
+                                                                <?php else: ?>
+                                                                    <button class="birthday-coupon-btn" id="birthday-coupon-btn" disabled>Claim Birthday coupon</button>
+                                                                    </br><span class="btn-disable-msg">Button will be enabled in your birthday month!</span>
+                                                                    <input type="hidden" name="cust_birthdate" class="cust_birthdate" value="">
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Two double-points orders
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">To assist you in advancing to the next level more swiftly, we'll select two orders on which you can earn double Inner Circle Points.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Exclusive offer days
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">You'll receive one day of 5% off throughout the year.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Free customs clearance
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">Experience worldwide fast delivery without any customs expenses.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php elseif($loyalty_data['level'] == 2) : ?>
+                            <div class="content-plot">
+                                <div class="head">
+                                    <div class="level-title">Check out your level perks, loyalty points and bespoke rewards that you’ve earned so far.</div>
+                                </div>
+                                <div class="acc-content-wrap">
+                                    <div class="accordion-container">
+                                        <div class="set">
+                                            <a>
+                                                Two exclusive rewards
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">Each year, we’ll curate two rewards for you ranging from exclusive offers to experiences to save-the-date sale alerts.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Birthday reward
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">
+                                                    A token of joy for your birthday.
+                                                    <?php if(empty($dob)): ?>
+                                                        <br>
+                                                        Set you Birthdate: 
+                                                        <input type="date" class="set-birthdate" name="set-birthdate"/>
+                                                        <i class="fa fa-info dob_error_icon" style="display: none"></i>
+                                                        <button type="button" class="set-birthdate-btn">SET</button>
+                                                    <?php else: ?>
+                                                        <br>Your Birthdate: <?= $dob; ?>
+                                                        <br>
+                                                        <?php
+                                                        $date = date($dob);
+                                                        $month = date('m', strtotime($date));
+
+                                                        $currentDate = new DateTime(); 
+                                                        $curr_month = $currentDate->format('m');
+                                                        ?>
+                                                        <?php if(isset($loyalty_data['birthday_coupon']) && $curr_month == $month): ?>
+                                                            <div class="birthday-coupon-table">
+                                                                <table class="coupon-table">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <th>Coupon</th>
+                                                                            <th>Discount</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><?= $loyalty_data['birthday_coupon']['coupon']; ?></td>
+                                                                            <td><?= $loyalty_data['birthday_coupon']['discount']; ?>%</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        <?php else: ?>
+                                                            <?php if(!$loyalty_data['has_birthday_coupon']): ?>
+                                                                <?php if($curr_month == $month): ?>
+                                                                    <button class="birthday-coupon-btn" id="birthday-coupon-btn">Claim Birthday coupon</button>
+                                                                    <input type="hidden" name="cust_birthdate" class="cust_birthdate" value="<?= $dob; ?>">
+                                                                    <input type="hidden" name="cust_loyalty_level" class="cust_loyalty_level" value="<?= $loyalty_data['level'];?>">
+                                                                <?php else: ?>
+                                                                    <button class="birthday-coupon-btn" id="birthday-coupon-btn" disabled>Claim Birthday coupon</button>
+                                                                    </br><span class="btn-disable-msg">Button will be enabled in your birthday month!</span>
+                                                                    <input type="hidden" name="cust_birthdate" class="cust_birthdate" value="">
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Private sale
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">Enjoy access to the sale during the private preview.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Exclusive offer days
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">You'll receive one days of 10% off throughout the year.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Free customs clearance
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">Experience worldwide fast delivery without any customs expenses.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php elseif($loyalty_data['level'] == 3) : ?> 
+                            <div class="content-plot">
+                                <div class="head">
+                                    <div class="level-title">Check out your level perks, loyalty points and bespoke rewards that you’ve earned so far.</div>
+                                </div>
+                                <div class="acc-content-wrap">
+                                    <div class="accordion-container">
+                                        <div class="set">
+                                            <a>
+                                                Three exclusive rewards
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">Each year, we’ll curate three rewards for you ranging from special access to events to exclusive offers or gifts.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Birthday reward
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">
+                                                    A token of joy for your birthday.
+                                                    <?php if(empty($dob)): ?>
+                                                        <br>
+                                                        Set you Birthdate: 
+                                                        <input type="date" class="set-birthdate" name="set-birthdate"/>
+                                                        <i class="fa fa-info dob_error_icon" style="display: none"></i>
+                                                        <button type="button" class="set-birthdate-btn">SET</button>
+                                                    <?php else: ?>
+                                                        <br>Your Birthdate: <?= $dob; ?>
+                                                        <br>
+                                                        <?php
+                                                        $date = date($dob);
+                                                        $month = date('m', strtotime($date));
+
+                                                        $currentDate = new DateTime(); 
+                                                        $curr_month = $currentDate->format('m');
+                                                        ?>
+                                                        <?php if(isset($loyalty_data['birthday_coupon']) && $curr_month == $month): ?>
+                                                            <div class="birthday-coupon-table">
+                                                                <table class="coupon-table">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <th>Coupon</th>
+                                                                            <th>Discount</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><?= $loyalty_data['birthday_coupon']['coupon']; ?></td>
+                                                                            <td><?= $loyalty_data['birthday_coupon']['discount']; ?>%</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        <?php else: ?>
+                                                            <?php if(!$loyalty_data['has_birthday_coupon']): ?>
+                                                                <?php if($curr_month == $month): ?>
+                                                                    <button class="birthday-coupon-btn" id="birthday-coupon-btn">Claim Birthday coupon</button>
+                                                                    <input type="hidden" name="cust_birthdate" class="cust_birthdate" value="<?= $dob; ?>">
+                                                                    <input type="hidden" name="cust_loyalty_level" class="cust_loyalty_level" value="<?= $loyalty_data['level'];?>">
+                                                                <?php else: ?>
+                                                                    <button class="birthday-coupon-btn" id="birthday-coupon-btn" disabled>Claim Birthday coupon</button>
+                                                                    </br><span class="btn-disable-msg">Button will be enabled in your birthday month!</span>
+                                                                    <input type="hidden" name="cust_birthdate" class="cust_birthdate" value="">
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Private sale
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">Enjoy early access to the sale during the private preview.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Exclusive offer days
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">You'll receive two days of 10% off throughout the year.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Priority my stylist access
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">Your style and shopping questions will get priority attention from our 24/7 fashion concierge team.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Seasonal styling consults
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">At the beginning of every Spring-Summer & Autmn-Winter season, you'll get an exclusive invite for a seasonal styling consultation.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Coming soon lookbook
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">You'll be the first to obtain a copy of our "Coming Soon" lookbook, offering a preview of the season ahead, before anyone else.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Free shipping + customs
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">Experience worldwide fast delivery without any customs expenses.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php elseif($loyalty_data['level'] == 4) : ?>
+                            <div class="content-plot">
+                                <div class="head">
+                                    <div class="level-title">Check out your level perks, loyalty points and bespoke rewards that you’ve earned so far.</div>
+                                </div>
+                                <div class="acc-content-wrap">
+                                    <div class="accordion-container">
+                                        <div class="set">
+                                            <a>
+                                                Four exclusive rewards
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">Each year, we’ll curate four rewards for you ranging from special access to events, exclusive offers or gifts.<br/>
+                                                We’ll also arrange one luxury experience every year.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Birthday reward
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">
+                                                    A token of joy for your birthday.
+                                                    <?php if(empty($dob)): ?>
+                                                        <br>
+                                                        Set you Birthdate: 
+                                                        <input type="date" class="set-birthdate" name="set-birthdate"/>
+                                                        <i class="fa fa-info dob_error_icon" style="display: none"></i>
+                                                        <button type="button" class="set-birthdate-btn">SET</button>
+                                                    <?php else: ?>
+                                                        <br>Your Birthdate: <?= $dob; ?>
+                                                        <br>
+                                                        <?php
+                                                        $date = date($dob);
+                                                        $month = date('m', strtotime($date));
+
+                                                        $currentDate = new DateTime(); 
+                                                        $curr_month = $currentDate->format('m');
+                                                        ?>
+                                                        <?php if(isset($loyalty_data['birthday_coupon']) && $curr_month == $month): ?>
+                                                            <div class="birthday-coupon-table">
+                                                                <table class="coupon-table">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <th>Coupon</th>
+                                                                            <th>Discount</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><?= $loyalty_data['birthday_coupon']['coupon']; ?></td>
+                                                                            <td><?= $loyalty_data['birthday_coupon']['discount']; ?>%</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        <?php else: ?>
+                                                            <?php if(!$loyalty_data['has_birthday_coupon']): ?>
+                                                                <?php if($curr_month == $month): ?>
+                                                                    <button class="birthday-coupon-btn" id="birthday-coupon-btn">Claim Birthday coupon</button>
+                                                                    <input type="hidden" name="cust_birthdate" class="cust_birthdate" value="<?= $dob; ?>">
+                                                                    <input type="hidden" name="cust_loyalty_level" class="cust_loyalty_level" value="<?= $loyalty_data['level'];?>">
+                                                                <?php else: ?>
+                                                                    <button class="birthday-coupon-btn" id="birthday-coupon-btn" disabled>Claim Birthday coupon</button>
+                                                                    </br><span class="btn-disable-msg">Button will be enabled in your birthday month!</span>
+                                                                    <input type="hidden" name="cust_birthdate" class="cust_birthdate" value="">
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Private sale
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">Enjoy being among the first to shop the sale during the private preview.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Exclusive offer days
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">You'll receive three days of 10% off throughout the year.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Priority my stylist access
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">Your style and shopping questions will get priority attention from our 24/7 fashion concierge team.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Seasonal styling consults
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">At the beginning of every Spring-Summer & Autmn-Winter season, you'll get an exclusive invite for a seasonal styling consultation.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Coming soon lookbook
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">You'll be the first to obtain a copy of our "Coming Soon" lookbook, offering a preview of the season ahead, before anyone else.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Seasonal gift
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">This one is on us, again—an exclusive gift we think you’ll love.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Personalised dedicated contact
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">We'll provide you with a dedicated contact to help you with all of your shopping questions.</p>
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <a>
+                                                Free shipping + customs
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="content">
+                                                <p class="acco-info">Experience worldwide fast delivery without any customs expenses.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        <div class="loyalty-point details">
+                            <div class="loyalty-active-reward-title">Active Rewards: </div>
+                            <div class="error-msg-loyalty"></div>
+                            <?php if($loyalty_data['hasLoyaltyPoints']): ?>
+                                <?php $discount = $loyalty_data['level_coupon_details']['discount_in_percentage']; ?>
+                                <table class="loyalty-point loyalty-customer-detail">
+                                    <tbody>
+                                        <tr>
+                                            <th>Loyalty Level</th>
+                                            <th>Total Loyalty Points</th>
+                                        </tr>
+                                        <tr>
+                                            <td data-th="level" class="col level"><?= $loyalty_data['level'] ?></td>
+                                            <td data-th="points" class="col points"><?= $loyalty_data['loyalty_points'] ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="exclusive-loyalty-days-off">
+                                    <?php if(isset($loyalty_data['discount_coupons'])) : ?>
+                                        <div class="discount-coupon-section">
+                                            <table class="coupon-table">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Sr No.</th>
+                                                        <th>Coupons</th>
+                                                        <th>Discount</th>
+                                                    </tr>
+                                                    <?php $sr = 1; ?>
+                                                    <?php foreach ($loyalty_data['discount_coupons'] as $key => $value) { ?>
+                                                        <tr>
+                                                            <td><?= $sr; ?></td>
+                                                            <td><?= $value['coupons'][$key]; ?></td>
+                                                            <td><?= $value['discount'][$key]; ?>%</td>
+                                                            <?php $sr++; ?>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if(!$loyalty_data['level_has_coupon'] && $loyalty_data['level'] > 0): ?>
+                                        <?php if(!$loyalty_data['has_generated_coupon']): ?>
+                                            <?php 
+                                            $no_of_coupons_words = 'one';
+                                            $no_of_coupons = $loyalty_data['level_coupon_details']['total_discount_coupons'];
+                                            if($no_of_coupons == 1){
+                                                $no_of_coupons_words = 'one';
+                                            }
+                                            elseif($no_of_coupons == 2){
+                                                $no_of_coupons_words = 'two';
+                                            }
+                                            elseif($no_of_coupons == 3){
+                                                $no_of_coupons_words = 'three';
+                                            }
+                                            ?>
+                                            <h7>Congratulations! You are eligible for <?= $no_of_coupons_words ;?> <?= $discount ?>% discount Coupon <?= $no_of_coupons > 1 ? 'codes' : 'code'; ?>.</h7>
+                                            <div class="days-off-selection">
+                                                <span><button type="button" class="get-discount-btn">Get Level <?= $loyalty_data['level']; ?> <?= $no_of_coupons > 1 ? 'Coupons' : 'Coupon'; ?></button></span>
+                                                <input type="hidden" name="discount-level" class="discount-level" value="<?= $loyalty_data['level']; ?>">
+                                                <input type="hidden" name="discount-percent" class="discount-percent" value="<?= $discount; ?>">
+                                            </div>
+                                        <?php endif;?>
+                                    <?php endif; ?>
+                                    <?php if($loyalty_data['level'] == 0) : ?>
+                                        <div class="earn-loyaltypoints-message">
+                                            Your Progress looks good! You will advance to level 1 as soon as you cross 100 loyalty points.
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="No-Loyalty Message-class">
+                                    <p>Order and get in the Inner Circle to get Loyalty benefits</p>
+                                    <p>To know more about the Inner Circle, visit <a href="https://orders.aashniandco.com/innercircle">The Inner Circle</a>.</p>
+                                </div>
+                            <?php endif;?>
+                        </div>
+                        <?php if(isset($loyalty_data['double_points_flag']) && !$loyalty_data['double_points_flag'] && isset($loyalty_data['level']) && $loyalty_data['level'] == 1) : ?>
+                            <div class="select-order-btn-body">
+                                <span>You can now get 2 loyalty points per 1000/- Rs for any two orders.</span>
+                                <button id="select-order-modal-button" data-mage-init='{"Fermion_LoyaltyPoint/js/selectordermodal": {}}'>
+                                    View all Orders
+                                </button>
+                                <span> and select two orders to get double loyalty points</span>
+                            </div>
+                        <?php endif; ?>
+                        <div id="modal-content-select-order" style="display: none;">
+                            <div class="select-instruct-order">Select any two Orders</div>
+                            <div class="selected-orders-list"></div>
+                            <div class="order-data-paginate">
+                                <?php echo $resp['orderHtml']; ?>
+                                <?php echo $resp['pagination']; ?>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <div class="content-plot">
+                            <div class="head">
+                                <div class="level-title">Place order to start your Journey. <br>Visit this Section to check out your level perks, loyalty points and bespoke rewards that you’ve earned so far.</div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+   
+
+   
+<!--  <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script> -->
+
+<script>
+    require(
+        ["jquery"],
+        function($){
+            jQuery('body').on('click', '.get-discount-btn', function(){
+                // var level = jQuery('input.discount-level').val();
+                // if(level == 1) {
+                //     if(date1 == null || date1 == ''){
+                //         jQuery('.date-selection-error').show();
+                //     }
+                //     else{
+                //         var data = {
+                //             'date_one' : date1,
+                //             'level' : "1",
+                //             'discount' : discount
+                //         }
+                //         setDates(data);
+                //     }
+                // }
+                // else{
+                //     if(date1 == null || date1 == '' || date2 == null || date2 == ''){
+                //         jQuery('.date-selection-error').show();
+                //     }
+                //     else{
+                //         var data = {
+                //             'date_one' : date1,
+                //             'date_two' : date2,
+                //             'level' : level,
+                //             'discount' : discount
+                //         }
+                //         setDates(data);
+                //     }
+                // }
+                var level = jQuery('input.discount-level').val(),
+                discount = jQuery('input.discount-percent').val();
+                var data = {
+                    'level' : level,
+                    'discount' : discount
+                }
+                setDates(data);
+            });
+
+
+            function setDates(data) {
+                $('#mgs-ajax-loading').show();
+                jQuery('.date-selection-error').hide();
+                jQuery.ajax({
+                    url:"/loyaltypoint/account/orderloyalty",
+                    data: data,
+                    type: 'POST',
+                    success: function(response){
+                        $('#mgs-ajax-loading').hide();
+                        resp = JSON.parse(response);
+                        if(resp.success){
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        })
+</script>
+
+<script>
+    require(['jquery','Fermion_LoyaltyPoint/js/canvasjs'], function(jQuery,CanvasJS) {
+
+        jQuery.fn.shake = function(interval,distance,times){
+           interval = typeof interval == "undefined" ? 100 : interval;
+           distance = typeof distance == "undefined" ? 10 : distance;
+           times = typeof times == "undefined" ? 3 : times;
+           var jTarget = jQuery(this);
+           jTarget.css('position','relative');
+           for(var iter=0;iter<(times+1);iter++){
+              jTarget.animate({ left: ((iter%2==0 ? distance : distance*-1))}, interval);
+           }
+           return jTarget.animate({ left: 0},interval);
+        }
+
+        jQuery(document).ready(function () {
+            var birthdayCouponBtnActive = jQuery("#birthday-coupon-btn").prop('disabled');
+            jQuery('body').on('mouseenter', '#birthday-coupon-btn', function() {
+                if(birthdayCouponBtnActive) {
+                    console.log("hovered on birthday coupon button");
+                    jQuery('.btn-disable-msg').css('color', 'red');
+                    jQuery('.btn-disable-msg').shake(100, 10, 3);
+                    setTimeout(function() {
+                        jQuery('.btn-disable-msg').css('color', 'black');
+                    }, 2000);
+                }
+            })
+            jQuery('body').on('click', '#birthday-coupon-btn', function() {
+                if(birthdayCouponBtnActive) {
+                    console.log("birthday button is disabled");
+                    console.log(jQuery('input[name="cust_birthdate"]').val());
+                    jQuery('.btn-disable-msg').css('color', 'red');
+                    jQuery('.btn-disable-msg').shake(100, 10, 3);
+                    setTimeout(function() {
+                        jQuery('.btn-disable-msg').css('color', 'black');
+                    }, 2000);
+                }
+                else{
+                    jQuery('#mgs-ajax-loading').show();
+                    console.log("birthday button is enabled");
+                    console.log(jQuery('input[name="cust_birthdate"]').val());
+                    var cust_loyalty_level = jQuery('input[name="cust_loyalty_level"]').val();
+                    jQuery.ajax({
+                        url:"/loyaltypoint/account/orderloyalty",
+                        data:{
+                            'dob' : "<?= $customer->getDob(); ?>",
+                            'customer_id':<?= $customer->getId(); ?>,
+                            'level':cust_loyalty_level,
+                            'getBirthdayCoupon': true
+                        },
+                        type: 'POST',
+                        success: function(response){
+                            jQuery('#mgs-ajax-loading').hide();
+                            resp = JSON.parse(response);
+                            console.log(resp);
+                            if(resp.success){
+                                jQuery('#birthday-coupon-btn').parent().append(resp.coupon_html);
+                                jQuery('#birthday-coupon-btn').parent().find('button, input').remove();
+                            }
+                            else{
+                                jQuery('#birthday-coupon-btn').parent().append("<br><span class='coupon-generate-error-msg'>An error occurred. Please try later!</span>");
+                                jQuery('.coupon-generate-error-msg').css('color', 'red');
+                                jQuery('.coupon-generate-error-msg').shake(100, 10, 3);
+                                setTimeout(function() {
+                                    jQuery('.btn-disable-msg').css('color', 'black');
+                                    jQuery('.coupon-generate-error-msg').remove();
+                                }, 3000);
+                            }
+                        },
+                        error: function(error) {
+                            jQuery('#mgs-ajax-loading').hide();
+                            jQuery('#birthday-coupon-btn').parent().append("<br><span class='coupon-generate-error-msg'>An error occurred. Please try later!</span>");
+                            jQuery('.coupon-generate-error-msg').css('color', 'red');
+                            jQuery('.coupon-generate-error-msg').shake(100, 10, 3);
+                            setTimeout(function() {
+                                jQuery('.btn-disable-msg').css('color', 'black');
+                                jQuery('.coupon-generate-error-msg').remove();
+                            }, 4000);
+                        }
+                    });
+                }
+            });
+
+            jQuery(".set > a").on("click", function () {
+                if (jQuery(this).hasClass("active")) {
+                    jQuery(this).removeClass("active");
+                    jQuery(this).siblings(".content").slideUp(200);
+                    jQuery(".set > a i").removeClass("fa-minus").addClass("fa-plus");
+                } 
+                else {
+                    jQuery(".set > a i").removeClass("fa-minus").addClass("fa-plus");
+                    jQuery(this).find("i").removeClass("fa-plus").addClass("fa-minus");
+                    jQuery(".set > a").removeClass("active");
+                    jQuery(this).addClass("active");
+                    jQuery(".content").slideUp(200);
+                    jQuery(this).siblings(".content").slideDown(200);
+                }
+            });
+
+            jQuery('body').on('click', '.set-birthdate-btn', function() {
+                jQuery("input.set-birthdate").css({
+                            "border-color" :"black",
+                            "color" : "black"
+                        });
+                    jQuery(".dob_error_icon").hide();
+                var dob = jQuery(".set-birthdate").val();
+                if(dob){
+                    jQuery.ajax({
+                        url:"/loyaltypoint/account/orderloyalty",
+                        data:{
+                            'dob' : dob,
+                            'customer_id':<?php echo $customer->getId(); ?>,
+                            'setDob': true
+                        },
+                        type: 'POST',
+                        success: function(response){
+                            resp = JSON.parse(response);
+                            if(resp.success){
+                                window.location.reload();
+                            }
+                            else{
+                                jQuery(".acco-info").append("<span style='color:red;'>An error occurred. Please try again after some time.</span>")
+                            }
+                        }
+                    })
+                }
+                else{
+                    jQuery("input.set-birthdate").css({
+                            "border-color" :"red",
+                            "color" : "red"
+                        });
+                    jQuery(".dob_error_icon").show();
+                }
+            });
+
+            var donutChartValues = [
+                { y: 4.8, indexLabel: "Patron", color: "#ccc" },
+                { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                { y: 4.8, indexLabel: "Ambassador", color: "#ccc" },
+                { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                { y: 4.8, indexLabel: "Maestro", color: "#ccc" },
+                { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                { y: 4.8, indexLabel: "Connoisseur", color: "#ccc" },
+                { y: 0.2, indexLabel: "", color: "white" }
+            ];
+
+            <?php
+            if($loyalty_data['hasLoyaltyPoints']) {
+                if($loyalty_data['level'] == '1') : ?>
+                    var donutChartValues = [
+                        { y: 4.8, indexLabel: "Patron", color: "#262626" },
+                        { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                        { y: 4.8, indexLabel: "Ambassador", color: "#ccc" },
+                        { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                        { y: 4.8, indexLabel: "Maestro", color: "#ccc" },
+                        { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                        { y: 4.8, indexLabel: "Connoisseur", color: "#ccc" },
+                        { y: 0.2, indexLabel: "", color: "white" }
+                    ];
+                <?php elseif ($loyalty_data['level'] == '2') : ?>
+                    var donutChartValues = [
+                        { y: 4.8, indexLabel: "Patron", color: "#262626" },
+                        { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                        { y: 4.8, indexLabel: "Ambassador", color: "#262626" },
+                        { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                        { y: 4.8, indexLabel: "Maestro", color: "#ccc" },
+                        { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                        { y: 4.8, indexLabel: "Connoisseur", color: "#ccc" },
+                        { y: 0.2, indexLabel: "", color: "white" }
+                    ];
+                <?php elseif ($loyalty_data['level'] == '3') : ?>
+                    var donutChartValues = [
+                        { y: 4.8, indexLabel: "Patron", color: "#262626" },
+                        { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                        { y: 4.8, indexLabel: "Ambassador", color: "#262626" },
+                        { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                        { y: 4.8, indexLabel: "Maestro", color: "#262626" },
+                        { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                        { y: 4.8, indexLabel: "Connoisseur", color: "#ccc" },
+                        { y: 0.2, indexLabel: "", color: "white" }
+                    ];
+                <?php elseif ($loyalty_data['level'] == '4') : ?>
+                    var donutChartValues = [
+                        { y: 4.8, indexLabel: "Patron", color: "#262626" },
+                        { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                        { y: 4.8, indexLabel: "Ambassador", color: "#262626" },
+                        { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                        { y: 4.8, indexLabel: "Maestro", color: "#262626" },
+                        { y: 0.2, indexLabel: "", color: "white" }, // Gap with white color
+                        { y: 4.8, indexLabel: "Connoisseur", color: "#262626" },
+                        { y: 0.2, indexLabel: "", color: "white" }
+                    ];
+                <?php endif; ?>
+            <?php
+            }
+            ?>
+            // f7b6d2 pink
+            // bcbd22 green
+            renderDonutChart(donutChartValues);
+            function renderDonutChart(values) {
+                var chart = new CanvasJS.Chart("donutChart", {
+                    backgroundColor: "white",
+                    colorSet: "colorSet2",
+                    // title: {
+                    //     text: "MY CURATOR POINTS",
+                    //     fontFamily: "Verdana",
+                    //     fontSize: 25,
+                    //     fontWeight: "normal",
+                    // },
+
+                    animationEnabled: true,
+                    data: [{
+                        type: "doughnut",
+                        startAngle: 270,
+                        showInLegend: false,
+                        indexLabel: "{indexLabel}",
+                        indexLabelFontSize: 15,
+                        indexLabelFontFamily: "Monospace",
+                        indexLabelFontColor: "darkgrey",
+                        indexLabelPlacement: "center",
+                        indexLabelLineColor: "transparent", // Set index label line color to transparent
+                        toolTipContent: "<strong>{indexLabel}</strong>",
+                        dataPoints: values
+                    }]
+                });
+                chart.render();
+            }
+        });
+    });
+    
+</script>

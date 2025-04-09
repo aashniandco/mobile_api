@@ -1,0 +1,10 @@
+<?php /** @var \Amasty\CronScheduleList\Block\Adminhtml\Notice $block */ ?>
+
+<div class="amasty_cron_notice">
+    <div class="message">
+        <p>
+            <?= /* @escapeNotVerified */
+            __('Last Cron Activity: ') . $block->getLastActivity(); ?>
+        </p>
+    </div>
+</div>

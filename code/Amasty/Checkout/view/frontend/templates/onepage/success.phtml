@@ -1,0 +1,128 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
+ * @package Amasty_Checkout
+ */
+?>
+<?php /** @var $block \Magento\Checkout\Block\Onepage\Success */ ?>
+<div class="checkout-success">
+    <?php if ($block->getOrderId()) :?>
+        <div class="success-messages">
+            <?php if ($block->getCanViewOrder()) :?>
+                <p><?= $block->escapeHtml(__('Your order number is:')) ?>
+                    <a href="<?= /* @noEscape */$block->getViewOrderUrl() ?>"
+                       class="order-number">
+                        <strong>
+                            <?= /* @noEscape */$block->getOrderId() ?>
+                        </strong>
+                    </a>
+                </p>
+            <?php  else : ?>
+                <p>
+                    <?= $block->escapeHtml(__('Your order # is:')) ?>
+                    <span>
+                        <?= /* @noEscape */$block->getOrderId() ?>
+                    </span>
+                </p>
+            <?php endif;?>
+            <p><?= $block->escapeHtml(__('We\'ll email you an order confirmation with details and tracking info.')) ?></p>
+        </div>
+        <?= $block->getChildHtml('details') ?>
+    <?php endif;?>
+
+    <?= $block->getAdditionalInfoHtml() ?>
+    <?= $block->getChildHtml('cms') ?>
+
+    <div class="actions-toolbar">
+        <div class="primary">
+            <a class="action primary continue" href="<?= /* @noEscape */$block->getUrl() ?>">
+                <span><?= $block->escapeHtml(__('Continue Shopping')) ?></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function getCook(cookiename) 
+      {
+      // Get name followed by anything except a semicolon
+      var cookiestring=RegExp(cookiename+"=[^;]+").exec(document.cookie);
+      // Return everything after the equal sign, or an empty string if the cookie name not found
+      return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "");
+      }
+    
+    var cookieValue = getCook('UTM');
+    var url = window.location.href;
+    console.log('url'+url); 
+
+    if(cookieValue!='')
+    {
+        const searchParams = new URLSearchParams(window.location.search);
+        var curr_url = new URL(window.location.href);
+        curr_url+=cookieValue;
+        window.history.replaceState(null,null,curr_url);
+    }
+
+</script>
+
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$categoryRepository = $objectManager->get('\Magento\Catalog\Api\CategoryRepositoryInterface');
+$orderId = $block->getOrderId();
+  if($orderId){
+    $objectManager   = \Magento\Framework\App\ObjectManager::getInstance();
+    $order =  $objectManager->create('Magento\Sales\Model\OrderFactory')->create()->loadByIncrementId($orderId);
+        ?>
+    <script type="text/javascript">
+        // jQuery(document ).ready(function() {
+           
+           
+        // });
+         console.log('Success event page');
+         gtag("event", "purchase", {
+            "transaction_id": "<?php echo $order->getIncrementId(); ?>",
+            "value": "<?php echo $order->getBaseGrandTotal();?>",
+            "tax":"<?php echo $order->getBaseTaxAmount();?>",
+            "shipping": "<?php echo $order->getBaseShippingAmount();?>",
+            "currency": "INR",
+            "coupon": "<?php echo $order->getCouponCode();?>",
+            "items": [
+
+                <?php 
+                    foreach($order->getAllVisibleItems() as $item){ 
+                        $parent = $objectManager->get('Magento\Catalog\Model\Product')->load($item->getProductId());
+                        $cats = $parent->getCategoryIds();
+                        $size = $parent->getResource()->getAttribute('size');
+                        $sizeVal = $size->getFrontend()->getValue($parent);
+                        $category_name = '';
+                        $category_id = isset($cats[0]) ? $cats[0] : 0; 
+                        if($category_id){
+                            try {
+                                $category = $categoryRepository->get($category_id);
+                                $category_name = $category->getName(); 
+                            }catch(Exception $e) {
+                                $category_name = 'NA';
+                            }
+                        }
+                ?>
+                    {
+                        "item_id": "<?php echo $item->getSku(); ?>",
+                        "item_name": "<?php echo $parent->getData('short_description'); ?>",
+                        "coupon": "<?php echo $order->getCouponCode();?>",
+                        "discount": "<?php echo $order->getDiscount();?>",
+                        "index": 0,
+                        "item_brand": "<?php echo $item->getName(); ?>",
+                        "item_category": "<?php echo $category_name; ?>",
+                        "item_variant": "<?php echo $sizeVal; ?>",
+                        "price": "<?php echo $item->getBasePriceInclTax() ?>",
+                        "quantity": "<?php echo $item->getQtyOrdered(); ?>"
+                    },
+                    <?php  } ?>
+            ]
+             });
+        
+
+</script>
+
+<?php } ?>

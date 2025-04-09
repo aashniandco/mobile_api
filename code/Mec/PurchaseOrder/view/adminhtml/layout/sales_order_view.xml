@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="left">
+            <referenceBlock name="sales_order_tabs">
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">custom_tab</argument>
+                    <argument name="block" xsi:type="string">Mec\PurchaseOrder\Block\Adminhtml\Order\View\Tab\CustomTab</argument>
+                </action>
+            </referenceBlock>           
+        </referenceContainer>        
+        <!--add custom block -->
+        <referenceBlock name="order_additional_info">
+            <container name="purchase_order_popup" htmlTag="div" htmlClass="purchase_order_popup">
+                <block name="purchaseorder.viewmodel" template="Mec_PurchaseOrder::order/view/modalbox.phtml">
+                    <arguments>
+                        <argument name="view_model" xsi:type="object">Mec\PurchaseOrder\ViewModel\ModalBox</argument>
+                    </arguments>
+                </block>
+            </container>
+        </referenceBlock>
+
+    </body>
+</page>

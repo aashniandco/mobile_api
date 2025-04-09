@@ -1,0 +1,976 @@
+<?php
+  $urlInterface = \Magento\Framework\App\ObjectManager::getInstance()
+      ->get(\Magento\Framework\UrlInterface::class);
+  $currentUrl = $urlInterface->getCurrentUrl();
+
+  // Check if '?' exists in the URL to find the canonical version
+  if (strpos($currentUrl, '?') !== false) {
+      $canonicalUrl = substr($currentUrl, 0, strpos($currentUrl, '?'));
+  } else {
+      // No query string, so the canonical URL is the current URL
+      $canonicalUrl = $currentUrl;
+  }
+?>
+<link rel="canonical" href="<?php echo $canonicalUrl; ?>" />
+
+<?php $helper = $this->helper('MGS\Mpanel\Helper\Data') ?>
+<?php $header = $helper->getStoreConfig('mgstheme/general/header') ?>
+<?php //echo "mithi"."<br>";
+//die("hi");
+$requestParams = $this->getRequest()->getParams();
+$catId = $this->getRequest()->getParam('id');
+//echo $catId."mithi"; 
+
+
+//Mithilesh code for json script start
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+
+$cmsPage = $objectManager->get('\Magento\Cms\Model\Page');
+
+$identifier=$cmsPage->getIdentifier();
+
+
+$request = $objectManager->get('Magento\Framework\App\Action\Context')->getRequest();
+        if($request->getFullActionName() == 'catalog_product_view'){
+                    $productId = (int) $this->getRequest()->getParam('id');
+                    $_product = $objectManager->create('Magento\Catalog\Model\Product')->load($productId);
+                    // $stockItem = $objectManager->get('\Magento\CatalogInventory\Model\Stock\StockItemRepository');
+                    // $productStock = $stockItem->get($productId);
+                    // $data_p = $productStock->getData();
+                    $stock_status = $_product->getQuantityAndStockStatus();
+                    $is_in_stock=isset($stock_status['is_in_stock']) ? $stock_status['is_in_stock'] : 'NULL';
+          if($is_in_stock==1){
+              $is_in_stock="in_stock"; 
+          }else{
+              $is_in_stock="out_of_stock";
+            }
+                    $imgBase='NULL';
+                    $getShortDescription='NULL';
+                    $getSpecialToDate='NULL';
+                    $getName='NULL';
+                    $getSku='NULL';
+                    $getDescription='NULL';
+                    $getProductUrl='NULL';
+                    $getFinalPrice='NULL';
+                    $getCurrencyCode='NULL';
+                    $_product = $objectManager->get('Magento\Catalog\Model\Product')->load($productId); 
+                    $_imagehelper = $this->helper('Magento\Catalog\Helper\Image'); 
+
+              if(!empty($_imagehelper->init($_product, 'category_page_list')->getUrl())){
+                  $imgBase = $_imagehelper->init($_product, 'category_page_list')->getUrl();
+                }
+                if(!empty($_product->getShortDescription())){
+                    $getShortDescription = $_product->getShortDescription();
+                  }
+                  if(!empty($_product->getSpecialToDate())){
+                      $getSpecialToDate = $_product->getSpecialToDate();
+                  }
+                  if(!empty($_product->getName())){
+                      $getName = $_product->getName();
+                  }
+                  if(!empty($_product->getSku())){
+                      $getSku = $_product->getSku();
+                  }
+                  if(!empty($_product->getDescription())){
+                      $getDescription = $_product->getDescription();
+                  }
+                  if(!empty($_product->getProductUrl())){
+                      $getProductUrl = $_product->getProductUrl();
+                    }
+                    if(!empty($_product->getFinalPrice())){
+                        $getFinalPrice = $_product->getFinalPrice();
+                      }
+                    $currencysymbol = $objectManager->get('Magento\Store\Model\StoreManagerInterface');
+                    $currency = $currencysymbol->getStore()->getCurrentCurrency();
+                    if(!empty($currency->getCurrencyCode())){
+                        $getCurrencyCode = $currency->getCurrencyCode();
+                      }?>
+                     <?php if(!empty($_product->getDesigner() && $_product->getAttributeText('designer')=='Sabyasachi')) 
+                     { ?>
+                         <script type="application/ld+json"> 
+                    { 
+                          "@context": "http://schema.org/", 
+                          "@type": "Product", 
+                          "name": "<?php echo $getShortDescription; ?>", 
+                          "image": " <?php echo $imgBase; ?>", 
+                          "description": "<?php echo $getDescription; ?>", 
+                          "brand": { 
+                          "@type": "Brand", 
+                          "name": "<?php echo $getName; ?>" 
+                        }, 
+                          "sku": "<?php echo $getSku; ?>", 
+                          "offers": { 
+                          "@type": "Offer", 
+                          "url": "<?php echo $getProductUrl; ?>", 
+                          "availability": "<?php echo $is_in_stock; ?>", 
+                          "itemCondition": "https://schema.org/NewCondition" 
+                        }, 
+                          "aggregateRating": { 
+                          "@type": "AggregateRating", 
+                          "ratingValue": "5", 
+                          "bestRating": "5", 
+                          "worstRating": "3.5", 
+                          "ratingCount": "5" 
+                        } 
+
+                    } 
+                    </script> 
+                    <?php 
+                     } else 
+                     {   ?>
+                       
+                        <script type="application/ld+json"> 
+                    { 
+                          "@context": "http://schema.org/", 
+                          "@type": "Product", 
+                          "name": "<?php echo $getShortDescription; ?>", 
+                          "image": " <?php echo $imgBase; ?>", 
+                          "description": "<?php echo $getDescription; ?>", 
+                          "brand": { 
+                          "@type": "Brand", 
+                          "name": "<?php echo $getName; ?>" 
+                        }, 
+                          "sku": "<?php echo $getSku; ?>", 
+                          "offers": { 
+                          "@type": "Offer", 
+                          "url": "<?php echo $getProductUrl; ?>", 
+                          "priceCurrency": "<?php echo $getCurrencyCode; ?>", 
+                          "price": "<?php echo $getFinalPrice; ?>", 
+                          "priceValidUntil": "2034-12-31", 
+                          "availability": "<?php echo $is_in_stock; ?>", 
+                          "itemCondition": "https://schema.org/NewCondition" 
+                        }, 
+                          "aggregateRating": { 
+                          "@type": "AggregateRating", 
+                          "ratingValue": "5", 
+                          "bestRating": "5", 
+                          "worstRating": "3.5", 
+                          "ratingCount": "5" 
+                        } 
+
+                    } 
+                    </script> 
+
+                    <?php  } ?>
+                  
+  <?php } ?>
+
+<?php if($header!=''): ?>
+  <?php echo $this->getLayout()->createBlock('Magento\Theme\Block\Html\Header')->setBlock($block)->setTemplate('Magento_Theme::html/headers/'.$header.'.phtml')->toHtml() ?>
+<?php else: ?>
+  <?php $canUsePanel = $helper->acceptToUsePanel() ?>
+
+  
+  <?php $customerSession = $objectManager->create('Magento\Customer\Model\Session'); ?>
+  <?php $customerUrl = $objectManager->create('Magento\Customer\Model\Url'); ?>
+<?php $productId = (int) $this->getRequest()->getParam('id'); ?>
+<?php   $product=$objectManager->create('Magento\Catalog\Model\Product');?>
+ <?php
+
+  $this->_request = $request;
+
+ $product_obj = $product->load($productId); 
+echo $product_obj."mithi";
+ ?>
+<?php 
+$this->_request = $request;
+$parent_id=$request->getFullActionName();
+echo $parent_id."mithi";
+ ?>
+ <?php
+$product = $objectManager->get('Magento\Catalog\Model\Product')->load(6089);
+echo $product."mithi";
+ ?> 
+
+
+ <?php $product_obj = $product->load($productid); ?>
+  <?php $topLeftBlock = $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('header_1_top_left_link')->setCanUsePanel($canUsePanel)->toHtml(); ?>
+  <div class="top-header-content">
+    <div class="container">
+      <?php echo $block->getChildHtml('store_language') ?>
+      
+      <?php echo $block->getChildHtml('currency') ?>
+      
+      <?php if($topLeftBlock): ?>
+        <div class="top-custom-link">
+          <?php echo $topLeftBlock; ?>
+        </div>
+      <?php endif ?>
+      <?php echo $block->getChildHtml('minicart') ?>
+      <div class="login-custom-link">
+        <?php if($customerSession->isLoggedIn()): ?>
+          <a href="<?php echo $customerUrl->getAccountUrl(); ?>"><span class="fa fa-user" aria-hidden="true"></span><?php echo $customerSession->getCustomer()->getName(); ?></a>
+          <a href="<?php echo $customerUrl->getLogoutUrl(); ?>"><span class="fa fa-sign-out" aria-hidden="true"></span><?php echo __('Logout'); ?></a>
+        <?php else: ?>
+          <a href="<?php echo $customerUrl->getLoginUrl(); ?>"><span class="fa fa-user" aria-hidden="true"></span><?php echo __('Login'); ?><span> <?php echo __('or'); ?> </span><?php echo __('Register'); ?></a>
+        <?php endif ?>
+      </div>
+    </div>
+  </div>
+  <div class="middle-header-content">
+    <?php echo $block->getChildHtml('logo') ?>
+  </div>
+  <div class="bottom-header-content">
+    <div class="container">
+      <div class="menu-content">
+        <button class="action nav-toggle hidden-lg"><span class="fa fa-bars" aria-hidden="true"></span></button>
+        <?php echo $block->getChildHtml('logo') ?>
+        <div class="megamenu-content<?php if($block->getChildHtml('megamenu')!=''): ?> mgs-menu<?php else: ?> mgt-menu<?php endif ?>">
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#main-Menucontent"><?php echo __('Menu'); ?></a></li>
+            <li><a data-toggle="tab" href="#main-Accountcontent"><?php echo __('My Account'); ?></a></li>
+          </ul>
+          <div class="tab-content">
+            <div id="main-Menucontent" class="tab-pane active">
+              <?php if($block->getChildHtml('megamenu')!=''): ?>
+                <?php echo $block->getChildHtml('megamenu') ?>
+              <?php else: ?>
+                <?php echo $block->getChildHtml('catalog.topnav') ?>
+              <?php endif ?>
+            </div>
+            <div id="main-Accountcontent" class="tab-pane">
+              <?php echo $block->getChildHtml('top.links') ?>
+              <?php if($topLeftBlock): ?>
+                <div class="top-custom-link">
+                  <?php echo $topLeftBlock; ?>
+                </div>
+              <?php endif ?>
+            </div>
+          </div>
+        </div>
+        <?php echo $block->getChildHtml('top.search') ?>
+      </div>
+    </div>
+  </div>
+  <button class="action close-nav-button"><span class="fa fa-times" aria-hidden="true"></span></button>
+<?php endif ?>
+
+<!-- Organization Schema (To be updated on all pages of website):
+ -->
+<script type="application/ld+json"> 
+{ 
+  "@context": "https://schema.org", 
+  "@type": "Organization", 
+  "name": "Aashni and Co", 
+  "alternateName": "Aashni + Co", 
+  "url": "https://aashniandco.com/", 
+  "logo": "https://d3hqqhbe1avk3m.cloudfront.net/logo/stores/1/aashniandco.png", 
+"description": "Aashni + Co pioneers the most desirable edit in contemporary Indian high fashion.", 
+"address": "125 Ledbury Road, London W11 2AQ", 
+  "contactPoint": [{ 
+    "@type": "ContactPoint", 
+    "telephone": "+91- 8375036648", 
+    "contactType": "customer service", 
+    "areaServed": "IN" 
+  },{ 
+    "@type": "ContactPoint", 
+    "telephone": "+44 755 728 9871", 
+    "contactType": "technical support", 
+    "areaServed": "GB" 
+},{ 
+"@type": "ContactPoint", 
+    "email": "customercare@aashniandco.com", 
+    "contactType": "customer service", 
+    "areaServed": "IN" 
+  }], 
+  "sameAs": [ 
+    "https://www.facebook.com/pages/Aashni-Co-Official/417895134941609", 
+    "https://twitter.com/aashniuk", 
+    "https://www.instagram.com/aashniandco/" 
+  ]} 
+</script>
+
+<!-- 
+Local Business: Type – Local Business (To be updated on all pages)
+ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Aashni and Co",
+  "image": "https://d3hqqhbe1avk3m.cloudfront.net/logo/stores/1/aashniandco.png",
+  "@id": "",
+  "url": "https://aashniandco.com",
+  "telephone": "+44 207 985 0155",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "125 Ledbury Road",
+    "addressLocality": "London",
+    "postalCode": "W11 2AQ",
+    "addressCountry": "GB"
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "opens": "10:00",
+    "closes": "19:00"
+  },{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": "Sunday",
+    "opens": "12:00",
+    "closes": "18:00"
+  }],
+  "sameAs": [
+    "ttps://www.facebook.com/pages/Aashni-Co-Official/417895134941609",
+    "https://twitter.com/aashniuk",
+    "https://www.instagram.com/aashniandco/"
+  ] 
+}
+</script>
+
+
+<!-- Local Business: Type – Store (To be updated on all pages)
+ -->
+ <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Store",
+  "name": "Aashni and Co",
+  "image": "https://d3hqqhbe1avk3m.cloudfront.net/logo/stores/1/aashniandco.png",
+  "@id": "",
+  "url": "https://aashniandco.com",
+  "telephone": "+44 207 985 0155",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Ledbury Road",
+    "addressLocality": "London",
+    "postalCode": "W11 2AQ",
+    "addressCountry": "GB"
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "opens": "10:00",
+    "closes": "19:00"
+  },{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": "Sunday",
+    "opens": "12:00",
+    "closes": "18:00"
+  }],
+  "sameAs": [
+    "ttps://www.facebook.com/pages/Aashni-Co-Official/417895134941609",
+    "https://twitter.com/aashniuk",
+    "https://www.instagram.com/aashniandco/"
+  ] 
+}
+</script>
+
+
+<!-- Local Business: Type – Store (To be updated on all pages)
+-->
+
+<!-- Gayatri code for header schema start -->
+
+  <?php if($catId == 4243){
+  ?>
+ <script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Christmas Sale", 
+
+  "description": "From stylish Christmas party clothes to unique gifts for your loved ones, Aashni & Co has all you need this Christmas. Explore our luxury collection of clothing & accessories today.", 
+
+  "startDate": "2022-12-10", 
+
+  "endDate": "2023-01-01", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/christmas-sale.html" 
+
+  } 
+
+} 
+
+</script> 
+<?php } ?>
+
+  <?php if($identifier == 'christmas-sale'){
+  ?>
+ <script type="application/ld+json"> 
+
+{ 
+
+   
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Christmas Sale", 
+
+  "description": "From stylish Christmas party clothes to unique gifts for your loved ones, Aashni & Co has all you need this Christmas. Explore our luxury collection of clothing & accessories today.", 
+  "image": "https://imgs-aashniandco.gumlet.io/pub/media/wysiwyg/Fw_ DTS- Homepage/01.jpg",
+  "startDate": "2022-12-10", 
+
+  "endDate": "2023-01-01", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/christmas-sale" 
+
+  
+
+  },
+  "performer": {
+    "@type": "PerformingGroup",
+    "name": "Aashni & Co"
+  },
+  "offers": {
+    "@type": "Offer",
+    "name": "christmas Sale",
+    "price": "40",
+    "priceCurrency": "USD",
+    "validFrom": "2022-08-01",
+    "url": "https://aashniandco.com/christmas-sale",
+    "availability": "InStock"
+  },
+  "organizer": {
+      "@type": "Organization",
+      "name": "Aashni + Co",
+      "url": "https://aashniandco.com/"
+    }
+
+} 
+
+</script> 
+<?php } ?>
+ <?php if($catId == 4244){
+  ?>
+ <script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Christmas Sale", 
+
+  "description": "We have got amazing womens christmas sale collections for you and your dear ones, give it a shot at Aashni & Co. Check out our exclusive women's Christmas clothing sale now.", 
+
+  "startDate": "2022-12-10", 
+
+  "endDate": "2023-01-01", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/christmas-sale/christmas-sale-for-women.html" 
+
+  } 
+
+} 
+
+</script> 
+<?php } ?>
+
+<?php if($catId == 4245){
+  ?>
+
+<script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Christmas Sale", 
+
+  "description": "Shop from designer men's Christmas Clothing Sale collections at Aashni & Co. Get great deals and offers on premium Men's Clothing this Christmas season.", 
+
+  "startDate": "2022-12-10", 
+
+  "endDate": "2023-01-01", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/christmas-sale/christmas-sale-for-men.html" 
+
+  } 
+
+} 
+
+</script> 
+<?php } ?>
+
+<?php if($catId == 4246){
+  ?>
+
+ <script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Christmas Sale", 
+
+  "description": "Aashni & Co has every kid's Christmas clothing you want for your child this Christmas. Explore our exquisite kid's Christmas clothing sale collection for your little ones.", 
+
+  "startDate": "2022-12-10", 
+
+  "endDate": "2023-01-01", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/christmas-sale/kids-christmas-clothing.html" 
+
+  } 
+
+} 
+
+</script> 
+<?php } ?>
+
+<?php if($catId == 4247){
+  ?>
+ <script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Christmas Sale", 
+
+  "description": "Get amazing deals & offers with our Christmas accessories sale on men's & women's accessories at Aashni & Co. Discover designer accessories such as bags, jewellery, & more.", 
+
+  "startDate": "2022-12-10", 
+
+  "endDate": "2023-01-01", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/christmas-sale/christmas-accessories-sale.html" 
+
+  } 
+
+} 
+
+</script>
+
+<?php } ?>
+
+
+<?php if($catId == 4248){
+  ?>
+<script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Christmas Sale", 
+
+  "description": "Shop for designer Christmas homeware sale at Aashni & Co. Get exclusive Christmas homeware items collection at your fingertips with great deals and offers.", 
+
+  "startDate": "2022-12-10", 
+
+  "endDate": "2023-01-01", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/christmas-sale/christmas-homeware-sale.html" 
+
+  } 
+
+} 
+
+</script> 
+<?php } ?>
+<?php if($catId == 4392){
+  ?>
+  <script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Eid Sale", 
+
+  "description": "Shop Eid clothes for women, men and kids at Aashni & Co. Explore designer clothing options as lehengas, shararas, sarees, eid kurtis, kurtas for men and more.", 
+
+  "startDate": "2023-03-27", 
+
+  "endDate": "2023-04-24", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/occasion/eid.html" 
+
+  } 
+
+} 
+
+</script> 
+<?php } ?>
+<?php if($catId == 4410){
+  ?>
+<script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Eid Sale", 
+
+  "description": "Shop for the latest Eid Clothes for Women online at Aashni & Co. This Eid choose from a wide range of designer ethnic wear as lehengas, shararas, kurtis and more.", 
+
+  "startDate": "2023-03-27", 
+
+  "endDate": "2023-04-24", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/occasion/eid/eid-clothes-for-womens.html" 
+
+  } 
+
+} 
+
+</script> 
+<?php } ?>
+
+<?php if($catId == 4396){
+  ?>
+<script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Eid Sale", 
+
+  "description": "Find the perfect Eid outfit for men with Aashni & Co's curated collection of mens eid clothes. Discover a range of ethnic wear & trendy outfits that cater to all styles.", 
+
+  "startDate": "2023-03-27", 
+
+  "endDate": "2023-04-24", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/occasion/eid/eid-clothes-for-mens.html" 
+
+  } 
+
+} 
+
+</script> 
+  <?php } ?>
+<?php if($catId == 4397){
+  ?>
+  <script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Eid Sale", 
+
+  "description": "Dress your kids in style this Eid with Aashni & Co's stunning eid clothes for kids. Discover a range of traditional and modern styles. Shop now.", 
+
+  "startDate": "2023-03-27", 
+
+  "endDate": "2023-04-24", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/occasion/eid/eid-clothes-for-kids.html" 
+
+  } 
+
+} 
+
+</script> 
+    <?php } ?>
+
+    <?php if($catId == 4411){
+  ?>
+<script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Eid Sale", 
+
+  "description": "Shop for the latest anarkali suits for Eid at Aashni & Co. Find a wide range of designer eid anarkalis in different styles and colors. Look elegant this festive season. Shop now!", 
+
+  "startDate": "2023-03-27", 
+
+  "endDate": "2023-04-24", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/occasion/eid/eid-clothes-for-womens/anarkalis.html" 
+
+  } 
+
+} 
+
+</script> 
+  <?php } ?> 
+
+  <?php if($catId == 4412){
+  ?>
+<script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Eid Sale", 
+
+  "description": "Elevate your Eid wardrobe with Aashni & Co's exquisite collection of Eid Lehengas. Find designer lehengas with a range of colors & designs. Shop now & make a statement.", 
+
+  "startDate": "2023-03-27", 
+
+  "endDate": "2023-04-24", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/occasion/eid/eid-clothes-for-womens/lehengas.html" 
+
+  } 
+
+} 
+
+</script> 
+  <?php } ?> 
+
+  <?php if($catId == 4413){
+  ?>
+<script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Eid Sale", 
+
+  "description": "Find the perfect sharara and get ready to elevate your eid wardrobe with Aashni & Co. Shop designer shararas for women and flaunt your style.", 
+
+  "startDate": "2023-03-27", 
+
+  "endDate": "2023-04-24", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/occasion/eid/eid-clothes-for-womens/shararas.html" 
+
+  } 
+
+} 
+
+</script> 
+<?php } ?> 
+
+<?php if($catId == 4414){
+  ?>
+  <script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Eid Sale", 
+
+  "description": "Buy designer Eid sarees for women online at Aashni & Co. With a wide range of eid saree designs and colors to choose from, shop the one that's just for you.", 
+
+  "startDate": "2023-03-27", 
+
+  "endDate": "2023-04-24", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/occasion/eid/eid-clothes-for-womens/sarees.html" 
+
+  } 
+
+} 
+
+</script> 
+<?php } ?> 
+
+<?php if($catId == 4402){
+  ?>
+  <script type="application/ld+json"> 
+
+{ 
+
+  "@context": "https://schema.org", 
+
+  "@type": "Event", 
+
+  "name": "Eid Sale", 
+
+  "description": "Shop for designer Eid kurta for men online at Aashni & Co. Explore a wide range of eid kurta for men in various colors, designs, patterns and more.", 
+
+  "startDate": "2023-03-27", 
+
+  "endDate": "2023-04-24", 
+
+  "eventStatus": "https://schema.org/EventScheduled", 
+
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode", 
+
+  "location": { 
+
+    "@type": "VirtualLocation", 
+
+    "url": "https://aashniandco.com/occasion/eid/eid-clothes-for-mens/kurtas.html" 
+
+  } 
+
+} 
+
+</script> 
+<?php } ?> 
+
+
+<!-- Gayatri code for header schema end -->
+
+
+
+
+
+
+
+
+
+
+
+
+

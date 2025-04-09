@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="MageWorx_GiftCards::css/checkout.css" />
+    </head>
+    <body>
+        <referenceBlock name="checkout.root">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="checkout" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="steps" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="billing-step" xsi:type="array">
+                                            <item name="component" xsi:type="string">uiComponent</item>
+                                            <item name="children" xsi:type="array">
+                                                <item name="payment" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="afterMethods" xsi:type="array">
+                                                            <item name="children" xsi:type="array">
+                                                                <item name="mageworxGiftcards" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">MageWorx_GiftCards/js/view/payment/mageworx-giftcards</item>
+                                                                    <item name="children" xsi:type="array">
+                                                                        <item name="errors" xsi:type="array">
+                                                                            <item name="sortOrder" xsi:type="string">0</item>
+                                                                            <item name="component" xsi:type="string">MageWorx_GiftCards/js/view/payment/mageworx-giftcards-messages</item>
+                                                                            <item name="displayArea" xsi:type="string">messages</item>
+                                                                        </item>
+                                                                        <item name="applied-gift-cards-info" xsi:type="array">
+                                                                            <item name="sortOrder" xsi:type="string">10</item>
+                                                                            <item name="component" xsi:type="string">MageWorx_GiftCards/js/view/payment/applied-gift-cards-info</item>
+                                                                            <item name="displayArea" xsi:type="string">applied-gift-cards-info</item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                                <item name="sidebar" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="summary" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="totals" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="mageworx_giftcards" xsi:type="array">
+                                                            <item name="component"  xsi:type="string">MageWorx_GiftCards/js/view/summary/mageworxgiftcards</item>
+                                                            <item name="sortOrder" xsi:type="string">15</item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="title" xsi:type="string" translate="true"></item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

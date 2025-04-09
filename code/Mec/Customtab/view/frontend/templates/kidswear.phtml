@@ -1,0 +1,61 @@
+  <style>
+#kidsweare_nav .nav li{ margin:0px !important; padding:0px !important; width:32%; float:left;}
+#kidsweare_nav .nav-pills > li > a { text-align:center;
+    border-radius:0px !important;
+	color: #000;
+font-size: 16px;
+font-weight: 100;
+ padding: 5px 15px;
+  }
+ #kidsweare_nav .nav-pills > li.active > a{
+	  background-color: #444 !important;
+	padding: 5px 15px;
+color:#fff;
+  }
+  </style>
+<?php
+$product = $block->getProduct();
+$kid = $product->getResource()->getAttribute('kids');
+
+if ($kid) {
+    $kidNames = explode(',', $kid->getFrontend()->getValue($product));
+    // var_dump($kidNames);
+    foreach ($kidNames as $kidName) {
+        $kidName = trim(strtolower($kidName));
+        //echo $kidName;
+        }
+    }
+?>
+<div id="kidsweare_nav" style="margin:0px; padding:0px;" class="container-fluid">
+  <div class="col-sm-12">  
+    <ul class="nav nav-pills row">
+      <li class="<?php echo ($kidName == 'girls') ? 'active' : ''; ?>"><a data-toggle="pill" href="https://aashniandco.com/table/size/kidswear.html#home">Girls size chart</a></li>
+      <li class="<?php echo ($kidName == 'boys') ? 'active' : ''; ?>"><a data-toggle="pill" href="https://aashniandco.com/table/size/kidswear.html#menu1">Boys size chart</a></li>
+	   <li class=""><a data-toggle="pill" href="https://aashniandco.com/table/size/kidswear.html#kidsnew">Footwear</a></li>
+    </ul>
+  </div>
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade <?php echo ($kidName == 'girls') ? 'active in' : ''; ?>">
+      <div style="float: left; width: 100%; overflow:scroll;  height:400px;"> 
+
+        <!-- <img src="https://aashniandco.com/pub/size/girls_size_chart.jpg"> -->
+        <?php echo $this->getLayout()->createBlock("Magento\Catalog\Block\Product\View")->setTemplate("Mec_Customtab::girls_chart_new.phtml")->toHtml(); ?>
+
+      </div>
+    </div>
+    <div id="menu1" class="tab-pane fade <?php echo ($kidName == 'boys') ? 'active in' : ''; ?>">
+      <div style="float: left; width: 100%; height:400px; overflow:scroll;"> 
+        <!-- <img style="" src="https://aashniandco.com/pub/size/boys_size_chart.jpg"/> -->
+        <?php echo $this->getLayout()->createBlock("Magento\Catalog\Block\Product\View")->setTemplate("Mec_Customtab::boys_chart_new.phtml")->toHtml(); ?>
+      </div>
+    </div>
+     
+    <div id="kidsnew" class="tab-pane fade">
+      <div style="float: left; width: 100%; height:400px; overflow:scroll;">
+        <!-- <img src="https://aashniandco.com/pub/size/kids-footwear.jpg" style="width:100%;"> -->
+        <?php echo $this->getLayout()->createBlock("Magento\Catalog\Block\Product\View")->setTemplate("Mec_Customtab::kidsFootwear.phtml")->toHtml(); ?>
+      </div>
+    </div>
+
+  </div>
+</div>

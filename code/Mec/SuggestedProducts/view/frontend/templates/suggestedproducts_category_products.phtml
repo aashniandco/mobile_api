@@ -1,0 +1,164 @@
+<style>
+#pdp_sliderrelated {
+    text-align: center;
+}
+#pdp_sliderlike {
+    text-align: center;
+}
+	.product-items {display:flex;}
+	.product-item{padding:5px; text-align: center;}
+.you_likebtn{ background:#000; border:1px #000 solid; padding:5px 15px; margin-top:10px; color:#fff;}	
+#pdp_sliderlike .price-label {
+    color: #000;
+}
+.owl-carousel .owl-nav.disabled {
+    display:block !important;
+}
+.owl-carousel .owl-nav button {
+    background: #000 !important;
+    width: 35px;
+    height: 35px;
+}
+.owl-carousel .owl-nav button span {
+    font-size: 41px !important;
+    color: #fff;
+    line-height: 31px;
+}
+.owl-carousel .owl-nav button.owl-prev{
+	  position: absolute;
+    z-index: 1;
+    top: 40%;
+    left: 0px;
+ 
+}
+.owl-carousel .owl-nav button.owl-next{
+	position: absolute;
+    z-index: 1;
+    top: 40%;
+    right: 0px;
+ 
+}
+</style>
+<?php
+
+const PARAM_NAME_BASE64_URL = 'r64';
+const PARAM_NAME_URL_ENCODED = 'uenc';
+use Magento\Framework\App\Action\Action;
+?>
+<?php $product_collection = $this->getProductCollectionByCategories(); ?>
+<div>
+<?php if ($product_collection):?>
+<div class="block widget block-suggested-products grid">
+<div class="block-content">
+    <div class="products-grid grid">
+        <ol id="pdp_sliderlike" class="owl-carousel owl-theme">
+            <?php $iterator = 1; ?>
+            <?php foreach ($product_collection as $item):
+            $_product =$block->getProductById($item->getId());
+            ?>
+            <?php echo($iterator++ == 1) ? '<li class="product-item-info item">' : '</li><li class="product-item-info item">' ?>
+            <div class="product-top">
+            <?php
+            $image_url = $block->imageHelperObj()->init($_product, 'product_base_image')
+            ->setImageFile($_product->getFile())
+            ->resize($this->getProductimagewidth(),$this->getProductimageheight())
+            ->getUrl();
+            ?>
+            <a href="<?php  echo $_product->getProductUrl() ?>" class="product-item-photo">
+            <img width="100px" src="<?php echo  $image_url;?>" alt="<?php echo $this->escapeHtml($_product->getName()) ?>" />
+	    </a>
+	    <?php if(!$_product->getHideprice()):?>
+            <ul class="actions-link">
+                <?php $quickViewHelper = $this->helper('MGS\QuickView\Helper\Data'); ?>
+                <li class="hidden-sm hidden-xs">
+                    <?php echo $quickViewHelper->aroundQuickViewHtml($_product); ?>
+                </li>
+                <li>
+                    <button data-title="Add to Wish List" data-post='<?php  echo $this->helper('Magento\Wishlist\Helper\Data')->getAddParams($_product) ?>' class="action towishlist" title="Add to Wish List" role="button">
+                    <i class="fa fa-heart"></i>
+                    </button>
+                </li>
+                <?php $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare'); ?>
+                <li><button data-title="<?php echo $block->escapeHtml(__('Add to Compare')); ?>"
+                            class="action tocompare"
+                            title="<?php echo $block->escapeHtml(__('Add to Compare')); ?>"
+                            aria-label="<?php echo $block->escapeHtml(__('Add to Compare')); ?>"
+                            data-post='<?php /* @escapeNotVerified */ echo $compareHelper->getPostDataParams($_product); ?>'
+                            role="button">
+                        <i class="fa fa-retweet"></i>
+                    </button></li>
+                <li>
+                <?php $postParams = $block->getAddToCartPostParams($_product); ?>
+                <form data-role="tocart-form" action="<?php /* @escapeNotVerified */ echo $postParams['action']; ?>" method="post">
+                    <input type="hidden" name="product" value="<?php /* @escapeNotVerified */ echo $postParams['data']['product']; ?>">
+                    <input type="hidden" name="<?php /* @escapeNotVerified */ echo Action::PARAM_NAME_URL_ENCODED; ?>" value="<?php /* @escapeNotVerified */ echo $postParams['data'][Action::PARAM_NAME_URL_ENCODED]; ?>">
+                    <?php echo $block->getBlockHtml('formkey')?>
+                    <?php $storeManager = \Magento\Framework\App\ObjectManager::getInstance()->get('Magento\Store\Model\StoreManagerInterface'); ?>
+                    <button type="submit"
+                            title="<?php echo $block->escapeHtml(__('Add to Cart')); ?>"
+                            class="action tocart ">
+                        <span class="fa fa-shopping-cart"></span>
+                    </button>
+                </form>
+                </li>
+	    </ul>
+	   <?php endif?>
+            <div class="product-item-details">
+                <strong class="product-item-name">
+                <a title="<?php echo $block->escapeHtml($_product->getName()) ?>"
+                href="<?php echo $_product->getProductUrl() ?>"
+                class="product-item-link">
+                    <?php echo $block->escapeHtml($_product->getName()) ?>
+                </a>
+                </strong>
+                <div class="product description product-item-description">
+                    <?php echo $block->escapeHtml($_product->getShortDescription()); ?>
+                </div>
+                <?php
+                echo $this->getProductPriceHtml($_product);
+                ?>
+                </div>
+		</div>
+                <?php if($_product->getHideprice()): ?>
+                        <span id="modal-btn" style="padding: 5px 25px; position: relative; top: 8px; border:1px #000 solid;" data-toggle="modal" data-book-id="<?php echo $_product->getSku();?>">Enquire Now</span>
+                <?php endif;?>
+
+                <?php echo($iterator == count($product_collection)+1) ? '</li>' : '' ?>
+                <?php endforeach ?>
+        </ol>
+    </div>
+    </div>
+</div>
+<?php endif;?>
+</div>
+
+<?php //echo "category"; ?>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'mgs/owlcarousel'
+    ], function(jQuery){
+        (function($) {
+		$("#pdp_sliderlike").owlCarousel({
+		loop:false,
+		rewind:true,	
+                items: 4,
+                nav: true,
+                margin:10,
+                dots: false,
+                autoplay: false,
+                autoplayTimeout:5000,
+                autoplayHoverPause:false,
+                loop:true,
+                navText: ["<i class='fa fa-arrow-left'></i>","<i class='fa fa-arrow-right'></i>"],
+                responsive:{
+                    0 : {items: 2},
+                    480 : {items: 2},
+                    768 : {items: 4},
+                    980 : {items: 4}
+                }
+            });
+        })(jQuery);
+
+    });
+</script>

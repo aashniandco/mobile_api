@@ -1,0 +1,35 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+
+	<head>
+        <title>Titlename</title>
+        <!--
+		demo
+		<css src="Mec_SuggestedProducts::css/css.css"/>
+		<script src="Mec_SuggestedProducts::js/js.js"/>
+		<css src="jquery/fileUploader/css/jquery.fileupload-ui.css"/>
+		<script src="path/file.js" defer="defer"/>
+		<link src="http://url.com" src_type="url"/>
+		<remove src="path/remove/file.css"/>
+
+		-->
+    </head>
+    <body>
+        <!--<referenceContainer name="sidebar.main">
+            <block class="Mec\SuggestedProducts\Block\Index\Sidebar" name="suggestedproducts_index_sidebar" before="-" template="Mec_SuggestedProducts::suggestedproducts_index_sidebar.phtml"/>
+        </referenceContainer>-->
+        <!-- <referenceContainer name="content">
+            <container name="product.suggested.product" htmlTag="div" htmlClass="product-suggested-product" after="-">
+                    <container name="product.suggested.product.tab" htmlTag="div" htmlClass="suggested-product-tab">
+                    <block class="Mec\SuggestedProducts\Block\SuggestedProduct" name="suggestedproducts_tab" template="Mec_SuggestedProducts::suggestedproducts_tab.phtml"/>
+                    </container>
+                    <container name="product.suggested.product.category" htmlTag="div" htmlClass="suggested-product-category tabcontent" htmlId="category-tab">
+                    <block class="Mec\SuggestedProducts\Block\SuggestedProduct" name="suggestedproducts_category" template="Mec_SuggestedProducts::suggestedproducts_category_products.phtml"/>
+                    </container>
+                   
+                    <container name="product.suggested.product.related" htmlTag="div" htmlClass="suggested-product-related tabcontent" htmlId="related-tab">
+                    <block class="Mec\SuggestedProducts\Block\SuggestedProduct" name="suggestedproducts_related_products" template="Mec_SuggestedProducts::suggestedproducts_related_products.phtml" />
+                    </container>
+            </container>
+        </referenceContainer> -->
+    </body>
+</page>

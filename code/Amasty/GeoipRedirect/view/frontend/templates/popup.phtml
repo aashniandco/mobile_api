@@ -1,0 +1,26 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
+ * @package Amasty_GeoipRedirect
+ */
+?>
+<?php /** @var \Amasty\GeoipRedirect\Block\RedirectionPopup $block */ ?>
+
+<div id="amredirect-popup">
+    <p><?= /* @noEscape */ nl2br($block->getText()); ?></p>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#amredirect-popup": {
+            "Amasty_GeoipRedirect/js/popup":{
+                "title":"<?= $block->escapeHtml(__('Redirect notification')) ?>"
+                <?= $block->getType() == \Amasty\GeoipRedirect\Model\Source\PopupType::CONFIRMATION
+                    ? ',"decline":"1"'
+                    : ''
+                ?>
+            }
+        }
+    }
+</script>

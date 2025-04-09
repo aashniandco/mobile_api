@@ -1,0 +1,201 @@
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+.step-label h3 span {
+    border: 1px solid #000;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 50%;
+}
+
+.giftcard-fieldset h2 {
+    margin-top: 4px;
+    margin-bottom: 2px;
+}
+
+.giftcard-info .stock {
+    text-align: right;
+    color: #575757;
+    margin-top: -20px;
+}
+
+#other_amount, .warnings #max, .warnings #min, .warnings #invalid {
+    display: none;
+}
+
+.warnings #max, .warnings #min, .warnings #invalid {
+    color: #e02b27;
+    font-size: 1.2rem;
+    margin-top: 7px;
+}
+
+.required em {
+    color: #e02b27;
+}
+
+.giftcard-info .field {
+    margin-top: 10px;
+}
+
+.amount-options {
+    margin-top: 10px;
+}
+
+.amount-option {
+    background: #f0f0f0;
+    color: #686868;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 20px;
+    padding: 4px 8px;
+    border: 1px solid #dadada;
+    cursor: pointer;
+    float: left;
+    margin: 0 10px 5px 0;
+}
+
+.amount-option.selected {
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    color: #000000;
+    outline: 2px solid #787878;
+}
+
+.amount-option:hover {
+    border: 1px solid #ffffff;
+    color: #333333;
+    outline: 1px solid #999999;
+}
+
+.amount-option:focus {
+    box-shadow: 0 0 3px 1px #00699d;
+}
+
+.calendar-icon {
+    background: url("calendar.svg") no-repeat scroll 0px 4px;
+    background-size: 21px;
+    width: 32px;
+    height: 32px;
+    position: relative;
+    top: -31px;
+    float: right;
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+.mw-clearfix:after {
+    clear: both;
+    content: '';
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+.product-sub-infomation {
+    display: none;
+}
+
+.product-info-common {
+    display: none;
+}
+
+.stock.available {
+    display: none;
+}
+
+#giftcard-fieldset .step-label {
+    display: none;
+}
+
+textarea#mail-message {
+    min-height: 10px !important;
+    height: 40px;
+    overflow: hidden;
+}
+
+.box-tocart .fieldset .actions {
+    display: none;
+}
+
+button#buy-now {
+    width: 200px;
+}
+
+input#card-amount {
+    width: 120px;
+    height: 30px;
+    padding-left: 25px;
+    position: absolute;
+    color: black;
+}
+
+.amount-options.mw-clearfix > i {
+    position: absolute;
+    display: block;
+    transform: translate(0, 16%);
+    top: 16%;
+    pointer-events: none;
+    width: 25px;
+    text-align: center;
+    font-style: normal;
+    z-index: 1;
+}
+
+button.choose-card-amount {
+    margin-left: 25px;
+    background-color: #fff;
+    border: 1px solid rgba(217, 217, 217, 0.55);
+    padding: 5px 15px;
+}
+
+.amount-select-buttons {
+    margin-left: 150px;
+}
+
+@media(max-width: 712px){
+    .amount-select-buttons {
+        margin-left: 85px;
+    }
+    input#card-amount {
+        width: 76px;
+    }
+    .amount-option {
+        font-size: 10px;
+        padding: 4px 2px;
+        height: 30px;
+        margin-right: 5px;
+    }
+}
+
+.product-suggested-product, #card-preview{
+    display: none;
+}
+
+.parent__gallery-thumbnail{
+    max-height: 265px;
+    overflow-y:auto;
+}
+
+@media(max-width: 712px){
+    .parent__gallery-thumbnail{
+	    max-height: 167px;
+	    overflow-y:auto;
+	}
+}
+
+.parent__gallery-thumbnail::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+.parent__gallery-thumbnail::-webkit-scrollbar-track {
+    background: #ccc;
+}
+.parent__gallery-thumbnail::-webkit-scrollbar-thumb {
+    background-color: #959595;
+}

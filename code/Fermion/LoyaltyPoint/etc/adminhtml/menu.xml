@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Fermion. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+          
+        <!-- loyalty module -->
+
+          <add id="Fermion_LoyaltyPoint::loyalty" title="Loyalty Point" module="Fermion_LoyaltyPoint" sortOrder="131" parent="Fermion_Pagelayout::fermion_menu" action="loyaltypoint/loyalty/" resource="Fermion_LoyaltyPoint::Loyalty_grid"/>   
+       
+    </menu>
+</config>

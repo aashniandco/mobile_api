@@ -1,0 +1,17 @@
+.box-tocart {
+    display: flex;
+}
+
+button#buy-now {
+    float: left;
+    width: 100px;
+    height: 40px;
+    margin-right: 15px;
+    background-color: #000 !important;
+    border-color: #000 !important;
+    color: #ffffff !important;
+    font-size: 13px;
+    text-align: center;
+    border-radius: 0;
+    box-shadow: none;
+}

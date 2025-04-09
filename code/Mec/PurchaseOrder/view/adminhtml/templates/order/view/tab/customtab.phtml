@@ -1,0 +1,30 @@
+<?php
+/**
+ * @var $block \Mec\PurchaseOrder\Block\Adminhtml\Order\View\Tab\CustomTab
+ */
+?>
+
+<div class="fieldset-wrapper order-information">
+    <div>
+        <h2>Mec</h2>
+    </div>
+    <div class="fieldset-wrapper-title">
+       <span class="title"><?php /* @escapeNotVerified */
+           echo __('Information for new Order tab') ?></span>
+    </div>
+    <table class="admin__table-secondary">
+        <tbody>
+        <?php echo $block->getChildHtml(); ?>
+        <tr>
+            <th><?php /* @escapeNotVerified */
+                echo __('Order ID:') ?></th>
+            <td><?php echo $block->getOrderIncrementId(); ?></td>
+        </tr>
+        <tr>
+            <th><?php /* @escapeNotVerified */
+                echo __('Last History:') ?></th>
+            <td><?php echo __('History of order') ?></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

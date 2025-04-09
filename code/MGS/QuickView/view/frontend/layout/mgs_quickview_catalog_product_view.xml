@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">    
+    <update handle="catalog_product_view"/>
+    <body>
+        <referenceBlock name="catalog.product.related" remove="true"/>
+        <referenceBlock name="product.info.upsell" remove="true"/>
+        <referenceBlock name="header.container" remove="true"/>
+        <referenceBlock name="footer-container" remove="true"/>
+        <referenceBlock name="page.top" remove="true" />
+        <referenceBlock name="copyright" remove="true" />
+        <referenceBlock name="authentication-popup" remove="true" />
+        <referenceBlock name="product.info.review" remove="true" />     
+        <referenceBlock name="product.info.social" remove="true" />     
+		
+        <referenceBlock name="product.info.overview">
+            <action method="setTemplate" ifconfig="mgs_quickview/general/hide_short_description">
+                <argument name="template" xsi:type="string"></argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="content" >                
+                <container name="product.info.size.chart" htmlTag="div" htmlClass="product-size-chart" before="-"  as="size_chart_data" label="ChaRT">
+                <block class="Magento\Catalog\Block\Product\View" name="size.chart.data" template="Mec_Customtab::size_chart.phtml">
+                        <arguments>
+                                <argument translate="true" name="title" xsi:type="string">Size Chart</argument>
+                                <argument name="sort_order" xsi:type="string">10</argument>
+                        </arguments>
+                </block>
+                </container>
+        </referenceBlock>
+		
+        <referenceBlock name="product.info.media.image">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Magento_Catalog::product/view/quickview/gallery.phtml</argument>
+            </action>
+        </referenceBlock>
+		
+        <referenceBlock name="product.info.sku">
+            <action method="setTemplate" ifconfig="mgs_quickview/general/hide_sku">
+                <argument name="template" xsi:type="string"></argument>
+            </action>
+        </referenceBlock>                          
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Framework\View\Element\Template" name="mgs.quickview.before.body.end" template="MGS_QuickView::before-body-end.phtml" />
+        </referenceContainer>
+        <referenceBlock name="product.info.details" remove="true"/>        
+    </body>
+</page>

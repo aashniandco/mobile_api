@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="MageWorx_GiftCards::css/paypal.css"/>
+    </head>
+    <body>
+        <referenceBlock name="checkout.cart.giftcardaccount" remove="true"/>
+        <referenceBlock name="paypal.additional.actions">
+            <block class="MageWorx\GiftCards\Block\PayPal\Express\GiftCards" template="MageWorx_GiftCards::cart/coupon.phtml" name="checkout.cart.giftcards" after="paypal.cart.coupon"/>
+        </referenceBlock>
+    </body>
+</page>

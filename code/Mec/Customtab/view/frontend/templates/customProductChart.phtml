@@ -1,0 +1,14 @@
+<?php
+  $product = $block->getProduct();
+  $sizeChartImg = $product->getData('prod_size_chart_img');
+?>
+
+<div id="custom_size_chart" style="margin:0px; padding:0px;" class="container-fluid">
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade active in">
+      <div style="float: left; width: 100%; overflow:hidden;  height:100%;"> 
+        <img style="width: 100%; height:100%; object-fit: cover; top: 0; left:0" src="https://orders.aashniandco.com/pub/media/catalog/product/<?= $sizeChartImg ?>">
+      </div>
+    </div>
+  </div>
+</div>

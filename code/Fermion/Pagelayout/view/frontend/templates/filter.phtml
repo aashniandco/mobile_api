@@ -1,0 +1,1778 @@
+<?php
+$requestParams = $this->getRequest()->getParams();
+$catId = $this->getRequest()->getParam('id');
+ if($catId == 1383){
+    $Filter_name = 'Celebrity';
+}else{
+    $Filter_name = 'Category';
+}
+$searchString = $this->getRequest()->getParam('q');
+$respData = array();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$Helper = $objectManager->get('\Fermion\Pagelayout\Helper\SolrHelper');
+$currentDevice = $Helper->getCurrentDevice();
+$storeManager = $objectManager->get('Magento\Store\Model\StoreManagerInterface');
+$currentStore = $storeManager->getStore();
+$mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+//error_log("-----------Filter.phtml-----------");
+if(!empty($catId)){
+    $respData = $block->getListingFilterdata($catId,$requestParams);
+}else{
+    $respData = $block->getSearchFilterdata($searchString,$requestParams);
+}
+
+$facets = isset($respData['facets']) ? $respData['facets'] : '';
+// jwellery id on live 6023 on stage 4069
+if($catId == 6023){
+    $desiredOrder = ["6028","6024","6050","6031","6085","6039","6064","6034","6047","6042","6037","6045","6079"];
+
+    $sortedCategories = array();
+    foreach ($desiredOrder as $key) {
+        if (isset($facets['categories'][$key])) {
+            $sortedCategories[$key] = $facets['categories'][$key];
+        }
+    }
+
+    foreach ($facets['categories'] as $key => $value) {
+        if (!isset($sortedCategories[$key])) {
+            $sortedCategories[$key] = $value;
+        }
+    }
+
+    // Print the arrays for debugging
+    // echo '<pre>';
+    // print_r($sortedCategories);
+    // print_r($facets['categories']);die;
+    $facets['categories'] = $sortedCategories;
+}
+// echo'<pre>';
+//  print_r($facets);
+// die;
+//error_log("==============data===========".json_encode($respData));
+$currentPageUrl = $block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]);
+$url = strtok($currentPageUrl, "?");
+?>
+<!-- 23-0-2023 -->
+<?php 
+if ($facets['min_price'] == $facets['max_price']) {
+?>
+<input type="hidden" id="min-price" value="0" />
+<input type="hidden" id="max-price" value="1" />
+<?php
+} else {
+?>
+<input type="hidden" id="min-price" value="<?= $facets['min_price']; ?>" />
+<input type="hidden" id="max-price" value="<?= $facets['max_price']; ?>" />
+
+<?php
+}
+?>
+<?php
+$plp_listing_url = "/pagelayout/plp/listing";
+$search_pagerequest_url = "/pagelayout/search/pagerequest";
+$utm_url = "?";
+$utm_url_set = false;
+
+if (isset($_GET['utm_source']) || isset($_GET['utm_medium']) || isset($_GET['utm_campaign']) || isset($_GET['utm_content'])) {
+    $utm_source = isset($_GET['utm_source']) ? rawurlencode($_GET['utm_source']) : '';
+    $utm_medium = isset($_GET['utm_medium']) ? rawurlencode($_GET['utm_medium']) : '';
+    $utm_campaign = isset($_GET['utm_campaign']) ? rawurlencode($_GET['utm_campaign']) : '';
+    $utm_content = isset($_GET['utm_content']) ? rawurlencode($_GET['utm_content']) : '';
+    $utm_url .= "utm_source=".$utm_source."&utm_medium=".$utm_medium."&utm_campaign=".$utm_campaign."&utm_content=".$utm_content;
+    $utm_url_set = true;
+}
+
+$plp_listing_url = $utm_url_set ? $plp_listing_url.$utm_url : $plp_listing_url;
+$search_pagerequest_url = $utm_url_set ? $search_pagerequest_url.$utm_url : $search_pagerequest_url;
+$block_currency = $this->getLayout()->createBlock('\Magento\Directory\Block\Currency')->getCurrentCurrencyCode();
+$catId = isset($catId) ? $catId : null;
+
+?>
+
+<div id="data-container"
+     data-plp-listing-url="<?php echo $plp_listing_url; ?>"
+     data-search-pagerequest-url="<?php echo $search_pagerequest_url;?>"
+     data-block-currency="<?php echo $block_currency; ?>"
+     data-cat-id="<?php echo $catId; ?>"  >
+</div>
+<input id="search" type="hidden" value="<?php echo isset($_GET['q']) ? $_GET['q'] : '';?>">
+<div class="block filter" id="layered-filter-block" data-collapsible="true">
+<div class="block-title filter-title" data-count="0" role="tablist">
+<strong class="title" data-role="title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Select Filter<span class="fa fa-filter"></span></strong>
+</div>
+<div class="block-content filter-content">                     
+    <div id="am-shopby-container" class="amshopby-filter-current filter-current hide-in-mobile" data-am-js="shopby-container" data-collapsible="true" role="tablist">
+        <span class="block-subtitle filter-current-subtitle" role="tab" aria-level="2" data-role="title" data-count="5" aria-selected="false" aria-expanded="false" tabindex="0">
+            Now Shopping by        </span>
+        <ol class="amshopby-items items">
+        </ol>
+
+        
+    </div>
+
+    <div class="block-actions filter-actions hide-in-mobile" style="display:none;">
+        <a href="<?php echo $url; ?>" class="action btn btn-xs btn-primary clear filter-clear"><span>Clear All</span></a>
+    </div>
+
+    <style type="text/css">
+        .filter-sticky{
+            position: fixed;
+            width: 300px;
+            height: 440px;
+            overflow-y: auto;
+        }
+       @media(max-height: 768px){
+            .filter-sticky{
+            position: fixed;
+            width: 300px;
+            height: 410px;
+            overflow-y: auto;
+            }
+        }
+        .filter-sticky::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+        }
+        .filter-sticky::-webkit-scrollbar-track {
+            background: #ccc;
+        }
+        .filter-sticky::-webkit-scrollbar-thumb {
+            background-color: #959595;
+        }
+        .filter-options-content::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .filter-options-content::-webkit-scrollbar-track {
+            background: #ccc;
+        }
+        .filter-options-content::-webkit-scrollbar-thumb {
+            background-color: #959595;
+        }
+        .breadcrumbs .breadcrumbs-content {
+            text-align: center;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        /*.sidebar .block.filter .block-subtitle{
+            text-align: center;
+            border: 1px solid #ebebeb;
+        }*/
+        .sidebar .block.filter .block-subtitle:after {
+            content: unset;
+        }
+        /*.filter-options{
+            display: block;
+        }*/
+
+        .filter-drop{
+            display: block;
+            border: 0;
+            text-align: left;
+            background-color: transparent;
+        }
+
+        @media(max-width: 1112px){
+            .filter-options{
+                display: none;
+                width: 100%;
+                float: left;
+                margin-top: 20px;
+            }
+            .filter-drop{
+                width: 100%;
+                float: left;
+                display: block;
+                text-align: center;
+                border: 1px solid #ebebeb;
+                background-color: transparent;    
+            }
+
+            .filter-drop .block-subtitle.mobile-filter{
+                font-size: 16px !important;
+                font-weight: 300;
+                color: #1a1a1a;
+                position: relative;
+                display: block;
+                margin-bottom: 0px !important;
+                padding: 2px 0px !important;
+
+            }
+
+            #amasty-shopby-product-list {
+                padding-top: 10px;
+            }
+        }
+    </style>
+    <!-- ------------html--------------------------------------------------------- -->
+    
+    <div class="wrap">
+        <div class="filter-section">
+            <div class="btn-sort-by">
+                <div class="img-pod">
+                    <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/sort-icon.svg">
+                </div>
+                <div class="sort-data">
+                    <div class="head">SORT BY</div>
+                    <div class="text-field">New Arrivals</div>
+                </div>
+            </div>
+            <div class="seperator"></div>
+            <div class="btn-filter-by">
+                <div class="img-pod">
+                    <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/funnel.svg">
+                    <div class="filter-applied"></div>
+                </div>
+                <div class="f-data click-filter">
+                    <div class="head">FILTER</div>
+                    <div class="text-field">Apply Filter</div>
+                </div>
+            </div>
+        </div>
+
+    <!------sort-by section------->
+        
+        <div class="sort-cat-block" style="display: none;">
+            <div class="sort-cat-content sorter">
+                <div class="sort-title-head">
+                    <div class="title">Sort By</div>
+                    <div class="close-btn"><img src="https://aashniandco.com/pub/media/close-btn.png"></div>
+                </div>
+                <!-- <label class="select-sort-item">
+                    <input type="radio" name="cat" class="select-radio" checked data-value="popularity">
+                    <div class="select-type"></div>
+                    <div class="text">Popularity</div>
+                </label> -->
+                <label class="select-sort-item">
+                    <input type="radio" name="cat" class="select-radio" data-value="low-to-high">
+                    <div class="select-type"></div>
+                    <div class="text">Price Low To High</div>
+                </label>
+                <label class="select-sort-item">
+                    <input type="radio" name="cat" class="select-radio" data-value="high-to-low">
+                    <div class="select-type"></div>
+                    <div class="text">Price High To Low</div>
+                </label>
+                <label class="select-sort-item">
+                    <input type="radio" name="cat" class="select-radio" checked data-value="new-arrival">
+                    <div class="select-type"></div>
+                    <div class="text">New Arrivals</div>
+                </label>
+            </div>
+        </div>  
+
+    <!------filter data section-------> 
+
+        <div class="mobile-filter-block" style="display: none;">
+            <div class="filter-main">
+                <div class="filter-head">
+                    <!-- <div class="img-pod">
+                        <img src="funnel.svg">
+                    </div> -->
+                    <div class="title">FILTERS</div>
+                    <div class="clearall-text"><a href="<?php echo $url; ?>">Clear all</a></div>
+                </div>
+
+                <div class="filter-body">
+                    <div class="left-content">
+                        <div class="filter-tab">
+                            <?php
+
+                           
+                            if (isset($facets["categories"]) && !empty($facets["categories"])) {
+                                $cat_div_css = "style='display:block;'";
+                            } else {
+                                $cat_div_css = "style='display:none;'";
+                            }
+
+                            if (isset($facets["navratri_colors"]) && !empty($facets["navratri_colors"])) {
+                                $nav_color_div_css = "style='display:block;'";
+                            } else {
+                                $nav_color_div_css = "style='display:none;'";
+                            }
+
+                            if (isset($facets["kids"]) && !empty($facets["kids"])) {
+                                $kid_div_css = "style='display:block;'";
+                            } else {
+                                $kid_div_css = "style='display:none;'";
+                            }
+                            if (isset($facets["patterns"]) && !empty($facets["patterns"]) && ( (isset($facets['categories']) && empty($facets['categories']) ) || !isset($facets['categories'])) ){
+                                $patterns_div_css = "style='display:block;'";
+                            } else {
+                                $patterns_div_css = "style='display:none;'";
+                            }
+                            if (isset($facets['genders']) && !empty($facets['genders'])){
+                                if(array_key_exists(6301,$facets['genders']) && (array_key_exists(6302,$facets['genders']))){
+                                    $gen_div_css = "style='display:block;'";
+                                }else{
+                                    $gen_div_css = "style='display:none;'";
+                                } 
+                            }else{
+                                $gen_div_css = "style='display:none;'";
+                            }
+                            if (isset($facets['tags']) && !empty($facets['tags'])){
+                                $tags_div_css = "style='display:none;'";
+                            }else{
+                                $tags_div_css = "style='display:none;'";
+                            }
+
+                            $category_plp = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+                            $parent_catId = $category_plp->getParentIds();
+                            if(isset($_GET['gtest']) && $_GET['gtest']=='gtest') {
+                                echo $parent_catId.'  :: Category_id';
+                                }
+                            $bridal_div_css = "style='display:none;'";
+                            if(in_array(3126, $parent_catId) || $parent_catId == 3126){
+                                if(isset($facets["bridal"]) && !empty($facets["bridal"])){
+                                        $bridal_div_css = "style='display:block;'";
+                                    }else{
+                                        $bridal_div_css = "style='display:none;'";
+                                    }
+                            }else{
+                                $bridal_div_css = "style='display:none;'";
+                            }
+
+                            if (isset($facets["designers"]) && !empty($facets["designers"]) && (count($facets['designers']) > 1)) {
+                                $des_div_css = "style='display:block;'";
+                            } else {
+                                $des_div_css = "style='display:none;'";
+                            }
+
+                            if (isset($facets["colors"]) && !empty($facets["colors"])) {
+                                $col_div_css = "style='display:block;'";
+                            } else {
+                                $col_div_css = "style='display:none;'";
+                            }
+
+                            if (isset($facets["sizes"]) && !empty($facets["sizes"])) {
+                                $facets["sizes"] = array_unique($facets["sizes"]);
+                                $sizes_div_css = "style='display:block;'";
+                            } else {
+                                $sizes_div_css = "style='display:none;'";
+                            }
+                            if(isset($_GET['atest']) && $_GET['atest']=='stest') {
+                                    print_r($facets["sizes"]);
+                                }
+
+                            $category_plp = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+                            $parent_catId = $category_plp->getParentIds();
+                            if(isset($_GET['atest']) && $_GET['atest']=='stest') {
+                                }
+                            
+                            if(in_array(3126, $parent_catId) || $parent_catId == 3126){
+                                $aco_div_css = "style='display:none;'";
+                            }elseif(isset($facets["a_co_edit"]) && !empty($facets["a_co_edit"])){
+                                $aco_div_css = "style='display:block;'";
+                            }else{
+                                $aco_div_css = "style='display:none;'";
+                            }
+                            if (isset($facets["occasions"]) && !empty($facets["occasions"])) {
+                                $occ_div_css = "style='display:block;'";
+                            } else {
+                                $occ_div_css = "style='display:none;'";
+                            }
+                            if(isset($_GET['aatest']) && $_GET['aatest']=='sstest') {
+                                    print_r($facets["delivery_times"]);
+                                }
+
+                            if (isset($facets["delivery_times"]) && !empty($facets["delivery_times"])) {
+                                $facets["delivery_times"] = array_unique($facets["delivery_times"]);
+                                $del_div_css = "style='display:block;'";
+                            } else {
+                                $del_div_css = "style='display:none;'";
+                            }
+                            if ($facets["min_price"] == $facets["max_price"]) {
+                                $pric_div_css = "style='display:none;'";
+                            } else {
+                                $pric_div_css = "style='display:block;'";
+                            }
+                            if (isset($facets["themes"]) && !empty($facets["themes"])) {
+                                $theme_div_css = "style='display:block;'";
+                            } else {
+                                $theme_div_css = "style='display:none;'";
+                            }
+                            ?>
+                            <div class="select-category filter-header-theme-mobile-left active" data-tab="tab-14" data-info="themeFilter" <?php echo $theme_div_css; ?> >Theme</div>
+                            <div class="select-category filter-header-category-mobile-left" data-tab="tab-1" data-info="categoryFilter" <?php echo $cat_div_css; ?> > <?php echo $Filter_name; ?></div>
+                            <div class="select-category filter-header-navratri-color-mobile-left" data-tab="tab-15" data-info="navratriColorFilter" <?php echo $nav_color_div_css; ?> >Navratri Colors</div>
+                            <div class="select-category filter-header-kids-mobile-left" data-tab="tab-2" data-info="kidFilter" <?php echo $kid_div_css; ?> >Kids</div>
+                            <div class="select-category filter-header-patterns-mobile-left" data-tab="tab-3" data-info="patternsFilter" <?php echo $patterns_div_css; ?> >Category</div>
+                            <div class="select-category filter-header-gender-mobile-left" data-tab="tab-4" data-info="genderFilter"<?php echo $gen_div_css; ?> >Gender</div>
+                            <div class="select-category filter-header-tags-mobile-left" data-tab="tab-5" data-info="tagsFilter" <?php echo $tags_div_css; ?> >Tags</div>
+                            <div class="select-category filter-header-bridal-mobile-left" data-tab="tab-6" data-info="bridalFilter" <?php echo $bridal_div_css; ?> >Bridal</div>
+                            <div class="select-category filter-header-designer-mobile-left" data-tab="tab-7" data-info="designerFilter" <?php echo $des_div_css; ?> >Designers</div>
+                            <div class="select-category filter-header-color-mobile-left" data-tab="tab-8" data-info="colorFilter" <?php echo $col_div_css; ?> >Colors</div>
+                            <div class="select-category filter-header-size-mobile-left" data-tab="tab-9" data-info="sizeFilter" <?php echo $sizes_div_css; ?> >Size</div>
+                            <div class="select-category filter-header-a-co-edits-mobile-left" data-tab="tab-10" data-info="acoeditFilter"<?php echo $aco_div_css; ?> >A+ Co Edits</div>
+                            <div class="select-category filter-header-occasion-mobile-left" data-tab="tab-11" data-info="occasionFilter" <?php echo $occ_div_css; ?> >Occasions</div>
+                            <div class="select-category filter-header-delivery-mobile-left" data-tab="tab-12" data-info="deliveryFilter" <?php echo $del_div_css; ?> >Delivery</div>
+                            <div class="select-category filter-header-price-mobile-left" data-tab="tab-13" data-info="priceFilter" <?php echo $pric_div_css; ?> >Price</div>
+                        </div>
+                    </div>
+                    <div class="right-content">
+                        <div class="filter-data-block">
+                            <div class="filter-data" data-filter="categoryFilter" id="tab-1">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search Category" class="search-input category-search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="all-filters">
+                                    <?php
+                                    $childCategoryArr = isset($facets["child_categories"]) ? $facets["child_categories"] : array();
+
+                                    if (isset($facets['categories']) && !empty($facets['categories'])) {
+                                        foreach ($facets['categories'] as $facetCatId => $catName) { ?>
+                                        <div class="filter-plot">
+                                            <!-- <div class="heading"><?php echo $catName; ?></div> -->
+                                            <div class="heading">
+                                                <?php 
+                                                $parentId = 0;
+                                                if (isset($childCategoryArr[$facetCatId]) && !empty($childCategoryArr[$facetCatId])) {
+                                                $parentId = 1;
+                                                }
+                                                ?>
+                                                <input type="checkbox" name="amshopby[cat][]" value="<?php echo $facetCatId; ?>" class="checkAll highlight-check" data-child="<?php echo $parentId;?>" data-info="<?php echo $catName; ?>">
+                                                <a href="javascript:void(0)" class="menu-slot"><?php echo $catName; ?></a>
+
+                                                <?php 
+                                                if($parentId == 1){
+                                                ?>
+                                                    <div class="show-plus-sign"></div>
+                                                <?php 
+                                                }
+                                                ?>
+                                                
+                                            </div>
+                                            <div class="filters filter-height designer-scroll filter-header-category-mobile">
+                                                <div class="search-form">
+                                                    <div class="input">
+                                                        <button class="btn"></button>
+                                                        <input type="text" name="" placeholder="Search Sub Category" class="sub-category-search-input">
+                                                    </div>
+                                                </div>
+                                                <div class="filter-scroll">
+                                                    <?php
+                                                    $parentId = 0;
+
+                                                    if (isset($childCategoryArr[$facetCatId]) && !empty($childCategoryArr[$facetCatId])) {
+                                                    $parentId = 1;
+                                                    // PHP loop to generate filter contents
+                                                    foreach ($childCategoryArr[$facetCatId] as $ckey => $cvalue) {
+                                                    ?>
+                                                        <label class="filter-content" data-filter="categoryFilter">
+                                                            <input type="checkbox" value="<?php echo $ckey;  ?>" data-info="<?php echo $cvalue;  ?>" name="amshopby[cat][]" class="highlight-check sub-check">
+                                                            <div class="check-box"></div>
+                                                            <a class="text">
+                                                                <?php echo $cvalue; ?>
+                                                                    
+                                                            </a>
+                                                        </label>
+                                                    <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+
+                            <div class="filter-data" data-filter="kidFilter" id="tab-2" >
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search" class="search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                        
+                                <div class="filters filter-height designer-scroll filter-option filter-header-kid-mobile">
+                                    
+                                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_kid_multiple" data-amshopby-filter-request-var="kid_multiple" autocomplete="off">
+                                        <ol class="items am-filter-items-attr_kid_multiple">
+                                                               
+                                            <?php
+                                            if(isset($facets['kids']) && !empty($facets['kids'])){
+                                                foreach($facets['kids'] as $kidOptionId => $kidName){ ?>
+                                                    <label class="filter-content" data-filter="kidFilter">
+                                                        <input name="amshopby[kid_multiple][]" value="<?php echo $kidOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $kidName; ?>">
+                                                        <div class="check-box"></div> 
+                                                        <a class="text">
+                                                            <?php echo $kidName;?>
+                                                        </a>                     
+                                                    </label>
+                                                 
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </ol>
+                                    </form>                               
+                                </div>
+                            </div>
+
+                            <div class="filter-data" data-filter="patternsFilter" id="tab-3">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search" class="search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                        
+                                <div class="filters filter-height designer-scroll filter-option filter-header-patterns-mobile">
+                                    
+                                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_patterns" data-amshopby-filter-request-var="patterns" autocomplete="off">
+                                        <ol class="items am-filter-items-attr_patterns">
+                                            
+                                        <?php
+                                        if(isset($facets['patterns']) && !empty($facets['patterns'])){
+                                            foreach($facets['patterns'] as $patternsOptionId => $patternsName){ ?>
+                                                    <label class="filter-content" data-filter="patternsFilter">
+                                                        <input name="amshopby[patterns][]" value="<?php echo $patternsOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $patternsName; ?>">
+                                                        <div class="check-box"></div> 
+                                                        <a class="text">
+                                                            <?php echo $patternsName;?>
+                                                        </a>                     
+                                                    </label>
+                                                 
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </ol>
+                                    </form>                               
+                                </div>
+                            </div>
+                            <div class="filter-data" data-filter="genderFilter" id="tab-4">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search" class="search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                        
+                                <div class="filters filter-height designer-scroll filter-option filter-header-gender-mobile">
+                                    
+                                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_genders" data-amshopby-filter-request-var="genders" autocomplete="off">
+                                        <ol class="items am-filter-items-attr_genders">
+                                            
+
+                                            <?php
+                                            if(isset($facets['genders']) && !empty($facets['genders'])){
+                                                foreach($facets['genders'] as $genderOptionId => $genderName){ ?>
+                                                <label class="filter-content" data-filter="genderFilter">
+                                                    <input name="amshopby[genders][]" value="<?php echo $genderOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $genderName; ?>">
+
+                                                    <div class="check-box"></div> 
+                                                    <a class="text">
+                                                        <?php echo $genderName;?>
+                                                    </a>                     
+                                                </label>
+                                                 
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </ol>
+                                    </form>                               
+                                </div>
+                            </div>
+                            <div class="filter-data" data-filter="tagsFilter" id="tab-5">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search" class="search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                        
+                                <div class="filters filter-height designer-scroll filter-option filter-header-tags-mobile">
+                                    
+                                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_tags" data-amshopby-filter-request-var="tags" autocomplete="off">
+                                            <ol class="items am-filter-items-attr_tags">
+                                                
+
+                                                <?php
+                                            if(isset($facets['tags']) && !empty($facets['tags'])){
+                                                foreach($facets['tags'] as $tagsOptionId => $tagsName){ ?>
+                                                    <label class="filter-content" data-filter="tagsFilter">
+                                                        <input name="amshopby[tags][]" value="<?php echo $tagsOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $tagsName; ?>">
+
+                                                        <div class="check-box"></div> 
+                                                        <a class="text">
+                                                            <?php echo $tagsName;?>
+                                                        </a>                     
+                                                    </label>
+                                                 
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </ol>
+                                    </form>                               
+                                </div>
+                            </div>
+                            <div class="filter-data" data-filter="bridalFilter" id="tab-6">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search" class="search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                        
+                                <div class="filters filter-height designer-scroll filter-option filter-header-bridal-mobile">
+                                    
+                                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_bridal" data-amshopby-filter-request-var="bridal" autocomplete="off">
+                                        <ol class="items am-filter-items-attr_bridal">
+                                            <?php
+                                                if(isset($facets['bridal']) && !empty($facets['bridal'])){
+                                                    foreach($facets['bridal'] as $bridalOptionId => $bridalName){ ?>
+                                                        <label class="filter-content" data-filter="bridalFilter">
+                                                            <input name="amshopby[bridal][]" value="<?php echo $bridalOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $bridalName; ?>">
+                                                            <div class="check-box"></div>
+                                                            <a class="text">
+                                                                <?php echo $bridalName;?>
+                                                            </a>                     
+                                                        </label>
+                                                     
+                                                <?php
+                                                    }
+                                                }
+                                                ?>
+
+                                        </ol>
+                                    </form>                               
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="filter-data" data-filter="designerFilter" id="tab-7">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search" class="search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                        
+                                <div class="filters filter-height designer-scroll filter-option filter-header-designer-mobile">
+                                    
+                                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_designer" data-amshopby-filter-request-var="designer" autocomplete="off">
+                                        <ol class="items am-filter-items-attr_designer">
+                                                               
+                                        <?php
+                                        if(isset($facets['designers']) && !empty($facets['designers'])){
+                                            foreach($facets['designers'] as $designerOptionId => $designerName){ ?>
+                                                    <label class="filter-content" data-filter="designerFilter">
+                                                        <input name="amshopby[designer][]" value="<?php echo $designerOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $designerName; ?>">
+                                                        <div class="check-box"></div> 
+                                                        <a class="text">
+                                                            <?php echo $designerName;?>
+                                                        </a>                     
+                                                    </label>
+                                                 
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </ol>
+                                    </form>                                
+                                </div>
+                            </div>
+
+                            <div class="filter-data" data-filter="colorFilter" id="tab-8">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search" class="search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                        
+                                <div class="filters filter-height designer-scroll filter-option filter-header-color-mobile">
+                                    
+                                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_color_multiple" data-amshopby-filter-request-var="color_multiple" autocomplete="off">
+                                        <ol class="items am-filter-items-attr_color_multiple">
+                                                               
+                                        <?php
+                                        if(isset($facets['colors']) && !empty($facets['colors'])){
+                                            foreach($facets['colors'] as $colorOptionId => $colorName){ ?>
+                                                    <label class="filter-content" data-filter="colorFilter">
+                                                        <input name="amshopby[color_multiple][]" value="<?php echo $colorOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $colorName; ?>">
+
+                                                        <div class="check-box"></div> 
+                                                        <a class="text">
+                                                            <?php echo $colorName;?>
+                                                        </a>                     
+                                                    </label>
+                                                 
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </ol>
+                                    </form>                               
+                                </div>
+                            </div>
+                            <div class="filter-data" data-filter="sizeFilter" id="tab-9">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search" class="search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                        
+                                <div class="filters filter-height designer-scroll filter-option filter-header-size-mobile">
+                                    
+                                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_size" data-amshopby-filter-request-var="size" autocomplete="off">
+                                        <ol class="items am-filter-items-attr_size">
+                                            <?php
+                                            
+                                        if(isset($facets['sizes']) && !empty($facets['sizes'])){
+                                            foreach($facets['sizes'] as $sizeOptionId => $sizeName){ ?>
+                                                    <label class="filter-content" data-filter="sizeFilter">
+                                                        <input name="amshopby[size][]" value="<?php echo $sizeName;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $sizeName; ?>">
+
+                                                        <div class="check-box"></div>
+                                                        <a class="text">
+                                                            <?php echo $sizeName;?>
+                                                        </a>                     
+                                                    </label>
+                                                 
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </ol>
+                                    </form>                               
+                                </div>
+                            </div>
+                            <div class="filter-data" data-filter="acoeditFilter" id="tab-10">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search" class="search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                        
+                                <div class="filters filter-height designer-scroll filter-option filter-header-a-co-edits-mobile">
+                                    
+                                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_edits" data-amshopby-filter-request-var="edits" autocomplete="off">
+                                        <ol class="items am-filter-items-attr_edits">
+                                            <?php
+                                        if(isset($facets['a_co_edit']) && !empty($facets['a_co_edit'])){
+                                            foreach($facets['a_co_edit'] as $aAndCoOptionId => $aAndCoName){ ?>
+                                                    <label class="filter-content" data-filter="acoeditFilter">
+                                                    <input name="amshopby[edits][]" value="<?php echo $aAndCoOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $aAndCoName; ?>">
+                                                    <div class="check-box"></div> 
+                                                    <a class="text">
+                                                        <?php echo $aAndCoName;?>
+                                                    </a>                     
+                                                    </label>
+                                                 
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </ol>
+                                    </form>                               
+                                </div>
+                            </div>
+                            <div class="filter-data" data-filter="occasionFilter" id="tab-11">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search" class="search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                        
+                                <div class="filters filter-height designer-scroll filter-option filter-header-occasion-mobile">
+                                    
+                                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_occasions" data-amshopby-filter-request-var="occasions" autocomplete="off">
+                                        <ol class="items am-filter-items-attr_occasions">
+                                            
+
+                                        <?php
+                                        if(isset($facets['occasions']) && !empty($facets['occasions'])){
+                                            foreach($facets['occasions'] as $occasionOptionId => $occasionName){ ?>
+                                                    <label class="filter-content" data-filter="occasionFilter">
+                                                        <input name="amshopby[occasions][]" value="<?php echo $occasionOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $occasionName; ?>">
+                                                        <div class="check-box"></div> 
+                                                        <a class="text">
+                                                            <?php echo $occasionName;?>
+                                                        </a>                     
+                                                    </label>
+                                                 
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </ol>
+                                    </form>                               
+                                </div>
+                            </div>
+                            <div class="filter-data" data-filter="deliveryFilter" id="tab-12">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search" class="search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                        
+                                <div class="filters filter-height designer-scroll filter-option filter-header-delivery-mobile">
+                                    
+                                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_deliverytimes" data-amshopby-filter-request-var="deliverytimes" autocomplete="off">
+                                        <ol class="items am-filter-items-attr_deliverytimes">
+                                       <?php
+                                        if(isset($facets['delivery_times']) && !empty($facets['delivery_times'])){
+                                            foreach($facets['delivery_times'] as $deliveryOptionId => $deliveryName){ ?>
+                                                    <label class="filter-content" data-filter="deliveryFilter">
+                                                        <input name="amshopby[deliverytimes][]" value="<?php echo $deliveryName;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $deliveryName; ?>">
+                                                        <div class="check-box"></div> 
+                                                        <a class="text">
+                                                            <?php echo $deliveryName;?>
+                                                        </a>
+                                                    </label>
+                                                 
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </ol>
+                                    </form>                               
+                                </div>
+                            </div>
+
+                            <div class="filter-data" id="tab-13">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <!-- <input type="text" name="" placeholder="Search" class="search-input"> -->
+                                        <!-- <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div> -->
+                                    </div>
+                                </div>
+                                        
+                                <div class="price-range">
+                                    <div class="range-line-m">
+                                        <div id="slider-snap-m" class="range-slide"></div>                                      
+                                        <div class="price-span">
+                                            <div class="product-value-one">
+                                                <!-- <span class="currency"></span> -->
+                                                <span class="value-lower" id="slider-snap-value-lower-m"><?= $facets["min_price"]?></span>
+                                            </div>
+                                            <div class="product-value-two">
+                                                <!-- <span class="currency"></span> -->
+                                                <span class="value-upper" id="slider-snap-value-upper-m"><?= $facets["max_price"]?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-values">
+                                        <div class="minimum">
+                                            <label>Minimum</label>
+                                            <div class="rupees"></div>
+                                            <input type="text" id="price-min-val-m" class="priceval" name="min-val" value="0">
+                                        </div> 
+                                        <div class="maximum">
+                                            <label>Maximum</label>
+                                            <div class="rupees"></div>
+                                            <input type="text" id="price-max-val-m" class="priceval" name="max-val" value="6000">
+                                        </div>
+                                    </div>
+                                    <!-- <div class="range-error">Please enter valid price</div>
+                                    <div class="apply-range">
+                                        <a class="apply-btn" href="#">Apply</a>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="filter-data active" data-filter="themeFilter" id="tab-14">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search" class="search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                        
+                                <div class="filters filter-height designer-scroll filter-option filter-header-theme-mobile">
+                                    
+                                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_themes" data-amshopby-filter-request-var="themes" autocomplete="off">
+                                        <ol class="items am-filter-items-attr_themes">
+                                       <?php
+                                        if(isset($facets['themes']) && !empty($facets['themes'])){
+                                            foreach($facets['themes'] as $themeId => $themeName){ ?>
+                                                    <label class="filter-content" data-filter="themeFilter">
+                                                        <input name="amshopby[themes][]" value="<?php echo $themeId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $themeName; ?>">
+                                                        <div class="check-box"></div> 
+                                                        <a class="text">
+                                                            <?php echo $themeName;?>
+                                                        </a>
+                                                    </label>
+                                                 
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </ol>
+                                    </form>                               
+                                </div>
+                            </div>
+                            <div class="filter-data" data-filter="navratriColorFilter" id="tab-15">
+                                <div class="search-field">
+                                    <div class="search-data">
+                                        <input type="text" name="" placeholder="Search" class="search-input">
+                                        <div class="img-pod">
+                                            <img src="<?php echo trim($mediaUrl) ?>/mobilefilter/search-icon.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                                        
+                                <div class="filters filter-height designer-scroll filter-option filter-header-navratri-color-mobile">
+                                    
+                                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_navratri_colors" data-amshopby-filter-request-var="navratri_colors" autocomplete="off">
+                                        <ol class="items am-filter-items-attr_navratri_colors">
+                                            
+                                        <?php
+                                        if(isset($facets['navratri_colors']) && !empty($facets['navratri_colors'])){
+                                            foreach($facets['navratri_colors'] as $navratriColorOptionId => $navratriColorName){ ?>
+                                                    <label class="filter-content" data-filter="navratriColorFilter">
+                                                        <input name="amshopby[navratri_colors][]" value="<?php echo $navratriColorOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $navratriColorName; ?>">
+                                                        <div class="check-box"></div> 
+                                                        <a class="text">
+                                                            <?php echo $navratriColorName;?>
+                                                        </a>                     
+                                                    </label>
+                                                 
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </ol>
+                                    </form>                               
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-actions">
+                    <div class="cancel-btn">Cancel</div>
+                    <div class="apply-btn">Apply Filters</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- ------------html--------------------------------------------------------- -->
+    <button class="filter-drop hide-in-mobile">
+        <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle mobile-filter">Show Filter</strong>
+    </button>
+    <div class="filter-options" id="narrow-by-list" data-role="content" role="tablist">
+<?php
+    if (isset($facets["themes"]) && !empty($facets["themes"])) {
+        $theme_div_css = "style='display:block;'";
+    } else {
+        $theme_div_css = "style='display:none;'";
+    }
+?>         
+<div data-role="collapsible" class="filter-options-item filter-header-theme" role="presentation" data-collapsible="true" data-info="themeFilter" <?php echo $theme_div_css;?>>
+    <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Themes</div>
+    <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+        <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_themes" data-amshopby-filter-request-var="themes" autocomplete="off">
+            <ol class="items am-filter-items-attr_themes">
+                <?php
+                if(isset($facets['themes']) && !empty($facets['themes'])){
+                    foreach($facets['themes'] as $themeId => $themeName){ ?>
+                        <li class="item item-<?php echo $themeName;?>" data-label="<?php echo $themeName;?>" data-value="theme" data-filter="themeFilter">
+                            <input name="amshopby[themes][]" value="<?php echo $themeId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $themeName; ?>">
+                            <a class="am-filter-item-6305e36df2169 amshopby-filter-parent" data-am-js="filter-item-default" href="javascript:void(0)" rel="nofollow">
+                                <span class="label"><?php echo $themeName;?></span>
+                            </a>
+                        </li>
+                        <?php
+                    }
+                }?>
+            </ol>
+        </form>
+    </div>
+</div>
+<?php
+// if(isset($_GET['aniitest']) && $_GET['aniitest']=='stest') {
+//         //var_dump($parent_catId);
+//         print_r($facets["categories"]);
+//     }
+ 
+if (isset($facets["categories"]) && !empty($facets["categories"])) {
+    $cat_div_css = "style='display:block;'";
+} else {
+    $cat_div_css = "style='display:none;'";
+}
+?>
+
+<div data-role="collapsible" class="filter-options-item filter-header-category allow" role="presentation" data-collapsible="true" data-info="categoryFilter" <?php echo $cat_div_css; ?>>
+    <div data-role="title" class="default filter-options-title" role="tab" aria-selected="true" aria-expanded="true" tabindex="0"><?php echo $Filter_name; ?></div>
+    <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="false" style="display: none;">
+
+
+
+<form data-amshopby-filter="attr_category_ids" data-amshopby-filter-request-var="cat">
+    <ol class="items am-filter-items-attr_category_ids am-labels-folding" >
+                <?php
+                 $childCategoryArr = isset($facets["child_categories"]) ? $facets["child_categories"] : array();
+
+if(isset($facets['categories']) && !empty($facets['categories'])){
+    foreach($facets['categories'] as $facetCatId => $catName){ ?>
+
+         <li class="item item-<?php echo $catName; ?>" data-label="<?php echo $catName; ?>" data-value="category" data-filter="categoryFilter">
+                
+                 <?php
+                    $childHtml = '';
+                    $parentId = 0;
+                    
+                    if(isset($childCategoryArr[$facetCatId]) && !empty($childCategoryArr[$facetCatId])){
+                        $parentId = 1;
+                       
+                        $childHtml .= ' <ol class="items am-filter-items-attr_category_ids am-labels-folding sub-catgory" style="margin-left: 20px;display:none;">';
+                    foreach ($childCategoryArr[$facetCatId] as $ckey => $cvalue) {
+                        
+                
+                        $childHtml .= '<li class="child-li item item-'.$cvalue.'" data-label="'.$cvalue.'" data-value="category" data-filter="categoryFilter" style="border-bottom: none;padding: 0;"> <input class="sub-check" name="amshopby[cat][]" value="'.$ckey.'" type="checkbox" data-info="'.$cvalue.'" ><a class="am-filter-item-6315aa5a7f9f7 amshopby-filter-parent" data-am-js="filter-item-category-amShopbyFilterCategoryLabelsFolding" href="'.$url.'"?firstAttemptedFilter=categoryFilter&categoryFilter="'.$ckey.'"><span class="label" style="font-size: 13px;">'.$cvalue.'</span></a></li>';
+                
+                    } 
+                    $childHtml .= '</ol>';
+                }
+
+                ?>
+                <input class="highlight-check" name="amshopby[cat][]" value="<?php echo $facetCatId; ?>" type="checkbox" data-info="<?php echo $catName; ?>" data-child="<?php echo $parentId;?>">
+                    <a class="am-filter-item-6315aa5a7f9f7 amshopby-filter-parent" data-am-js="filter-item-category-amShopbyFilterCategoryLabelsFolding" href="javascript:void(0)">
+               
+                <span class="label"><?php echo $catName; ?></span>
+                <?php if($parentId == 1){
+                    echo '<span class="plusminus"></span>';
+                }
+
+                ?>
+                
+
+
+                </a>
+               
+                <?php echo $childHtml;?>
+
+
+
+        </li>
+
+
+
+     
+<?php
+    }
+    }
+
+?>
+               
+            
+               
+    
+    
+    </ol>
+</form>
+
+    
+</div>
+                    </div>
+                    
+<?php
+    if (isset($facets["navratri_colors"]) && !empty($facets["navratri_colors"])) {
+        $nav_color_div_css = "style='display:block;'";
+    } else {
+        $nav_color_div_css = "style='display:none;'";
+    }
+?>         
+<div data-role="collapsible" class="filter-options-item filter-header-navratri-color" role="presentation" data-collapsible="true" data-info="navratriColorFilter" <?php echo $nav_color_div_css;?>>
+    <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Navratri Colors</div>
+    <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+        <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_navratri_colors" data-amshopby-filter-request-var="navratri_colors" autocomplete="off">
+            <ol class="items am-filter-items-attr_navratri_colors">
+                <?php
+                if(isset($facets['navratri_colors']) && !empty($facets['navratri_colors'])){
+                    foreach($facets['navratri_colors'] as $navColorId => $navColorName){ ?>
+                        <li class="item item-<?php echo $navColorName;?>" data-label="<?php echo $navColorName;?>" data-value="navratri_colors" data-filter="navratriColorFilter">
+                            <input name="amshopby[navratri_colors][]" value="<?php echo $navColorId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $navColorName; ?>">
+                            <a class="am-filter-item-6305e36df2169 amshopby-filter-parent" data-am-js="filter-item-default" href="javascript:void(0)" rel="nofollow">
+                                <span class="label"><?php echo $navColorName;?></span>
+                            </a>
+                        </li>
+                        <?php
+                    }
+                }?>
+            </ol>
+        </form>
+    </div>
+</div>                                        
+
+            <?php
+
+            if (isset($facets["kids"]) && !empty($facets["kids"])) {
+                $kid_div_css = "style='display:block;'";
+            } else {
+                $kid_div_css = "style='display:none;'";
+            }
+            ?>
+                    
+            <div data-role="collapsible" class="filter-options-item filter-header-kid" role="presentation" data-collapsible="true" data-info="kidFilter" <?php echo $kid_div_css;?>>
+                <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Kids</div>
+                <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+
+                    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_kid_multiple" data-amshopby-filter-request-var="kid_multiple" autocomplete="off">
+                        <ol class="items am-filter-items-attr_kid_multiple">
+                                               
+                            <?php
+                            if(isset($facets['kids']) && !empty($facets['kids'])){
+                                foreach($facets['kids'] as $kidOptionId => $kidName){ ?>
+                                    <li class="item item-<?php echo $kidName;?>" data-label="<?php echo $kidName;?>" data-value="kid" data-filter="kidFilter">
+
+                                        <input name="amshopby[kid_multiple][]" value="<?php echo $kidOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $kidName; ?>">
+
+                                        <a class="am-filter-item-6305e36deced1 amshopby-filter-parent" data-am-js="filter-item-default" href="javascript:void(0)" rel="nofollow">
+                                            <span class="label"><?php echo $kidName;?></span>
+                                        </a>
+                                    </li>
+                                 
+                            <?php
+                            }
+                                }
+
+                            ?>
+
+                        </ol>
+                    </form>
+
+                </div>
+            </div>
+
+ 
+
+  
+<?php
+
+if (isset($facets["patterns"]) && !empty($facets["patterns"]) && ( (isset($facets['categories']) && empty($facets['categories']) ) || !isset($facets['categories'])) ){
+    $patterns_div_css = "style='display:block;'";
+} else {
+    $patterns_div_css = "style='display:none;'";
+}
+?>
+         
+<div data-role="collapsible" class="filter-options-item filter-header-patterns" role="presentation" data-collapsible="true" data-info="patternsFilter" <?php echo $patterns_div_css;?>>
+    <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Category</div>
+        <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+
+<form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_patterns" data-amshopby-filter-request-var="patterns" autocomplete="off">
+<ol class="items am-filter-items-attr_patterns">
+    
+<?php
+if(isset($facets['patterns']) && !empty($facets['patterns'])){
+    foreach($facets['patterns'] as $patternsOptionId => $patternsName){ ?>
+        <li class="item item-<?php echo $patternsName;?>" data-label="<?php echo $patternsName;?>" data-value="patterns" data-filter="patternsFilter">
+
+            <input name="amshopby[patterns][]" value="<?php echo $patternsOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $patternsName; ?>">
+
+            <a class="am-filter-item-6305e36de193d amshopby-filter-parent" data-am-js="filter-item-default" href="javascript:void(0)" rel="nofollow">
+
+        <span class="label"><?php echo $patternsName;?></span>
+                </a>
+    </li>
+       
+<?php
+}
+    }
+
+?>
+            
+</ol>
+</form>
+
+</div>
+</div>
+
+  
+<!-- Gender Filter Code -->
+<?php
+if (isset($facets['genders']) && !empty($facets['genders'])){
+    //  if(isset($_GET['harshtest']) && $_GET['harshtest']=='stest') {
+    //     print_r($facets["genders"]);die;
+    // }
+    if(array_key_exists(6301,$facets['genders']) && (array_key_exists(6302,$facets['genders']))){
+        $gen_div_css = "style='display:block;'";
+    }else{
+        $gen_div_css = "style='display:none;'";
+    } 
+}else{
+    $gen_div_css = "style='display:none;'";
+}
+?>         
+<div data-role="collapsible" class="filter-options-item filter-header-gender" role="presentation" data-collapsible="true" data-info="genderFilter" <?php echo $gen_div_css;?>>
+    <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Gender</div>
+        <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+
+<form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_genders" data-amshopby-filter-request-var="genders" autocomplete="off">
+<ol class="items am-filter-items-attr_genders">
+    
+
+    <?php
+if(isset($facets['genders']) && !empty($facets['genders'])){
+    foreach($facets['genders'] as $genderOptionId => $genderName){ ?>
+        <li class="item item-<?php echo $genderName;?>" data-label="<?php echo $genderName;?>" data-value="gender" data-filter="genderFilter">
+
+            <input name="amshopby[genders][]" value="<?php echo $genderOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $genderName; ?>">
+
+
+<a class="am-filter-item-6305e36df2169 amshopby-filter-parent" data-am-js="filter-item-default" href="javascript:void(0)" rel="nofollow">
+
+<span class="label"><?php echo $genderName;?></span>
+                </a>
+    </li>
+       
+<?php
+}
+    }
+
+?>
+
+
+    
+                
+</ol>
+</form>
+
+</div>
+</div>
+
+<!-- End Gender Filer Code -->
+
+
+<!-- Tags Filter Code -->
+<?php
+if (isset($facets['tags']) && !empty($facets['tags'])){
+    $tags_div_css = "style='display:none;'";
+}else{
+    $tags_div_css = "style='display:none;'";
+}
+?>         
+<div data-role="collapsible" class="filter-options-item filter-header-tags" role="presentation" data-collapsible="true" data-info="tagsFilter" <?php echo $tags_div_css;?>>
+    <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Tags</div>
+        <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+
+<form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_tags" data-amshopby-filter-request-var="tags" autocomplete="off">
+<ol class="items am-filter-items-attr_tags">
+    
+
+    <?php
+if(isset($facets['tags']) && !empty($facets['tags'])){
+    foreach($facets['tags'] as $tagsOptionId => $tagsName){ ?>
+        <li class="item item-<?php echo $tagsName;?>" data-label="<?php echo $tagsName;?>" data-value="tags" data-filter="tagsFilter">
+
+            <input name="amshopby[tags][]" value="<?php echo $tagsOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $tagsName; ?>">
+
+
+<a class="am-filter-item-6305e36df2169 amshopby-filter-parent" data-am-js="filter-item-default" href="javascript:void(0)" rel="nofollow">
+
+<span class="label"><?php echo $tagsName;?></span>
+                </a>
+    </li>
+       
+<?php
+}
+    }
+
+?>
+
+
+    
+                
+</ol>
+</form>
+
+</div>
+</div>
+
+<!-- End tags Filer Code -->
+
+<?php
+//$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+$category_plp = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+    $parent_catId = $category_plp->getParentIds();
+    if(isset($_GET['gtest']) && $_GET['gtest']=='gtest') {
+        echo $parent_catId.'  :: Category_id';
+        }
+    $bridal_div_css = "style='display:none;'";
+    if(in_array(3126, $parent_catId) || $parent_catId == 3126){
+        //error_log('bridal class ');
+        if(isset($facets["bridal"]) && !empty($facets["bridal"])){
+          //  error_log('bridal class 1');
+                $bridal_div_css = "style='display:block;'";
+            }else{
+              //  error_log('bridal class 2 ');
+                $bridal_div_css = "style='display:none;'";
+            }
+    }else{
+       // error_log('bridal class 3');
+        $bridal_div_css = "style='display:none;'";
+    }
+// if(isset($facets["bridal"]) && !empty($facets["bridal"])){
+//                 $bridal_div_css = "style='display:block;'";
+//             } else {
+//                 $bridal_div_css = "style='display:none;'";
+//             }
+            ?>         
+            <div data-role="collapsible" class="filter-options-item filter-header-bridal" role="presentation" data-collapsible="true" data-info="bridalFilter" <?php echo $bridal_div_css;?>>
+                <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Bridal</div>
+                    <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+
+                        <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_bridal" data-amshopby-filter-request-var="bridal" autocomplete="off">
+                            <ol class="items am-filter-items-attr_bridal">
+                                <?php
+                                    if(isset($facets['bridal']) && !empty($facets['bridal'])){
+                                        foreach($facets['bridal'] as $bridalOptionId => $bridalName){ ?>
+                                            <li class="item item-<?php echo $bridalName;?>" data-label="<?php echo $bridalName;?>" data-value="bridal" data-filter="bridalFilter">
+
+                                                <input name="amshopby[bridal][]" value="<?php echo $bridalOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $bridalName; ?>">
+
+
+                                    <a class="am-filter-item-6305e36df2169 amshopby-filter-parent" data-am-js="filter-item-default" href="javascript:void(0)" rel="nofollow">
+
+                                    <span class="label"><?php echo $bridalName;?></span>
+                                                    </a>
+                                        </li>
+                                           
+                                    <?php
+                                    }
+                                        }
+
+                                    ?>    
+                                            
+                            </ol>
+                        </form>
+
+                    </div>
+            </div>
+
+
+
+
+<?php
+
+if (isset($facets["designers"]) && !empty($facets["designers"]) && (count($facets['designers']) > 1)) {
+    $des_div_css = "style='display:block;'";
+} else {
+    $des_div_css = "style='display:none;'";
+}
+?>
+         
+<div data-role="collapsible" class="filter-options-item filter-header-designer" role="presentation" data-collapsible="true" data-info="designerFilter" <?php echo $des_div_css;?>>
+    <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Designer</div>
+        <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+
+<form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_designer" data-amshopby-filter-request-var="designer" autocomplete="off">
+<ol class="items am-filter-items-attr_designer">
+    
+<?php
+if(isset($facets['designers']) && !empty($facets['designers'])){
+    foreach($facets['designers'] as $designerOptionId => $designerName){ ?>
+        <li class="item item-<?php echo $designerName;?>" data-label="<?php echo $designerName;?>" data-value="designer" data-filter="designerFilter">
+
+            <input name="amshopby[designer][]" value="<?php echo $designerOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $designerName; ?>">
+
+            <a class="am-filter-item-6305e36de193d amshopby-filter-parent" data-am-js="filter-item-default" href="javascript:void(0)" rel="nofollow">
+
+        <span class="label"><?php echo $designerName;?></span>
+                </a>
+    </li>
+       
+<?php
+}
+    }
+
+?>
+            
+</ol>
+</form>
+
+</div>
+</div>
+
+<?php
+
+if (isset($facets["colors"]) && !empty($facets["colors"])) {
+    $col_div_css = "style='display:block;'";
+} else {
+    $col_div_css = "style='display:none;'";
+}
+?>
+            
+<div data-role="collapsible" class="filter-options-item filter-header-color" role="presentation" data-collapsible="true" data-info="colorFilter" <?php echo $col_div_css;?>>
+    <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Color</div>
+        <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+
+<form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_color_multiple" data-amshopby-filter-request-var="color_multiple" autocomplete="off">
+<ol class="items am-filter-items-attr_color_multiple">
+                       
+<?php
+if(isset($facets['colors']) && !empty($facets['colors'])){
+    foreach($facets['colors'] as $colorOptionId => $colorName){ ?>
+        <li class="item item-<?php echo $colorName;?>" data-label="<?php echo $colorName;?>" data-value="color" data-filter="colorFilter">
+
+            <input name="amshopby[color_multiple][]" value="<?php echo $colorOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $colorName; ?>">
+
+            <a class="am-filter-item-6305e36deced1 amshopby-filter-parent" data-am-js="filter-item-default" href="javascript:void(0)" rel="nofollow">
+                <span class="label"><?php echo $colorName;?></span>
+            </a>
+        </li>
+     
+<?php
+}
+    }
+
+?>
+                      
+             
+
+
+
+</ol>
+</form>
+
+</div>
+</div>
+
+
+<?php
+
+if (isset($facets["sizes"]) && !empty($facets["sizes"])) {
+    $facets["sizes"] = array_unique($facets["sizes"]);
+    $sizes_div_css = "style='display:block;'";
+} else {
+    $sizes_div_css = "style='display:none;'";
+}
+if(isset($_GET['atest']) && $_GET['atest']=='stest') {
+        //var_dump($parent_catId);
+        print_r($facets["sizes"]);
+    }
+?>
+            
+<div data-role="collapsible" class="filter-options-item filter-header-size" role="presentation" data-collapsible="true" data-info="sizeFilter" <?php echo $sizes_div_css;?>>
+    <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Size</div>
+        <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+
+<form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_size" data-amshopby-filter-request-var="size" autocomplete="off">
+<ol class="items am-filter-items-attr_size">
+    <?php
+    
+if(isset($facets['sizes']) && !empty($facets['sizes'])){
+    foreach($facets['sizes'] as $sizeOptionId => $sizeName){ ?>
+       
+
+         <li class="item item-<?php echo $sizeName;?>" data-label="<?php echo $sizeName;?>" data-value="size" data-filter="sizeFilter">
+
+            <input name="amshopby[size][]" value="<?php echo $sizeName;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $sizeName; ?>">
+
+            <a class="am-filter-item-6305e36def168 amshopby-filter-parent" data-am-js="filter-item-default" href="javascript:void(0)" rel="nofollow">
+
+                <span class="label"><?php echo $sizeName;?></span>
+            </a>
+        </li>
+
+       
+<?php
+}
+
+    }
+
+?>
+       
+
+
+</ol>
+</form>
+
+</div>
+</div>
+          
+<?php
+if(isset($_GET['aatest']) && $_GET['aatest']=='sstest') {
+        //var_dump($parent_catId);
+        print_r($facets["delivery_times"]);
+    }
+
+if (isset($facets["delivery_times"]) && !empty($facets["delivery_times"])) {
+    $facets["delivery_times"] = array_unique($facets["delivery_times"]);
+    $del_div_css = "style='display:block;'";
+} else {
+    $del_div_css = "style='display:none;'";
+}
+?>    
+    <div data-role="collapsible" class="filter-options-item filter-header-delivery" role="presentation" data-collapsible="true" data-info="deliveryFilter" <?php echo $del_div_css;?>>
+        <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Delivery</div>
+        <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+
+    <form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_deliverytimes" data-amshopby-filter-request-var="deliverytimes" autocomplete="off">
+        <ol class="items am-filter-items-attr_deliverytimes">
+       <?php
+        if(isset($facets['delivery_times']) && !empty($facets['delivery_times'])){
+            foreach($facets['delivery_times'] as $deliveryOptionId => $deliveryName){ ?>
+       
+
+        
+
+        <li class="item item-<?php echo $deliveryName;?>" data-label="<?php echo $deliveryName;?>" data-value="delivery" data-filter="deliveryFilter">
+
+        <input name="amshopby[deliverytimes][]" value="<?php echo $deliveryName;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $deliveryName; ?>">
+
+        <a class="am-filter-item-6305e36df30bd amshopby-filter-parent" data-am-js="filter-item-default" href="javascript:void(0)" rel="nofollow">
+
+            <span class="label"><?php echo $deliveryName;?></span>
+        </a>
+    </li>
+       
+<?php
+}
+    }
+
+?>                
+    
+              
+</ol>
+</form>
+
+</div>
+</div>
+<!-- new code 23-08-2023 start -->
+
+<?php
+if ($facets["min_price"] == $facets["max_price"]) {
+                    $pric_div_css = "style='display:none;'";
+                } else {
+                    $pric_div_css = "style='display:block;'";
+                }
+?>    
+    <div data-role="collapsible" class="filter-options-item filter-header-price" role="presentation" data-collapsible="true" data-info="priceFilter" <?php echo $pric_div_css;?>>
+        <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Price</div>
+        <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+        <div class="filter-section" <?= $pric_div_css?>>
+                    <div class="filters price-section">
+                        <div class="price-range">                               
+                            <div class="range-line">
+                                <div id="slider-snap" class="range-slide"></div>                                        
+                                <div class="price-span">
+                                    <div class="product-value-one">
+                                        <span class="currency"><?= $facets["curr_symb"]?>
+                                        </span>
+                                        <span class="value-lower" id="slider-snap-value-lower"><?= $facets["min_price"]?></span>
+                                    </div>
+                                    <div class="product-value-two">
+                                        <span class="currency"><?= $facets["curr_symb"]?>
+                                        </span>
+                                        <span class="value-upper" id="slider-snap-value-upper"><?= $facets["max_price"]?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-values">
+                                <div class="minimum">
+                                    <label>Minimum</label>
+                                    <div class="rupees"></div>
+                                    <input type="text" id="price-min-val" class="priceval" name="min-val" value="">
+                                </div> 
+                                <div class="maximum">
+                                    <label>Maximum</label>
+                                    <div class="rupees"></div>
+                                    <input type="text" id="price-max-val" class="priceval" name="max-val" value="">
+                                </div>
+                            </div>
+                            <div class="range-error">Please enter valid price</div>
+                            <!-- <div class="apply-range">
+                                <a class="apply-btn">Apply</a>
+                            </div> -->
+                        </div>                      
+                    </div>
+                </div>
+    
+
+</div>
+</div> 
+<?php
+
+    $category_plp = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+    $parent_catId = $category_plp->getParentIds();
+if(isset($_GET['atest']) && $_GET['atest']=='stest') {
+        var_dump($parent_catId);
+        //print_r($facets["a_co_edit"]);
+    }
+    
+    if(in_array(3126, $parent_catId) || $parent_catId == 3126){
+        $aco_div_css = "style='display:none;'";
+    }elseif(isset($facets["a_co_edit"]) && !empty($facets["a_co_edit"])){
+        $aco_div_css = "style='display:block;'";
+    }else{
+        $aco_div_css = "style='display:none;'";
+    }
+// if (isset($facets["a_co_edit"]) && !empty($facets["a_co_edit"])) {
+//     $aco_div_css = "style='display:block;'";
+// } else {
+//     $aco_div_css = "style='display:none;'";
+// }
+?>
+
+
+    <div data-role="collapsible" class="filter-options-item filter-header-a-co-edits" role="presentation" data-collapsible="true" data-info="acoeditFilter" <?php echo $aco_div_css;?>>
+                              <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">A+CO Edits</div>
+                           <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+
+<form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_edits" data-amshopby-filter-request-var="edits" autocomplete="off">
+<ol class="items am-filter-items-attr_edits">
+    <?php
+if(isset($facets['a_co_edit']) && !empty($facets['a_co_edit'])){
+    foreach($facets['a_co_edit'] as $aAndCoOptionId => $aAndCoName){ ?>
+       
+        <li class="item item-<?php echo $aAndCoName;?>" data-label="<?php echo $aAndCoName;?>" data-value="acoedit" data-filter="acoeditFilter">
+
+            <input name="amshopby[edits][]" value="<?php echo $aAndCoOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $aAndCoName; ?>">
+
+            <a class="am-filter-item-6305e36df0fd3 amshopby-filter-parent" data-am-js="filter-item-default" href="javascript:void(0)" rel="nofollow">
+
+                <span class="label"><?php echo $aAndCoName;?></span>
+            </a>
+        </li>
+
+
+         
+       
+<?php
+}
+    }
+
+?>                     
+
+
+                        
+
+
+
+               
+</ol>
+</form>
+
+</div>
+</div>
+   
+<?php
+
+if (isset($facets["occasions"]) && !empty($facets["occasions"])) {
+    $occ_div_css = "style='display:block;'";
+} else {
+    $occ_div_css = "style='display:none;'";
+}
+?>         
+<div data-role="collapsible" class="filter-options-item filter-header-occasion" role="presentation" data-collapsible="true" data-info="occasionFilter" <?php echo $occ_div_css;?>>
+    <div data-role="title" class="default filter-options-title" role="tab" aria-selected="false" aria-expanded="false" tabindex="0">Occasions</div>
+        <div data-role="content" class="filter-options-content" role="tabpanel" aria-hidden="true" style="display: none;">
+
+<form class="am-ranges" data-am-js="ranges" data-amshopby-filter="attr_occasions" data-amshopby-filter-request-var="occasions" autocomplete="off">
+<ol class="items am-filter-items-attr_occasions">
+    
+
+    <?php
+if(isset($facets['occasions']) && !empty($facets['occasions'])){
+    foreach($facets['occasions'] as $occasionOptionId => $occasionName){ ?>
+        <li class="item item-<?php echo $occasionName;?>" data-label="<?php echo $occasionName;?>" data-value="occasion" data-filter="occasionFilter">
+
+            <input name="amshopby[occasions][]" value="<?php echo $occasionOptionId;?>" type="checkbox" style="" class="highlight-check" data-info="<?php echo $occasionName; ?>">
+
+
+<a class="am-filter-item-6305e36df2169 amshopby-filter-parent" data-am-js="filter-item-default" href="javascript:void(0)" rel="nofollow">
+
+<span class="label"><?php echo $occasionName;?></span>
+                </a>
+    </li>
+       
+<?php
+}
+    }
+
+?>
+
+
+
+</ol>
+</form>
+
+</div>
+</div>
+  
+
+ 
+
+<!-- new code end -->
+
+            
+                                        
+                    </div>
+                    <?php 
+                        //$utm_source_cookie = isset($_COOKIE['UTM'])?$_COOKIE['UTM']:'';
+
+                    //if($currentDevice == 'Desktop' && $catId != 5586 && $utm_source_cookie == ''){?>
+                             <!-- <div class="promotional-img"><a href="https://aashniandco.com/anniversary-sale-2023?utm_campaign=anniversary+sale"><img src="https://aashniandco.com/pub/media/wysiwyg/promotional-banner/anniversary-2023.jpg"></a>
+                             </div>   -->
+                     <?php //}elseif($currentDevice == 'Desktop' && $catId != 5586 && $utm_source_cookie != ''){ ?>
+                    <!--  <div class="promotional-img"><a href="https://aashniandco.com/anniversary-sale-2023<?php// echo $utm_source_cookie; ?>"><img src="https://aashniandco.com/pub/media/wysiwyg/promotional-banner/anniversary-2023.jpg"></a>
+                     </div> -->
+                     <?php //}?>
+                     <!-- <div class="promotional-img"><a target="_blank"href="https://api.whatsapp.com/send?phone=918375036648&amp;text=https://aashniandco.com/ Hello Aashni + Co ! I have a question I would like to ask."><img style="width:100%;" src="https://static.aashniandco.com/pub/media/wysiwyg/promotional-banner/20-04-23.png"></a></div> -->
+</div>
+</div>
+
+

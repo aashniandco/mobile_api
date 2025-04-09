@@ -1,0 +1,54 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+/** @var $block Magento\Catalog\Block\Product\View */
+?>
+<?php
+$required = '';
+if ($block->hasRequiredOptions()) {
+    $required = ' data-hasrequired="' . $block->escapeHtmlAttr(__('* Required Fields')) . '"';
+}
+?>
+<?php
+$_product = $block->getProduct();
+$media_url = $_product->getMediaConfig()->getBaseMediaUrl();
+if(!$_product->getHideprice()): ?>
+<div class="product-size-select">
+  <div class="product-options-wrapper" id="product-options-wrapper"<?= /* @noEscape */ $required ?>>
+      <div class="fieldset" tabindex="0">
+          <?= $block->getChildHtml('', true) ?>
+      </div>
+      <div class="product-size-chart-wrapper" id="product-size-chart-wrapper">
+        <a class="size_charta" data-toggle="modal" data-target="#newsizech"> Size Chart <span class="size-chart-logo-pdp"><img src="<?=$media_url?>/size-guide-icon.jpg" alt="size-guide-icon" style="width: 100%;"></span></a>
+
+        <!-- Modal -->
+        <div class="modal fade" id="newsizech" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <?php
+                    echo $this->getLayout()->createBlock("Magento\Catalog\Block\Product\View")->setTemplate("Mec_Customtab::size_chart.phtml")->toHtml();
+                ?>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="delivery-simple-products">
+    <div class="delivery-time-products">
+      Delivery : <span class="delivery-time-simple-products"><?php echo $_product->getData('delivery'); ?></span>
+    </div>
+    <div class="pdp-icon-legend"> 
+      <i class="fa fa-truck"></i> Ready To Ship
+    </div>
+  </div>
+</div>
+
+<?php endif; ?>
+

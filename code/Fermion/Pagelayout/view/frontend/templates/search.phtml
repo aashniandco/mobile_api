@@ -1,0 +1,544 @@
+
+<?php
+
+
+$requestParams = $this->getRequest()->getParams();
+$searchString = $this->getRequest()->getParam('q');
+
+$respData = array();
+$respData = $block->getSearchFilterdata($searchString,$requestParams);
+$htmlData = isset($respData['prod_grid_html']) ? $respData['prod_grid_html'] : '';
+$noOfPages = isset($respData['no_of_pages']) ? $respData['no_of_pages'] : '';
+//$cat_data = isset($respData['cat_data']) ? $respData['cat_data'] : '';
+$facets = isset($respData['facets']) ? $respData['facets'] : '';
+$currentPageUrl = $block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]);
+$url = strtok($currentPageUrl, "?");
+?>
+
+
+
+<div class="row designer_listprofile">
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$enquire_block = $objectManager->create('Mec\Enquire\Block\EnquireFormPdp');
+
+?>
+
+
+<input type="hidden" id="current_page" value="1">
+<input type="hidden" id="no-of-pages" value="<?php echo $noOfPages;?>">
+<input type="hidden" id="is_searched_activity" value="1" />
+<input type="hidden" id="stopAjax" value="0" />
+<input type="hidden" id="isRequestSent" value="0" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="column main col-lg-9 col-md-9 col-sm-12 col-xs-12 pull-right"> -->
+
+
+    <div class="catalog-topnav amasty-catalog-topnav">
+</div><div class="row designer_listprofile">
+</div>
+<input name="form_key" type="hidden" value="i7mOGFqfGkS9PGNh">
+
+
+
+
+<div id="monkey_campaign" style="display:none;">
+</div><span></span>    <div id="amasty-shopby-product-list">    <div class="category-product-actions">
+<div class="toolbar toolbar-products">
+<div class="modes"></div>
+
+<div class="toolbar-sorter sorter">
+<label class="sorter-label" for="sorter">Sort By</label>
+<select id="sorter" data-role="sorter" class="sorter-options">
+<option value="high-to-low">
+Price - High To Low            </option>
+<option value="low-to-high">
+Price - Low To High            </option>
+<option value="new-arrival" selected="selected">
+Latest            </option>
+</select>
+<a title="Set Ascending Direction" href="#" class="action sorter-action sort-desc" data-role="direction-switcher" data-value="asc" style="display: none !important;">
+<span>Set Ascending Direction</span>
+</a>
+</div>
+</div>
+
+</div>
+
+<style>
+@media only screen and (min-width: 600px) {
+#listEnquiryModal .modal-dialog {
+width: 450px;
+}
+}
+#listEnquiryModal .modal-title {
+font-family: 'Prata', serif;
+text-align: center;
+}
+#listEnquiryModal .modal-footer {
+display: none;
+}
+#listEnquiryModal .close {
+color: #000;
+border: 1px #000 solid;
+padding: 5px 10px;
+position: absolute;
+right: -16px;
+top: -18px;
+background: #000 !important;
+opacity: unset !important;
+border-radius: 21px;
+border: 2px #ccc solid;
+}
+#listEnquiryModal .close span {
+color: #fff;
+}
+#listEnquiryModal .button {
+background: #000;
+border: 1px #000 solid;
+color: #fff;
+padding: 8px 25px;
+margin-top: 15px;
+}
+</style>
+
+<div class="products_new_ga4" id="newly_added_products_in_productGrid" style="display: none !important;">
+    <ol class="list_new_ga4" id="ol_newly_added_products_in_productGrid"></ol>
+</div>
+<div class="products wrapper grid products-grid" id="product-wrapper">
+<ol class="products list items product-items row row-col-lg-4">
+
+                              <?php echo $htmlData['prod_html'];?>          
+                                                                            
+                               
+                </ol>
+<div id="amasty-shopby-overlay"><div class="loader"></div></div></div>
+<!-- <div class="bottom-pagination">
+<div class="toolbar toolbar-products">
+
+
+<div class="toolbar-sorter sorter">
+<label class="sorter-label" for="sorter">Sort By</label>
+<select id="sorter" data-role="sorter" class="sorter-options">
+<option value="high_to_low">
+Price - High To Low            </option>
+<option value="low_to_high">
+Price - Low To High            </option>
+<option value="latest" selected="selected">
+Latest            </option>
+</select>
+<a title="Set Ascending Direction" href="#" class="action sorter-action sort-desc" data-role="direction-switcher" data-value="asc">
+<span>Set Ascending Direction</span>
+</a>
+</div>
+</div>
+</div> -->
+
+<!---Enqury on List Page--->
+<div class="modal fade" id="listEnquiryModal" tabindex="-1" role="dialog" aria-labelledby="listEnquiryModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<div class="modal-title" id="listEnquiryModalLabel">New message</div>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">×</span>
+</button>
+</div>
+<div class="modal-body">
+                <form action="/enquire" method="post" enctype="multipart/form-data" autocomplete="off" data-hasrequired="* Required Fields" novalidate="novalidate" data-mage-init='{"validation":{}}'>
+    <input type="hidden" id="product_sku" name="sku" value="">
+    <input type="hidden" id="designer_name" name="designer_name" value="">
+    <input type="hidden" id="product_desc" name="product_desc" value="">
+    <input type="hidden" name="remote_ip" id="remote_ip" title="Client IP" class="input-text required-entry" value="172.31.5.217">
+    <ul class="form-list">
+        <li>
+            <div class="field">
+                <label for="name" class="required">Name</label>
+                <div class="input-box">
+                    <input name="customer_name" id="customer_name" title="Name" value="" class="input-text required-entry" type="text" data-validate="{required:true}">
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="field">
+                <label for="email" class="required">Email</label>
+                <div class="input-box">
+                    <input name="customer_email" id="customer_email" title="Email" value="" class="input-text required-entry validate-email" type="text">
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="field">
+                <label for="country" class="required">Country</label>
+                <div class="input-box">
+                    <select name="country" id="country" title="Country" class="input-text required-entry">
+                        <option value="">Select Country</option>
+                        <?php foreach ($enquire_block->getCountryOptions() as $country): ?>
+                            <option data-dialcode="<?php echo $country['dial_code']; ?>" value="<?php echo $country['name']; ?>"><?php echo $country['name']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="field">
+                <label for="phone" class="required">Phone</label>
+                <div class="input-box" style="display: flex;justify-content: space-between;">
+                    <input name="country_code" id="country_code" title="Country code" value="" class="input-text" type="text" readonly  style="width: 75px;float: left;">
+                    <input name="customer_phone" id="customer_phone" title="Phone" value="" class="input-text validate-number required-entry" type="text" style="width: 80%">
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="field">
+                <label for="phone" class="required">Your Query</label>
+                <div class="input-box">
+                    <input name="query" id="query" title="Comments" value="" class="input-text required-entry" type="text">
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <button type="submit" title="Submit" class="button"><span><span>Submit</span></span></button>
+</form>
+</div>
+<!--<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<button type="button" class="btn btn-primary">Send message</button>
+</div>-->
+</div>
+</div>
+</div>
+<!---Enquiry on List Page--->
+<script>
+require(['jquery'],function($) {
+$(document).ready(function () {
+
+console.log('Hello');
+$('#listEnquiryModal').on('show.bs.modal', function (event) {
+var button = $(event.relatedTarget); // Button that triggered the modal
+var product_name = button.data('name'); // Extract info from data* attributes
+    var product_sku = button.data('sku');
+var product_description = button.data('description');
+// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+var modal = $(this);
+    console.log('product_name'+product_name);
+modal.find('.modal-title').text(product_name);
+modal.find('.modal-body #designer_name').val(product_name);
+    modal.find('.modal-body #product_sku').val(product_sku);
+modal.find('.modal-body #product_desc').val(product_description);
+});
+});
+});
+</script>
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        $('#country').change(function() {
+            var selectedOption = $(this).find('option:selected');
+            var dialCode = selectedOption.data('dialcode');
+            
+            $('#country_code').val(dialCode);
+        });
+    });
+</script>
+</div>
+
+
+
+
+<div class="amshopby-filters-bottom-cms">
+</div>
+
+<div data-am-js="js-init">
+
+</div>
+<!-- </div> -->
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+#layered-filter-block .item input {float:left; margin-right:5px !important}
+input[type=checkbox] {
+margin-right:5px !important;
+}
+.am-ranges input {
+float: left;
+margin-right: 6px;
+}
+
+.items.am-filter-items-attr_category_ids.am-labels-folding {
+left: 0px !important;
+}
+
+/*.am-collapse-icon{display:none;}*/
+/*.filter-current{display:none;}*/
+/*.filter-actions{display:none;}*/
+
+
+.block.filter .filter-content .block-actions.filter-actions+.block-subtitle.filter-subtitle{margin-top: 0;}
+.block.filter .filter-content .block-actions.filter-actions{margin-bottom: 30px;}
+</style>
+
+
+
+
+<script>
+    require(["jquery"], function ($) {
+        var collapseSelector = ".sidebar"
+            + " .am-collapse-icon";
+        if (!$(collapseSelector).length) {
+            collapseSelector = '.am-collapse-icon';
+        }
+
+        $(collapseSelector).nextAll('ul').each(function() {
+            if($(this).find('input[checked]').length === 0) {
+                if ($(this).siblings(".amshopby-filter-parent")
+                        .find('input[name^="amshopby[cat]"]').first().prop("checked")) {
+                    return true;
+                }
+                $(this).hide();
+            } else {
+                $(this).prevAll('.am-collapse-icon').toggleClass('_active');
+            }
+        });
+
+        $(collapseSelector).click(function (e) {
+            $(this).nextAll('ul').toggle();
+            $(this).toggleClass('_active');
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    });
+</script>
+
+
+
+<?php $helper = $this->helper('MGS\Mpanel\Helper\Data') ?>
+<?php $canUsePanel = $helper->acceptToUsePanel() ?>
+
+<?php
+//$new_catId=$respData['cat_data']['cat_id'];
+//echo $new_catId;
+//echo $new_catId;die("asdf");
+$new_catId='';
+$html = '';
+if($new_catId==1475)
+{
+    //echo "Sabyasachi_mi";die("xyz");
+
+
+
+    echo $html.=' 
+    <div class="footer-container">
+   <div class="bottom-footer">
+    <div class="container-fluid">
+    <div class="row"><div class="col-md-12" style="background-color: white; margin-top: 20px;">'
+    ?>
+
+
+  <?php 
+
+  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_sabyasachi')->setCanUsePanel($canUsePanel)->toHtml()
+  ?>
+<?php }elseif($new_catId==1447)
+{
+    echo $html.=' 
+   <div class="bottom-footer">
+    <div class="container-fluid">
+    <div class="row"><div class="col-md-12" style="background-color: white; margin-top: 20px;">'
+    ?>
+
+
+  <?php 
+
+  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_manish_malhotra')->setCanUsePanel($canUsePanel)->toHtml()
+  ?>
+<?php }elseif($new_catId==2177)
+{
+    echo $html.=' 
+   <div class="bottom-footer">
+    <div class="container-fluid">
+    <div class="row"><div class="col-md-12" style="background-color: white; margin-top: 20px;">'
+    ?>
+
+
+  <?php 
+
+  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_abu_jani_sandeep_khosla')->setCanUsePanel($canUsePanel)->toHtml()
+  ?>
+  <?php }elseif($new_catId==1412)
+{
+    echo $html.=' 
+   <div class="bottom-footer">
+    <div class="container-fluid">
+    <div class="row"><div class="col-md-12" style="background-color: white; margin-top: 20px;">'
+    ?>
+
+
+  <?php 
+
+  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_anamika_khanna')->setCanUsePanel($canUsePanel)->toHtml()
+  ?>
+  <?php }elseif($new_catId==1426)
+{
+    echo $html.=' 
+   <div class="bottom-footer">
+    <div class="container-fluid">
+    <div class="row"><div class="col-md-12" style="background-color: white; margin-top: 20px;">'
+    ?>
+
+
+  <?php 
+
+  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_anita_dongre')->setCanUsePanel($canUsePanel)->toHtml()
+  ?>
+  <?php }elseif($new_catId==1485)
+{
+    echo $html.=' 
+   <div class="bottom-footer">
+    <div class="container-fluid">
+    <div class="row"><div class="col-md-12" style="background-color: white; margin-top: 20px;">'
+    ?>
+
+
+  <?php 
+
+  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_tarun_tahiliani')->setCanUsePanel($canUsePanel)->toHtml()
+  ?>
+</div>
+</div>
+</div>
+</div>
+<?php }
+?>
+
+<script>
+  require(["jquery"], function ($) {
+        $(document).on("click", ".towishlist", function(){
+            gtag("event", "add_to_wishlist", {
+                currency: "<?php echo $this->getLayout()->createBlock('\Magento\Directory\Block\Currency')->getCurrentCurrencyCode(); ?>",
+                value: this.getAttribute('data-value'),
+                items: [
+                    {
+                        item_id: this.getAttribute('data-sku'),
+                        item_name: this.getAttribute('data-shortDesc'),
+                        affiliation: "",
+                        coupon: "",
+                        discount: "",
+                        index: 0,
+                        item_brand: this.getAttribute('data-brand'),
+                        item_category: this.getAttribute('data-category'),
+                        item_variant: "",
+                        price: this.getAttribute('data-value'),
+                        quantity: 1
+                    }
+                ],
+            });
+        });
+
+        $(document).on("click", ".item.product.product-item-info.product-item", function() {
+            var dataSku = $(this).data('sku');
+            var dataShortDesc = $(this).data('shortdesc');
+            var dataBrand = $(this).data('brand');
+            var dataCategory = $(this).data('category');
+            var dataValue = $(this).data('value');
+            gtag("event", "select_item", {
+                items: [
+                    {
+                        item_id: dataSku,
+                        item_name: dataShortDesc,
+                        affiliation: "",
+                        coupon: "",
+                        discount: "",
+                        index: 0,
+                        item_brand: dataBrand,
+                        item_category: dataCategory,
+                        item_variant: "",
+                        Location_id: "",
+                        price: dataValue,
+                        quantity: 1
+                    }
+                ]
+            });
+        });
+
+        $(document).ready(function() {
+            var i = 0;
+            var items = [];
+            var itemArray = [];
+            $(".item.product.product-item-info.product-item").each(function() {
+                    var dataSku = $(this).data('sku');
+                    var dataShortDesc = $(this).data('shortdesc');
+                    var dataBrand = $(this).data('brand');
+                    var dataCategory = $(this).data('category');
+                    var dataValue = $(this).data('value');
+                    
+                    var item = {
+                        dataSku: dataSku,
+                        dataShortDesc: dataShortDesc,
+                        dataBrand: dataBrand,
+                        dataCategory: dataCategory,
+                        dataValue: dataValue
+                    }
+
+                    items.push(item);
+            });
+            console.log(items);
+            items.forEach(function(item){
+                var arr = {
+                    item_id :  item.dataSku,
+                    item_name : item.dataShortDesc,
+                    affiliation : "",
+                    coupon : "",
+                    discount : "",
+                    index : i,
+                    item_brand : item.dataBrand,
+                    item_category : item.dataCategory,
+                    item_variant : "",
+                    price : item.dataValue,
+                    quantity : 1
+                }
+                itemArray.push(arr);
+                i++;
+            });
+            gtag("event", "view_item_list", {
+                currency: "<?php echo $this->getLayout()->createBlock('\Magento\Directory\Block\Currency')->getCurrentCurrencyCode(); ?>",
+                items : itemArray
+            });
+        });
+  });
+</script>

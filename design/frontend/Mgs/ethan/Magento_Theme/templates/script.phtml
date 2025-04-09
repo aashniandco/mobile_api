@@ -1,0 +1,142 @@
+<?php $themeHelper = $this->helper('MGS\Mpanel\Helper\Data'); ?>
+<?php if($themeHelper->getStoreConfig('mgstheme/general/sticky_menu') && $themeHelper->getStoreConfig('mgstheme/general/header') != 'header_4'): ?>
+	<script type="text/javascript">
+		require([
+			'jquery'
+		], function(jQuery){
+			(function($) {
+				var height_header = $('.header').height();
+				if($('body').height() > $(window).height()){
+					$(window).scroll(function(){
+						if($(this).scrollTop() > height_header & $(this).width() > 991){
+							$('#placeholder-header').height(height_header);
+							$('#placeholder-header').show();
+							$('.header').addClass('active-sticky');
+							
+							<?php if($themeHelper->getStoreConfig('mgstheme/general/header') == 'header_1'): ?>
+								$(".middle-header-content .logo").detach().prependTo('#main-Menucontent');
+								$(".header1 .minicart-wrapper").detach().appendTo('#main-Menucontent');
+								$(".login-custom-link").detach().appendTo('.middle-header-content');
+							<?php endif ?>
+						}else {
+							$('.header').removeClass('active-sticky');
+							$('#placeholder-header').hide();
+							
+							<?php if($themeHelper->getStoreConfig('mgstheme/general/header') == 'header_1'): ?>
+								$("#main-Menucontent .logo").detach().prependTo('.middle-header-content');
+								$(".header1 .minicart-wrapper").detach().appendTo('.top-header-content > .container');
+								$(".login-custom-link").detach().appendTo('.top-header-content > .container');
+							<?php endif ?>
+						}
+					});
+					$(window).resize(function() {
+						if($(this).width() < 992){
+							$('.header').removeClass('active-sticky');
+							$('#placeholder-header').hide();
+						}
+					});
+				}
+			})(jQuery);
+		});
+	</script>
+<?php endif ?>
+<?php if($themeHelper->getStoreConfig('mgstheme/general/back_to_top')): ?>
+	<a href="" class="scroll-to-top"><i class="fa fa-arrow-up"></i></a>
+	<script type="text/javascript">
+		require([
+			'jquery'
+		], function(jQuery){
+			(function($) {
+				$(window).scroll(function(){
+					if ($(this).scrollTop() > 1) {
+						$('.scroll-to-top').css({bottom:"100px"});
+
+						if ($(window).width() <= 767) {
+                			$('.scroll-to-top').css({ bottom: "60px" });
+                		}
+					} else {
+						$('.scroll-to-top').css({bottom:"-100px"});
+					}
+				});
+
+				$('.scroll-to-top').click(function(){
+					$('html, body').animate({scrollTop: '0px'}, 800);
+					return false;
+				});
+			})(jQuery);
+		});
+	</script>
+<?php endif ?>
+
+<?php if (!$themeHelper->getStoreConfig('checkout/cart/redirect_to_cart')) : ?>
+	<script type="text/x-magento-init">
+	{
+		"[data-role=tocart-form], .form.map.checkout": {
+			"catalogAddToCart": {}
+		}
+	}
+	</script>
+<?php endif; ?>	
+<div class="mfp-wrap mfp-close-btn-in mfp-auto-cursor mfp-ready" id="mgs-ajax-loading" style="display: none;">
+	<div class="mfp-bg mfp-ready"></div>
+	<div class="preloader"></div>
+</div>
+
+<?php // ZOOM PRODUCT DETAIL ?>
+<script type="text/javascript">
+	require([
+		'jquery',
+		'zoom-images'
+	], function ($) {
+		$(document).on("click",".gallery-thumbnail .image-item",function(e){
+			if(!$(this).hasClass('active')){
+				$('.gallery-thumbnail .image-item.active').removeClass('active');
+				$(this).addClass('active');
+				var url = $(this).data('img-change');
+				$('.product-image-base img').attr('src', url);
+				zoomElement(".product-image-base");
+			}
+		});
+	});
+</script>
+<script type="text/javascript">
+	function zoomElement(el){
+		require([
+			'jquery',
+			'zoom-images'
+		],function( $ ) {
+			$(el).addClass('parentZoom');
+			<?php if($themeHelper->getStoreConfig('mpanel/product_details/disable_zoom_detail')): ?>
+				if($(window).width() > 767){
+					$(el).zoom({magnify: 1});
+				}else {
+					$(el).trigger('zoom.destroy');
+				}
+			<?php else: ?>
+				$(el).zoom({magnify: 1.5});
+			<?php endif ?>
+		});
+	}
+</script>
+<?php if($themeHelper->getStoreConfig('mpanel/product_details/disable_zoom_detail')): ?>
+	<script type="text/javascript">
+		require([
+			'jquery',
+			'zoom-images'
+		], function(jQuery){
+			(function($) {
+				$(window).resize(function(){
+					if ($(window).width() > 767) {
+						$('.parentZoom').each(function(i, obj) {
+							$(this).zoom({magnify: 1});
+						});
+					} else {
+						$('.parentZoom').each(function(i, obj) {
+							$(this).trigger('zoom.destroy');
+						});
+					}
+				});
+			})(jQuery);
+		});
+	</script>
+<?php endif ?>

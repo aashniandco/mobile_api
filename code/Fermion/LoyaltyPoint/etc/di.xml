@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Fermion\LoyaltyPoint\Api\AddLoyaltyManagementInterface" type="Fermion\LoyaltyPoint\Model\AddLoyaltyManagement"/>
+	<preference for="Fermion\LoyaltyPoint\Api\removeLoyaltyPointsManagementInterface" type="Fermion\LoyaltyPoint\Model\removeLoyaltyPointsManagement"/>
+	<preference for="Magento\Customer\Block\Account\Dashboard\Info" type="Fermion\LoyaltyPoint\Block\Account\Dashboard\Info"/>
+</config>

@@ -1,0 +1,28 @@
+<?php
+// Function to check if the request is from a mobile device
+function isMobile() {
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
+    $mobileAgents = ['Mobile', 'Android', 'Silk/', 'Kindle', 'BlackBerry', 'Opera Mini', 'Opera Mobi'];
+
+    foreach ($mobileAgents as $agent) {
+        if (stripos($userAgent, $agent) !== false) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Determine which block to load based on the user agent
+if (isMobile()) {
+    $blockId = 'homepage_mob';
+} else {
+    $blockId = 'homepage_desktop';
+}
+
+// Load the CMS block content
+$blockContent = $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId($blockId)->toHtml();
+?>
+
+<div id="dynamic-content">
+    <?php// echo $blockContent; ?>
+</div>

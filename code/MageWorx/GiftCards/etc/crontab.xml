@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="mageworx_giftcards">
+        <job name="mageworx_giftcards_expired" instance="MageWorx\GiftCards\Cron\SendEmails" method="SendExpiredEmail">
+            <schedule>0 9 * * *</schedule>
+        </job>
+        <job name="mageworx_giftcards_expiration_alert" instance="MageWorx\GiftCards\Cron\SendEmails" method="SendExpirationAlertEmail">
+            <schedule>0 8 * * *</schedule>
+        </job>
+        <job name="mageworx_giftcards_send_using_delivery_date" instance="MageWorx\GiftCards\Cron\SendEmails" method="sendEmailOnDeliveryDate">
+            <schedule>0 7 * * *</schedule>
+        </job>
+    </group>
+</config>

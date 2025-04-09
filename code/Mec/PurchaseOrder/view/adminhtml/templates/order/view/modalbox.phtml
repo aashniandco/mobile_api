@@ -1,0 +1,344 @@
+<?php
+/**
+ * @var $block \Mec\PurchaseModule\Block\Adminhtml\Order\ModalBox
+ */
+
+?>
+
+<?php //echo $block->getInfo(); ?>
+
+<?php
+    $viewModel = $block->getViewModel();
+    $orderId = $viewModel->getOrderId();
+    $orderIncrementId = $viewModel->getOrderIncrementId();
+
+    //echo $viewModel->getFormAction();
+?>
+
+<div id="popup-modal" style="display: none">
+    <div class="entry-edit form-inline">
+        <div class="fieldset-wrapper">
+        <!--<div class="fieldset-wrapper-title">Create Purchase Order</div>-->
+         <div class="admin__fieldset-wrapper-content">
+            <form class="form" action="<?php echo  $viewModel->getFormAction(); ?>" method="post"
+          id="order-view-add-warranty-form" data-mage-init='{"validation":{}}'>
+            <fieldset class="admin__fieldset">              
+                
+
+                <div class="admin__field" style="display:none">
+                    <div class="admin__field-label">
+                        <label><span>Order Id</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input class="admin__control-text" type="text" name="order_id" value="<?= $orderId ?>">
+                    </div>
+                </div>   
+
+                <?php 
+                $data = $viewModel->getOrderItemsJsonData();                
+                ?>
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Item</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                <script>
+                    var txt = '<?php echo  $data; ?>'; 
+                </script>
+                <select class="admin__control-text required test" type="dropdown" name="order_items">
+                            <option value="">Please select product</option>
+                            <?php 
+                            $items = $viewModel->getOrderItems(); 
+                            foreach ($items as $item) {
+                                //var_dump($item->getData());
+                                //echo $item->getDescription();
+                                //echo $item->getShortdescription();
+                            if($item['product_type'] != 'configurable'){
+                                ?>
+                                <option value="<?= $item->getItemId() ?>">
+                                    <?= $item->getSku(); ?>                        
+                                </option>
+                                <?php
+                                } 
+                            } 
+                            ?>                        
+
+                        </select>
+                    </div>
+                </div>             
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>PO Number</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input class="admin__control-text" type="text" name="po_number" value="PO/ABC/001">
+                    </div>  
+                </div>
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>GST Number</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input class="admin__control-text" type="text" name="gst_number" value="27AAOCA2184J1ZC">
+                    </div>  
+                </div>
+                    
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Vendor</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input id="item_vendor_name" class="admin__control-text" type="text" name="vendor" value="">
+                    </div>
+                </div>
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Vendor Code</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input id="item_vendor_code"  class="admin__control-text" type="text" name="vendor_code" value="">
+                    </div>
+                </div>                
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Merchandiser Details</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <textarea class="admin__control-text" type="textarea" name="merchandiser_details" value="">                            
+                        </textarea>
+                    </div>
+                </div>
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Ship to</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <textarea class="admin__control-text" type="text" name="ship_to" value="Aashni + Co
+                            Basement LB - 2,
+                            Peninsula Park,
+                            Veera Desai Road, Near Fun Republic,
+                            Andheri West, Mumbai - 400053 .">
+                            Aashni + Co
+                            Basement LB - 2,
+                            Peninsula Park,
+                            Veera Desai Road, Near Fun Republic,
+                            Andheri West, Mumbai - 400053                            
+                        </textarea> 
+                    </div>
+                </div>               
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Order Increment Id</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input class="admin__control-text" type="text" name="order_increment_id" value="<?= $orderIncrementId ?>">
+                    </div>
+                </div>
+
+                
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Serial No</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input id="item_sl"  class="admin__control-text" type="text" name="serial_no" value="">
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>SKU</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input id="item_sku" class="admin__control-text" type="text" name="sku" value="">
+                    </div>
+                </div>
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Product Id</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input id="item_product_id" class="admin__control-text" type="text" name="product_id" value="">
+                    </div>
+                </div>
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Description</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <textarea id="item_description" class="admin__control-text" type="textarea" name="description" value="">
+                        </textarea>
+                    </div>
+                </div>
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Size</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input id="item_size" class="admin__control-text" type="text" name="size" value="">
+                    </div>
+                </div>
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>QTY</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input id="item_qty" class="admin__control-text" type="text" name="qty" value="">
+                    </div>
+                </div>
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Price</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input id="item_price" class="admin__control-text" type="text" name="price" value="">
+                    </div>
+                </div>
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Delivery Date</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input id="item_delivery_date" class="admin__control-text" type="text" name="delivery_date" value="">
+                    </div>
+                </div>
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Special Instructions</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <textarea id="special_instructions" class="admin__control-text" type="textarea" name="special_instructions" value="">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Measurements</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <textarea id="measurements" class="admin__control-text" type="textarea" name="measurements" value="">
+                        </textarea>
+                    </div>
+                </div> 
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span>Authorised signatory</span></label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input id="authorised_signatory" class="admin__control-text" type="textarea" name="authorised_signatory" value="Satish Shirvadkar"/>
+                    </div>
+                </div>                 
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><span></span></label>
+                    </div>
+                    <div class="admin__field-control">
+                         <!--<input type="button" value="Download Pdf" id="download-pdf">-->
+                         <input type="button" value="Download Pdf" id="order-view-add-warranty">
+                    </div>
+                </div>                                  
+            </fieldset>
+            </form>             
+         </div>
+         </div>
+    </div>
+</div>
+
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function (
+            $,
+            modal
+        ) {
+            $('select').change(function() {
+            var val = $(this).val();
+            console.log(val);
+            const myJSON = $.parseJSON(txt);
+            var key = "id_"+val; 
+            console.log(myJSON);                     
+            var sku = myJSON[key]['sku'];
+            var product_id = myJSON[key]['product_id'];
+            var price = myJSON[key]['price'];
+            var description = myJSON[key]['description'];
+            var size = myJSON[key]['attribute_value'];
+
+            var sl = myJSON[key]['sl'];
+            var vendor_code = myJSON[key]['vendor_code'];
+            var vendor_name = myJSON[key]['vendor_name'];
+            var delivery_date = myJSON[key]['delivery_date'];
+
+            document.getElementById('item_sku').value = sku;
+            document.getElementById('item_product_id').value = product_id;
+
+            document.getElementById('item_price').value = price;
+
+            document.getElementById('item_description').value = description;
+            document.getElementById('item_size').value = size;
+
+            document.getElementById('item_sl').value = sl;
+            document.getElementById('item_vendor_code').value = vendor_code;
+            document.getElementById('item_vendor_name').value = vendor_name;
+
+            document.getElementById('item_delivery_date').value = delivery_date;
+
+            //var selected_sku_obj = myJSON[val];
+            //console.log(selected_sku_obj);
+            });
+            
+            //
+            //console.debug(dataObj);
+            //console.log(dataObj[27233]);
+
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: 'Create Purchase Order',
+                modalClass: 'custom-modal',
+                buttons: [{
+                    text: $.mage.__('Close'),
+                    class: '',
+                    click: function () {
+                        this.closeModal();
+                     }
+                }]
+            };
+
+            var popup = modal(options, $('#popup-modal'));
+            $("#purchase_order_button").click(function() {
+                $("#popup-modal").modal('openModal');
+            });
+
+           $('#order-view-add-warranty').click(function () {
+                $('#order-view-add-warranty-form').append($('<input>', {
+                    'name': 'form_key',
+                    'value': window.FORM_KEY,
+                    'type': 'hidden'
+                }));
+                $('#order-view-add-warranty-form').submit();
+
+            });
+
+        }
+
+    );
+</script>

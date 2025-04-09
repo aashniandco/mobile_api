@@ -1,0 +1,176 @@
+<?php
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+use MageWorx\GiftCards\Api\Data\GiftCardsInterface;
+
+/* @var $block \MageWorx\GiftCards\Block\Adminhtml\Catalog\Product\Composite\Fieldset\GiftCards */
+
+$product   = $block->getProduct();
+$preValues = $product->getPreconfiguredValues();
+$currency  = $block->getCurrency();
+$from      = $currency->convert($product->getMageworxGcOpenAmountMin());
+$to        = $currency->convert($product->getMageworxGcOpenAmountMax());
+?>
+
+<div class="giftcard-info">
+    <fieldset id="giftcard-fieldset" class="fieldset giftcard-fieldset admin__fieldset">
+        <?php if ($block->getAdditionalPrices() || $product->getMageworxGcAllowOpenAmount()) : ?>
+            <div class="field admin__field required _required">
+                <label for="card-amount" class="label admin__field-label">
+                    <span><?php echo __('Card value') . '  (' . $block->getCurrentCurrencySymbol() . ')' ?></span>
+                </label>
+                <div class="control admin__field-control">
+                    <select id="card-amount" name="card_amount" class="validate-select required-entry select admin__control-select">
+                        <?php if ($product->getPrice() > 0) : ?>
+                            <option value="<?php echo $product->getPrice();?>"
+                                <?php echo 'selected'; ?>><?php echo $block->checkoutHelper->formatPrice($product->getPrice());?>
+                            </option>
+                        <?php endif; ?>
+                        <?php if ($block->getAdditionalPrices()): ?>
+                            <?php foreach($block->getAdditionalPrices() as $additionalPrice) : ?>
+                                <?php if ($additionalPrice) : ?>
+                                    <option value="<?php echo $additionalPrice;?>"
+                                        <?php
+                                        if ($preValues->getCardAmount() == $additionalPrice && !$product->getPrice()) {
+                                            echo 'selected';
+                                        }; ?>>
+                                        <?php echo $block->checkoutHelper->formatPrice($additionalPrice);?>
+                                    </option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                        <?php if ($product->getMageworxGcAllowOpenAmount()) : ?>
+                            <option value="other_amount">
+                                <?php echo __('Other Amount...');?>
+                            </option>
+                        <?php endif; ?>
+                    </select>
+                </div>
+            </div>
+            <?php if ($product->getMageworxGcAllowOpenAmount()) : ?>
+                <div class="field admin__field" style="display: none">
+                    <label for="mail-from" class="label admin__field-label"></label>
+                    <div class="control admin__field-control">
+                        <input type="text" id="other_amount" name="card_amount_other" disabled
+                               class="validate-number mageworx-giftcards-min-amount mageworx-giftcards-max-amount required-entry input-text admin__control-text"
+                               placeholder="<?php echo $block->escapeHtmlAttr($block->getAmountPlaceholder()) ?>"/>
+                    </div>
+                </div>
+            <script>
+                require([
+                    'jquery',
+                    'MageWorx_GiftCards/catalog/product/composite/fieldset/validation-rules',
+                    'Magento_Catalog/catalog/product/composite/configure'
+                ], function ($) {
+
+                    productConfigure.mageworxGiftcardsConfig = {};
+
+                    productConfigure.mageworxGiftcardsConfig.minAmount = <?php echo $from ? $from : 0; ?>;
+                    productConfigure.mageworxGiftcardsConfig.maxAmount = <?php echo $to ? $to : 0; ?>;
+
+                    $(document).ready(function() {
+                        if ($('#card-amount').val() === 'other_amount') {
+                            $('#other_amount').closest('div.field').show();
+                            $('#other_amount').prop('disabled', false);
+                        }
+                    });
+
+                    $('#card-amount').on('change', function() {
+                        var otherAmount = $('#other_amount');
+
+                        if ($('#card-amount').val() === 'other_amount') {
+                            otherAmount.closest('div.field').show();
+                            otherAmount.prop('disabled', false);
+                        } else {
+                            otherAmount.closest('div.field').hide();
+                            otherAmount.prop('disabled', true);
+                        }
+                    });
+                });
+            </script>
+            <?php endif; ?>
+        <?php else: ?>
+            <div class="field admin__field">
+                <label for="card-amount" class="label admin__field-label">
+                    <span><?php echo __('Card value') . '  (' . $block->getCurrentCurrencySymbol()  . ')' ?></span>
+                </label>
+                <div class="control admin__field-control">
+                    <div class="admin__field-value">
+                        <span class="control-value">
+                            <input type="hidden" id="card-amount" name="card_amount"
+                                   value="<?php echo $product->getPrice();?>"/>
+                            <?php echo $block->checkoutHelper->formatPrice($product->getPrice());?>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+        <div class="field admin__field">
+            <label for="mail-from" class="label admin__field-label">
+                <span><?php echo __('From Name') ?></span>
+            </label>
+            <div class="control admin__field-control">
+                <input type="text" id="mail-from" name="mail_from" class="input-text admin__control-text"
+                       value="<?php echo $preValues->getMailFrom();?>"/>
+            </div>
+        </div>
+        <div class="field admin__field">
+            <label for="mail-to" class="label admin__field-label">
+                <span><?php echo __('To Name') ?></span>
+            </label>
+            <div class="control admin__field-control">
+                <input type="text" id="mail-to" name="mail_to" class="input-text admin__control-text"
+                       value="<?php echo $preValues->getMailTo();?>"/>
+            </div>
+        </div>
+        <?php if ($block->getCardType() == 1): ?>
+            <div class="field admin__field required _required">
+                <label for="mail-to-email" class="label admin__field-label">
+                    <span><?php echo __('To E-mail') ?></span>
+                </label>
+                <div class="control admin__field-control">
+                    <input type="text" id="mail-to-email" name="mail_to_email"
+                           class="validate-email required-entry input-text admin__control-text"
+                           value="<?php echo $preValues->getMailToEmail();?>"/>
+                </div>
+            </div>
+        <?php endif; ?>
+        <div class="field admin__field">
+            <label for="mail-message" class="label admin__field-label">
+                <span><?php echo __('Message') ?></span>
+            </label>
+            <div class="control admin__field-control">
+                <textarea id="mail-message" name="mail_message" class="input-text admin__control-textarea"><?php echo $preValues->getMailMessage();?></textarea>
+            </div>
+        </div>
+
+        <?php if ($block->getCardType() == \MageWorx\GiftCards\Model\GiftCards::TYPE_EMAIL): ?>
+            <div class="field admin__field">
+                <label for="delivery-date" class="label admin__field-label">
+                    <span><?= $block->escapeHtml(__('Delivery Date')) ?>:</span>
+                </label>
+                <div class="control admin__field-control">
+                    <input type="text" id="delivery-date" name="<?= /* @noEscape */ GiftCardsInterface::MAIL_DELIVERY_DATE . '_user_value' ?>"
+                           class="input-text admin__control-text"  value="<?= $block->escapeHtmlAttr($preValues->getMailDeliveryDateUserValue()) ?>"/>
+                    <div class="calendar-icon"></div>
+                </div>
+            </div>
+
+            <script>
+                require([
+                    "jquery",
+                    "mage/calendar"
+                ], function($){
+                    $("#delivery-date").calendar({
+                        dateFormat: "<?= $block->getDateFormat() ?>",
+                        autoComplete: false
+                    });
+                });
+            </script>
+        <?php endif; ?>
+
+    </fieldset>
+</div>

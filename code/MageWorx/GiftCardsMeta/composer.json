@@ -1,0 +1,9 @@
+{
+  "name": "mageworx/module-giftcards",
+  "version": "3.0.4",
+  "type": "metapackage",
+  "require": {
+    "mageworx/module-info": ">=1.0.0",  
+    "mageworx/module-giftcardsbase": "2.10.5"
+  }
+}

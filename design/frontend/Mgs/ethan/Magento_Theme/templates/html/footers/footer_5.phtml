@@ -1,0 +1,16 @@
+<?php $helper = $this->helper('MGS\Mpanel\Helper\Data') ?>
+<?php $canUsePanel = $helper->acceptToUsePanel() ?>
+<?php $block = $this->getBlock() ?>
+<div class="footer-container">
+	<div class="middle-footer">
+		<div class="container">
+			<div class="text-center">
+				<!-- Static block: footer_block_bottom_payment -->
+				<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_bottom_payment')->setCanUsePanel($canUsePanel)->toHtml() ?>
+				<!-- Static block: footer_block_bottom_link -->
+				<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_block_bottom_link')->setCanUsePanel($canUsePanel)->toHtml() ?>
+				<address><?php /* @escapeNotVerified */ echo $block->getCopyright() ?></address>
+			</div>
+		</div>
+	</div>
+</div>

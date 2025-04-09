@@ -1,0 +1,820 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+<?php $_product = $block->getProduct(); ?>
+<?php $buttonTitle = __('ADD TO CART'); ?>
+<?php if ($_product->isSaleable()): ?>
+
+	<?php $themeHelper = $this->helper('MGS\Mpanel\Helper\Data'); ?>
+	
+	<?php // If is deals product. Show countdown time ?>
+	<?php if($_product->getSpecialPrice() && $_product->getSpecialToDate() && $_product->getSpecialFromDate()): ?>
+		
+		<?php $dateTimeFormat = \Magento\Framework\Stdlib\DateTime::DATETIME_PHP_FORMAT; ?>
+		<?php $now = $themeHelper->getCurrentDateTime(); ?>
+		<?php $specialFromDate = date($dateTimeFormat, strtotime($_product->getSpecialFromDate())); ?>
+		<?php $specialToDate = date($dateTimeFormat, strtotime($_product->getSpecialToDate())); ?>
+		
+		<?php if($specialFromDate <= $now && $specialToDate > $now): ?>
+			<div class="product-detail-deals">
+				<?php echo $this->getLayout()->createBlock('MGS\Mpanel\Block\Products\Deals')->setProduct($_product)->setTemplate('MGS_Mpanel::products/deals/item.phtml')->toHtml() ?>
+			</div>
+		<?php endif ?>
+		
+	<?php endif ?>
+	<?php // End Deals ?>
+	
+	<div class="box-tocart">
+
+		<?php echo $block->getChildHtml('', true) ?>
+		
+		<div class="fieldset">
+			<?php if ($block->shouldRenderQuantity()): ?>
+			<div class="field qty">
+				<label class="label" for="qty"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></label>
+				<div class="control">
+					<span class="edit-qty minus" onclick="minusQty('qty')">-</span>
+					<input type="number"
+						   name="qty"
+						   id="qty"
+						   maxlength="12"
+						   value="<?php /* @escapeNotVerified */ echo $block->getProductDefaultQty() * 1 ?>"
+						   title="<?php /* @escapeNotVerified */ echo __('Qty') ?>" class="input-text qty"
+						   data-validate="<?php echo $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+						   />
+					<span class="edit-qty plus" onclick="plusQty('qty')">+</span>
+				</div>
+			</div>
+			<?php endif; ?>
+			<div class="actions">
+				<?php if(!$_product->getHideprice()){?>
+				<button type="submit"
+						title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+						class="action primary tocart"
+						id="product-addtocart-button">
+						<!-- <span class="fa fa-shopping-cart"></span> -->
+					<span><?php /* @escapeNotVerified */ echo $buttonTitle ?></span>
+				</button>
+				<?php }else {?>
+				<div class="enquire_info row" >
+                                <div class=" col-sm-6">
+					<div  class="action btn btn-secondary" id="modal-btn"> Enquire Now </div>
+				</div>
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  -->
+
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"> Designer  Name </h4>
+      </div>
+      <div class="modal-body">
+         <div class="row">
+            <div class="col-sm=12">
+              Please fill the form below to submit your Query
+            </div>
+
+            <div class="col-sm=12">
+               
+
+               <form class="form-horizontal">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" placeholder="">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Phone</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" placeholder="">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Your Query</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" placeholder="">
+                    </div>
+                  </div>
+
+                   <div class="form-group">
+                     <div class="action btn btn-secondary"> Submit </div>
+                  </div>
+
+
+                </form>
+
+
+            </div>
+         </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+
+				</div>
+				<?php }?>
+				<?php
+					$_wishlistSubmitParams = $this->helper('Magento\Wishlist\Helper\Data')->getAddParams($_product);
+					$compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
+				?>
+				
+				<?php if ($themeHelper->getStoreConfig('mpanel/product_details/wishlist') && $this->helper('Magento\Wishlist\Helper\Data')->isAllow()) : ?>
+					<?php if(!$_product->getHideprice()):?>
+					<button id="btn_add_towishlist" class="action towishlist"
+						data-post='<?php /* @escapeNotVerified */ echo $_wishlistSubmitParams; ?>'
+						data-action="add-to-wishlist"
+						title="<?php /* @escapeNotVerified */ echo __('Add to Wish List') ?>">
+							<span class="fa fa-heart"></span>
+					</button>
+					<?php endif?>
+					<script type="text/x-magento-init">
+						{
+							"body": {
+								"addToWishlist": <?php /* @escapeNotVerified */ echo $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode($block->getWishlistOptions())?>
+							}
+						}
+					</script>
+				<?php endif; ?>
+				
+				<?php if($themeHelper->getStoreConfig('mpanel/product_details/compare')): ?>
+					<?php if(!$_product->getHideprice()):?>
+					<button class="action tocompare compareCart" 
+						data-post='<?php /* @escapeNotVerified */ echo $compareHelper->getPostDataParams($_product);?>'
+						data-role="add-to-links"
+						title="<?php /* @escapeNotVerified */ echo __('Add to Compare') ?>">
+							<span class="fa fa-retweet"></span>
+					</button>
+					<?php endif?>
+				<?php endif ?>
+				
+				<?php if ($block->canEmailToFriend()): ?>
+					<button onclick="setLocation('<?php /* @escapeNotVerified */ echo $this->helper('Magento\Catalog\Helper\Product')->getEmailToFriendUrl($_product) ?>')" 
+				   class="action mailto friend" title="<?php /* @escapeNotVerified */ echo __('Send Email to Friend') ?>"><span class="fa fa-envelope"></span></button>
+				<?php endif; ?>
+			</div>
+		</div>
+		<!-- -----------------------------------360 view---------------------------------------------- -->
+		<?php if ($_product->getId() == 90238 ) { ?>
+			
+		
+		<div class="360-view">
+			<div title="360 Degree View" id="view-360-div" style="height: 40px; width: 40px; background-color: #ffffff; border: 1px solid #e6e6e6; color: #6c6c6c; font-size: 13px; text-align: center; border-radius: 0; box-shadow: none; float: left; margin-left: 15px!important;">
+				<img src="pub/media/wysiwyg/360-icon.svg" style="height: 100%; width: 100%;">
+			</div>
+		</div>
+		<div class="3D-view">
+			<div title="3D View" id="view-3d-div" style="height: 40px; width: 40px; background-color: #ffffff; border: 1px solid #e6e6e6; color: #6c6c6c; font-size: 13px; text-align: center; border-radius: 0; box-shadow: none; float: left; margin-left: 15px!important;">
+				<img src="pub/media/wysiwyg/3D-icon.svg" style="height: 100%; width: 100%;">
+			</div>
+		</div>
+		<?php } ?>
+		<div id="threejs-popup">
+		    <div id="close-button">Close</div>
+		    <div id="threejs-container"></div>
+		</div>
+		<div id="loading-bar-container">
+		    <div id="loading-bar">0%</div>
+		</div>
+		<script type="module">
+		    import * as THREE from 'https://unpkg.com/three@0.126.1/build/three.module.js';
+		    import { OrbitControls } from 'https://unpkg.com/three@0.126.1/examples/jsm/controls/OrbitControls.js';
+		    import { GLTFLoader } from 'https://unpkg.com/three@0.126.1/examples/jsm/loaders/GLTFLoader.js';
+
+		    const viewDiv = document.getElementById('view-360-div');
+		    const popup = document.getElementById('threejs-popup');
+		    const closeButton = document.getElementById('close-button');
+		    const container = document.getElementById('threejs-container');
+
+		    viewDiv.addEventListener('click', () => {
+		        // Show the popup
+		        popup.style.display = 'block';
+
+		        let scene, camera, renderer, plane;
+				    //const container = document.getElementById('container');
+				    const width = window.innerWidth;
+					const height = window.innerHeight;
+				    const imageCount = 120; // Total number of images
+				    const imagePathBase = "https://s1.pixriot.com/433181dfa6/WebRotate360.com/imagerotator_examples/demo-stone/images/image-"; // Base path to images
+				    const imageFormat = ".webp"; // Image file format
+				    let images = []; // Array to hold preloaded images
+				    let currentImageIndex = 1;
+				    let isDragging = false;
+				    let previousMousePosition = { x: 0 };
+
+				    function init() {
+				        // Set up scene, camera, and renderer
+				        scene = new THREE.Scene();
+				        camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+				        camera.position.z = 5;
+
+				        renderer = new THREE.WebGLRenderer({ antialias: true });
+				        renderer.setSize(width, height);
+				        container.appendChild(renderer.domElement);
+
+				        // Initial texture setup with the first image
+				        const texture = new THREE.TextureLoader().load(`${imagePathBase}0001${imageFormat}`);
+				        const material = new THREE.MeshBasicMaterial({ map: texture });
+				        const geometry = new THREE.PlaneGeometry(4, 3);
+				        plane = new THREE.Mesh(geometry, material);
+				        scene.add(plane);
+
+				        // Preload images into memory
+				        preloadImages();
+
+				        // Set up mouse event listeners for interaction
+				        container.addEventListener('mousedown', startDragging);
+				        container.addEventListener('mousemove', drag);
+				        container.addEventListener('mouseup', stopDragging);
+				        container.addEventListener('mouseleave', stopDragging);
+
+				        container.addEventListener('touchstart', startTouchDragging);
+				        container.addEventListener('touchmove', touchDrag);
+				        container.addEventListener('touchend', stopDragging);
+				        container.addEventListener('touchcancel', stopDragging);
+
+				        window.addEventListener('resize', onWindowResize, false);
+				        animate();
+				    }
+
+				    // Preload all images into an array
+				    function preloadImages() {
+				        for (let i = 1; i <= imageCount; i++) {
+				            const indexString = String(i).padStart(4, '0'); // Pads numbers to 4 digits
+				            const img = new Image();
+				            img.crossOrigin = "anonymous";
+				            img.src = `${imagePathBase}${indexString}${imageFormat}`;
+				            images.push(img);
+				        }
+				    }
+
+				    // Helper function to set texture based on preloaded image
+				    function updateTexture(index) {
+				        const texture = new THREE.Texture(images[index - 1]);
+				        texture.needsUpdate = true;
+				        plane.material.map = texture;
+				    }
+
+				    // Mouse event functions
+				    function startDragging(e) {
+				        isDragging = true;
+				        previousMousePosition.x = e.clientX;
+				    }
+
+				    function drag(e) {
+				        if (isDragging) {
+				            const deltaX = e.clientX - previousMousePosition.x;
+				            const sensitivity = -3; // Adjust sensitivity for smoother rotation
+
+				            if (deltaX > sensitivity) { 
+				                currentImageIndex = (currentImageIndex - 1 + imageCount) % imageCount || imageCount;
+				            } else if (deltaX < -sensitivity) { 
+				                currentImageIndex = (currentImageIndex + 1) % imageCount || imageCount;
+				            }
+
+				            // Update texture from preloaded images
+				            updateTexture(currentImageIndex);
+				            previousMousePosition.x = e.clientX;
+				        }
+				    }
+
+				    function stopDragging() {
+				        isDragging = false;
+				    }
+
+				    // Adjusted for Touch Event
+					function startTouchDragging(e) {
+					    e.preventDefault(); // Prevent default touch behavior
+					    isDragging = true;
+					    previousMousePosition.x = e.touches[0].clientX; // Initial touch position
+					}
+
+					function touchDrag(e) {
+					    e.preventDefault(); // Prevent page scroll on touch drag
+					    if (isDragging) {
+					        const deltaX = e.touches[0].clientX - previousMousePosition.x;
+					        const sensitivity = 2;
+
+					        if (deltaX > sensitivity) {
+					            currentImageIndex = (currentImageIndex - 1 + imageCount) % imageCount || imageCount;
+					        } else if (deltaX < -sensitivity) {
+					            currentImageIndex = (currentImageIndex + 1) % imageCount || imageCount;
+					        }
+					        updateTexture(currentImageIndex);
+					        previousMousePosition.x = e.touches[0].clientX; // Update last touch position
+					    }
+					}
+
+				    function onWindowResize() {
+			    	 //    const canvas = document.querySelector('canvas');
+					    // canvas.width = canvas.clientWidth;
+					    // canvas.height = canvas.clientHeight;
+				     //    camera.aspect = width / height;
+				     //    camera.updateProjectionMatrix();
+				     //    renderer.setSize(width, height);
+				    }
+
+				    function animate() {
+				        requestAnimationFrame(animate);
+				        renderer.render(scene, camera);
+				    }
+
+				    init();
+		    });
+
+		    closeButton.addEventListener('click', () => {
+		        // Close the popup and remove the 3D content
+		        popup.style.display = 'none';
+		        container.innerHTML = ''; // Clear the 3D renderer content to avoid duplicates
+		    });
+		</script>
+
+
+		<!-- -----------------------------------360 view---------------------------------------------- -->
+		<!-- -----------------------------------3d view---------------------------------------------- -->
+		<style>
+	        body { margin: 0; }
+	        #threejs-popup {
+	            position: fixed;
+	            top: 0;
+	            left: 0;
+	            width: 100%;
+	            height: 100%;
+	            display: none;
+	            background-color: rgba(0, 0, 0, 0.8);
+	            z-index: 2001;
+	        }
+	        #threejs-container {
+	            width: 100%;
+	            height: 100%;
+	        }
+	        #close-button {
+	            position: absolute;
+	            top: 10px;
+	            right: 20px;
+	            padding: 10px 15px;
+	            background-color: #fff;
+	            border: none;
+	            cursor: pointer;
+	            font-size: 18px;
+	            z-index: 1100;
+	        }
+	        #loading-bar-container {
+	            position: fixed;
+	            top: 50%;
+	            left: 50%;
+	            transform: translate(-50%, -50%);
+	            width: 300px;
+	            background: #ccc;
+	            border-radius: 5px;
+	            overflow: hidden;
+	            display: flex;
+	            display: none;
+	            text-align: center;
+	            z-index: 2005;
+	        }
+	        #loading-bar {
+	            height: 20px;
+	            width: 0;
+	            background: #76c7c0;
+	            transition: width 0.3s;
+	        }
+	    </style>
+		<script type="module">
+		    import * as THREE from 'https://unpkg.com/three@0.126.1/build/three.module.js';
+		    import { OrbitControls } from 'https://unpkg.com/three@0.126.1/examples/jsm/controls/OrbitControls.js';
+		    import { GLTFLoader } from 'https://unpkg.com/three@0.126.1/examples/jsm/loaders/GLTFLoader.js';
+
+		    const viewDiv = document.getElementById('view-3d-div');
+		    const popup = document.getElementById('threejs-popup');
+		    const closeButton = document.getElementById('close-button');
+		    const container = document.getElementById('threejs-container');
+	        const loadingBarContainer = document.getElementById('loading-bar-container');
+	        const loadingBar = document.getElementById('loading-bar');
+
+		    viewDiv.addEventListener('click', () => {
+		        // Show the popup
+		        popup.style.display = 'block';
+				loadingBarContainer.style.display = 'block';
+
+
+		        // Basic Three.js Setup
+		        const scene = new THREE.Scene();
+		        scene.background = new THREE.Color(0xEEEEEE);
+		        const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+		        const renderer = new THREE.WebGLRenderer({ antialias: true });
+		        renderer.setSize(container.clientWidth, container.clientHeight);
+				renderer.shadowMap.enabled = true;
+			    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+		        container.appendChild(renderer.domElement);
+
+		        // OrbitControls
+		        const controls = new OrbitControls(camera, renderer.domElement);
+		        controls.enableDamping = true;
+
+		        // GLTFLoader for loading 3D models
+		        const loader = new GLTFLoader();
+		        loader.load('/pub/media/wysiwyg/MaterialsVariantsShoe.glb', (gltf) => {
+				    // Add the model to the scene
+				    const model = gltf.scene;
+				    scene.add(model);
+
+				    // Compute the bounding box of the model
+				    const box = new THREE.Box3().setFromObject(model);
+				    const size = new THREE.Vector3();
+				    box.getSize(size);
+
+				    // Adjust the camera position based on the size of the model
+				    const maxDim = Math.max(size.x, size.y, size.z);
+				    const fov = camera.fov * (Math.PI / 180);
+				    let cameraZ = maxDim / (2 * Math.tan(fov / 2));
+
+				    // Ensure the camera is not too close to the model
+				    cameraZ *= 1.5; // Add some distance margin
+				    camera.position.z = cameraZ;
+
+				    // Center the model
+				    const center = new THREE.Vector3();
+				    box.getCenter(center);
+				    model.position.x -= center.x;
+				    model.position.y -= center.y;
+				    model.position.z -= center.z;
+
+				    // Ensure the model fits in the viewport
+				    camera.lookAt(0, 0, 0);
+
+				    loadingBarContainer.style.display = 'none';
+				    loadingBar.style.width = '0%';
+	                loadingBar.innerHTML = '0%';
+				}, (xhr) => {
+	                // Update loading bar progress
+	                const percentComplete = Math.round((xhr.loaded / xhr.total) * 100);
+	                console.log(percentComplete);
+	                loadingBar.style.width = percentComplete + '%';
+	                loadingBar.innerHTML = percentComplete + '%';
+
+            	}, (error) => {
+				    console.error(error);
+				    loadingBarContainer.style.display = 'none'; // Hide the loading bar on error
+				});
+
+
+		        // Basic lighting
+			    const light = new THREE.DirectionalLight(0xffffff, 1);
+			    light.position.set(0, 1, 0).normalize();
+			    scene.add(light);
+
+			    const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5); // Soft light
+			    scene.add(ambientLight);
+
+		        // Position the camera
+		        camera.position.z = 5;
+
+		        // Render loop
+		        function animate() {
+		            requestAnimationFrame(animate);
+		            controls.update(); // Update controls with damping
+		            renderer.render(scene, camera);
+		        }
+
+		        animate();
+
+		        // Handle window resize
+		        window.addEventListener('resize', () => {
+		            camera.aspect = container.clientWidth / container.clientHeight;
+		            camera.updateProjectionMatrix();
+		            renderer.setSize(container.clientWidth, container.clientHeight);
+		        });
+		    });
+
+		    closeButton.addEventListener('click', () => {
+		        // Close the popup and remove the 3D content
+		        popup.style.display = 'none';
+		        container.innerHTML = ''; // Clear the 3D renderer content to avoid duplicates
+		    });
+		</script>
+
+		<!-- -----------------------------------3d view---------------------------------------------- -->
+	</div>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/product/view/validation": {
+                "radioCheckboxClosest": ".nested"
+            }
+        }
+    }
+</script>
+<?php if (!$block->isRedirectToCartEnabled()) : ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "catalogAddToCart": {
+                "bindSubmit": false
+            }
+        }
+    }
+</script>
+<?php endif; ?>
+
+<?php if ($block->shouldRenderQuantity()): ?>
+	<script type="text/javascript">
+		function plusQty(qtyInput){
+			require([
+			'jquery'
+			], function(jQuery){
+				(function($) {
+					if($('#'+qtyInput).attr('disabled')!='disabled'){
+						qty = $('#'+qtyInput).attr('value');
+						qty = parseInt(qty);
+						qty++;
+						$('#'+qtyInput).val(qty);
+					}
+				})(jQuery);
+			});
+			
+		}
+		function minusQty(qtyInput){
+			require([
+			'jquery'
+			], function(jQuery){
+				(function($) {
+					if($('#'+qtyInput).attr('disabled')!='disabled'){
+						qty = $('#'+qtyInput).attr('value');
+						qty = parseInt(qty);
+						
+						if(qty>1){
+							qty--;
+							$('#'+qtyInput).val(qty);
+						}
+					}
+				})(jQuery);
+			});
+		}
+	</script>
+<?php endif; ?>
+
+
+
+<!--mp-->
+<div class='enquire-pop-top' style='display:none;'>
+<div class="enquire_popup" id="custom-model-popup">
+	<p class='sku-header'><?php echo $_product->getName() ?></p>
+	<form action="/enquire" method="post" enctype="multipart/form-data" autocomplete="off"
+          data-hasrequired="* Required Fields" data-mage-init='{"validation":{}}'>
+	                     <input type="hidden" name="sku" value="<?php echo $_product->getSku() ?>">
+                             <input type="hidden" name="designer_name" value="<?php echo $_product->getName() ?>">
+                             <input type="hidden" name="product_desc" value="<?php echo $_product->getShortDescription() ?>">
+			     <input type="hidden" name="remote_ip" id="remote_ip" title="Client IP" class="input-text required-entry" value="<?php echo $_SERVER['REMOTE_ADDR'] ?>">
+			     <?php echo $block->getFormKeyHtml(); ?>
+                            <ul class="form-list">
+                                 <li>
+                                     <div class="field">
+                                         <label for="name" class="required">Name</label>
+                                         <div class="input-box">
+                                             <input name="customer_name" id="customer_name" title="Name" value="" class="input-text required-entry" type="text">
+                                         </div>
+                                     </div>
+                                 </li>
+                                 <li>
+                                     <div class="field">
+                                         <label for="email" class="required">Email</label>
+                                         <div class="input-box">
+                                             <input name="customer_email" id="customer_email" title="Email" value="" class="input-text required-entry validate-email" type="text">
+                                         </div>
+                                     </div>
+                                 </li>
+                                 <li>
+					                <div class="field">
+					                    <label for="country" class="required">Country</label>
+					                    <div class="input-box">
+					                        <select name="country" id="country" title="Country" class="input-text required-entry" style="border: 1px solid #000000;">
+					                            <option value="">Select Country</option>
+					                            <?php foreach ($block->getCountryOptions() as $country): ?>
+					                                <option data-dialcode="<?php echo $country['dial_code']; ?>" value="<?php echo $country['name']; ?>"><?php echo $country['name']; ?></option>
+					                            <?php endforeach; ?>
+					                        </select>
+					                    </div>
+					                </div>
+					            </li>
+					            <li>
+					                <div class="field">
+					                    <label for="phone" class="required">Phone</label>
+					                    <div class="input-box" style="display: flex;justify-content: space-between;">
+					                        <input name="country_code" id="country_code" title="Country code" value="" class="input-text" type="text" readonly style="width: 75px;float: left;">
+					                        <input name="customer_phone" id="customer_phone" title="Phone" value="" class="input-text validate-number required-entry" type="text" style="width: 82%">
+					                    </div>
+					                </div>
+					            </li>
+                                <li>
+                                     <div class="field">
+                                         <label for="phone" class="required">Your Query</label>
+                                         <div class="input-box">
+                                             <input  name="query" id="query" title="Comments" value="" class="input-text required-entry" type="text">
+                                         </div>
+                                     </div>
+                                 </li>
+                             </ul>
+	
+	<button  type="submit" title="Submit" class="button"><span><span>Submit</span></span></button>
+	</form>
+</div>
+</div>
+<script>
+	require([
+		"jquery",
+		"Magento_Ui/js/modal/modal"
+	], function($, modal){
+		var options = {
+			type: 'popup',
+			responsive: true,
+			innerScroll: true,
+		};
+		var popupdata = $('<div />').append($('#custom-model-popup'));
+		modal(options, popupdata);
+		$("#modal-btn").click(function() {
+			popupdata.modal('openModal');
+			});
+
+	});
+</script>
+
+<script>
+<?php
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$categoryRepository = $objectManager->get('\Magento\Catalog\Api\CategoryRepositoryInterface');
+	$parent = $objectManager->get('Magento\Catalog\Model\Product')->load($_product->getId());
+    $cats = $parent->getCategoryIds();
+    $category_name = '';
+    $category_id = isset($cats[0]) ? $cats[0] : 0; 
+    if($category_id){
+        try {
+            $category = $categoryRepository->get($category_id);
+            $category_name = $category->getName(); 
+        }catch(Exception $e) {
+            $category_name = 'NA';
+        }
+    }
+?>
+<?php $productName = $_product->getData('short_description');?>
+require(["jquery"], function ($) {
+	// $(document).ready(function() {
+		// $(document).on("click", "#product-addtocart-button", function(){
+		var oldPrice = "<?php echo $_product->getPriceInfo()->getPrice("regular_price")->getAmount(); ?>";
+		var finalPrice = "<?php echo $_product->getFinalPrice();?>";
+		$("#product-addtocart-button").click(function () {
+			gtag("event", "add_to_cart", {
+  				currency: "<?php echo $this->getLayout()->createBlock('\Magento\Directory\Block\Currency')->getCurrentCurrencyCode(); ?>",
+  				value: <?php echo $_product->getFinalPrice();?>,
+  				items: [
+	    			{
+      					item_id: "<?php echo $_product->getSku();?>",
+      					item_name: "<?php echo $productName; ?>",
+      					coupon: "",
+      					discount: 0,
+      					index: 0,
+      					item_brand: "<?php echo $_product->getName();?>",
+      					item_category: "<?php echo $category_name; ?>",
+      					item_variant: "",
+      					price: "<?php echo $_product->getFinalPrice();?>",
+      					quantity: 1
+	    			}
+  				]
+			});
+		});
+		$("#btn_add_towishlist").click(function (){
+			gtag("event", "add_to_wishlist", {
+  				currency: "<?php echo $this->getLayout()->createBlock('\Magento\Directory\Block\Currency')->getCurrentCurrencyCode(); ?>",
+  				value: "<?php echo $_product->getFinalPrice();?>",
+  				items: [
+	    			{
+	      				item_id: "<?php echo $_product->getSku();?>",
+      					item_name: "<?php echo $productName; ?>",
+      					affiliation: "",
+      					coupon: "",
+      					discount: 0,
+      					index: 0,
+      					item_brand: "<?php echo $_product->getName();?>",
+      					item_category: "<?php echo $category_name; ?>",
+      					item_variant: "",
+      					price: "<?php echo $_product->getFinalPrice();?>",
+      					quantity: 1
+    				}
+  				],
+			});
+		});
+		 gtag("event", "view_item_detail", {
+                currency:"<?php echo $this->getLayout()->createBlock('\Magento\Directory\Block\Currency')->getCurrentCurrencyCode(); ?>",
+                value:oldPrice,
+                items: [
+            	{
+	              item_id: "<?php echo $_product->getSku();?>",
+	              item_name: "<?php echo $productName; ?>",
+	              affiliation: "",
+	              coupon: "",
+	              discount: oldPrice - finalPrice,
+	              index: 0,
+	              item_brand: "<?php echo $_product->getName();?>",
+	              item_category: "<?php echo $category_name; ?>",
+	              item_variant: "",
+	              price: finalPrice,
+	              quantity: 1
+	            }
+	          ]
+            });
+	// })
+});
+</script>
+<script type="text/javascript">
+	var breadcrumblistschemaArr=[];
+	var breadcrumblistschema1 = {
+    "@type": "ListItem",  
+    "position": "1",
+    "name": "Home",
+    "item": "https://aashniandco.com/"
+    }
+    breadcrumblistschemaArr.push(breadcrumblistschema1);
+    var breadcrumblistschema2={
+        '@type':'ListItem',
+        'position':2,
+        'name': "<?php echo $_product->getName(); ?>",
+        'item': "<?php echo $_product->getProductUrl();?>"
+    }
+    breadcrumblistschemaArr.push(breadcrumblistschema2);
+    
+    //pdp breadcrumbschema list
+    var el = document.createElement('script');
+    el.type = 'application/ld+json';
+
+    el.text = JSON.stringify({
+           "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": breadcrumblistschemaArr
+        });
+    document.getElementsByTagName('head')[0].appendChild(el);
+</script>
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        $('#country').change(function() {
+            var selectedOption = $(this).find('option:selected');
+            var dialCode = selectedOption.data('dialcode');
+            
+            $('#country_code').val(dialCode);
+        });
+
+
+        var dataSku = "<?php echo $_product->getSku();?>" // Get the SKU of the clicked product
+        console.log('SKU' + dataSku);
+
+        // Retrieve the existing SKUs from local storage
+        var recentlyViewedSkus = JSON.parse(localStorage.getItem('recentlyViewedSkus')) || [];
+
+        // Add the new SKU to the array if it's not already present
+        if (!recentlyViewedSkus.includes(dataSku)) {
+            recentlyViewedSkus.unshift(dataSku); // Add to the start of the array
+
+            // Limit the array to a maximum of 15 SKUs
+            if (recentlyViewedSkus.length > 15) {
+                recentlyViewedSkus.pop(); // Remove the oldest SKU
+            }
+
+            // Save the updated array back to local storage
+            localStorage.setItem('recentlyViewedSkus', JSON.stringify(recentlyViewedSkus));
+        }
+        
+    });
+</script>
+
+
+
+	

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config/etc/config.xsd">
+    <default>
+        <invoice>
+            <general>
+                 <enable>1</enable>
+                <secret_key>sk_test_ygqHpkhRkKOh5ylenJ4xsZIQ00bEcN0E7K</secret_key>
+                <due_days>6</due_days>
+                <user_id_list>51</user_id_list>
+                <finalize_invoice>1</finalize_invoice>
+                <send_invoice>1</send_invoice>
+            </general>
+        </invoice>
+    </default>
+</config>

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+		<referenceContainer name="content">
+			<container name="product.info.main.before" htmlTag="div" htmlClass="row" before="-">
+				<container name="product.info.main.media" htmlTag="div" htmlClass="col-md-6 col-sm-6 col-xs-12" before="-">
+					<block class="Magento\Catalog\Block\Product\View\Gallery" name="product.info.media.image" template="Magento_Catalog::product/view/gallery.phtml"/>
+				</container>
+				<container name="product.info.main.infomation" htmlTag="div" htmlClass="col-md-6 col-sm-6 col-xs-12" after="product.info.main.media" />
+			</container>
+			<referenceBlock name="catalog.product.related">
+				<arguments>
+                    <argument name="position" xsi:type="string">maincontent</argument>
+                </arguments>
+			</referenceBlock>
+		
+			<block class="Magento\Cms\Block\Block" name="custom.product.detail.bottom.static.block" after="-">
+				<arguments>
+					<argument name="block_id" xsi:type="string">mpanel_product_detail_bottom_block</argument>
+					<argument name="enabled_builder" xsi:type="string">1</argument>
+				</arguments>
+			</block>
+		</referenceContainer>
+		<block class="Magento\Catalog\Block\Product\View\Gallery" name="product.detail.sharethis" after="-" template="MGS_Mpanel::sharethis/sharethis.phtml" ifconfig="mpanel/share_config/share_product_detail"/>
+        <referenceContainer name="content.aside" remove='true'>
+            <container name="product.sidebar.main.before.all" htmlTag="div" before="-"/>
+            <block ifconfig="mpanel/product_details/related_sidebar" class="Magento\Catalog\Block\Product\ProductList\Related" after="product.sidebar.main.before.all" name="catalog.product.related.sidebar" template="Magento_Catalog::product/list/items.phtml">
+                <arguments>
+                    <argument name="type" xsi:type="string">related</argument>
+                    <argument name="position" xsi:type="string">sidebar</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+		
+		<block class="Magento\Cms\Block\Block" name="custom.product.detail.top.static.block">
+			<arguments>
+				<argument name="block_id" xsi:type="string">mpanel_product_detail_top_block</argument>
+				<argument name="enabled_builder" xsi:type="string">1</argument>
+			</arguments>
+		</block>
+		
+		<!-- Move Element -->
+		<referenceContainer name="product.info.media" remove="true"/>
+		
+		<move element="custom.product.detail.top.static.block" destination="product.info.main.infomation" after="-" />
+		
+		<move element="product.detail.sharethis" destination="product.info.main" after="-" />
+		
+		<move element="product.info.extrahint" destination="product.info.main" after="product.info" />
+		
+		<move element="product.info.overview" destination="product.info.main" after="product.info.price" />
+		
+		<move element="page.main.title" destination="product.info.main.infomation" before="-" />
+		
+		<move element="product.info.main" destination="product.info.main.infomation"/>
+		
+        <move element="product.info.stock.sku" destination="product.info.price" after="product.price.final"/>
+		
+        <move element="product.info.review" destination="product.info.main" before="product.info.price"/>
+	</body>
+</page>

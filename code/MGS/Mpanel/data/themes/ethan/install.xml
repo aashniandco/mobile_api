@@ -1,0 +1,325 @@
+<install>
+	<static_block>
+		<item>
+			<title>Header 1 Top Left Link</title>
+			<identifier>header_1_top_left_link</identifier>
+			<content><![CDATA[<ul>
+<li><a href="{{store url=""}}sales/order/history/"><span class="fa fa-car">&nbsp;</span>Track Your Order</a></li>
+<li><a href="{{store url=""}}storelocator"><span class="fa fa-map-marker">&nbsp;</span>Store Locator</a></li>
+</ul>]]></content>
+		</item>
+		<item>
+			<title>Header 2 Top Right Link</title>
+			<identifier>header_2_top_right_link</identifier>
+			<content><![CDATA[<ul>
+<li><a href="{{store url=""}}storelocator"><span class="fa fa-map-marker">&nbsp;</span>Store Locator</a></li>
+<li><a href="{{store url=""}}sales/order/history/"><span class="fa fa-car">&nbsp;</span>Track Your Order</a></li>
+</ul>]]></content>
+		</item>
+		<item>
+			<title>Header 2 Top Left Contact</title>
+			<identifier>header_2_top_left_contact</identifier>
+			<content><![CDATA[<ul>
+<li><a href="tel:+8467896789"><span class="fa fa-phone">&nbsp;</span>+84 6789 6789</a></li>
+<li><a href="mailto:ethanstore@gmail.com" target="_top"><span class="fa fa-envelope">&nbsp;</span>ethanstore@gmail.com</a></li>
+</ul>]]></content>
+		</item>
+		<item>
+			<title>Header 3 Top Right Link</title>
+			<identifier>header_3_top_right_link</identifier>
+			<content><![CDATA[<ul>
+<li><a href="{{store url=""}}storelocator"><span class="fa fa-map-marker">&nbsp;</span>Store Locator</a></li>
+<li><a href="{{store url=""}}sales/order/history/"><span class="fa fa-car">&nbsp;</span>Track Your Order</a></li>
+</ul>]]></content>
+		</item>
+		<item>
+			<title>Header 3 Top Left Service</title>
+			<identifier>header_3_top_left_service</identifier>
+			<content><![CDATA[<ul><li class="no-link"><span class="fa fa-plane">&nbsp;</span>Free Shipping On All Order Over $499</li></ul>]]></content>
+		</item>
+		<item>
+			<title>Footer Contact Us</title>
+			<identifier>footer_contact_us</identifier>
+			<content><![CDATA[<h4>Contact Us</h4>
+<ul class="list-icon">
+<li><span class="icon fa fa-map-marker">&nbsp;</span> ETHAN London Oxford Street 02 United Kingdom.</li>
+<li><span class="icon fa fa-envelope">&nbsp;</span> <a href="mailto:emailethan@gmail.com">emailethan@gmail.com</a><br /> <a href="mailto:emailsupport@gmail.com">emailsupport@gmail.com</a></li>
+<li><span class="icon fa fa-phone">&nbsp;</span> <a href="tel:+9234567890">(+92) 3456 7890</a><br /> <a href="tel:+9212345678">(+92) 1234 5678</a></li>
+</ul>]]></content>
+		</item>
+		<item>
+			<title>Footer Block Quick Link</title>
+			<identifier>footer_block_quick_link</identifier>
+			<content><![CDATA[<h4>Quick Link</h4>
+<ul>
+<li><a href="#">My account</a></li>
+<li><a href="#">Order history</a></li>
+<li><a href="#">Wish list</a></li>
+<li><a href="#">Returns</a></li>
+<li><a href="#"> Store Location</a></li>
+<li><a href="#">Site map</a></li>
+</ul>]]></content>
+		</item>
+		<item>
+			<title>Footer Block Our Policy</title>
+			<identifier>footer_block_our_policy</identifier>
+			<content><![CDATA[<h4>Our policy</h4>
+<ul>
+<li><a href="#">Help & Contact</a></li>
+<li><a href="#">Shipping & taxes</a></li>
+<li><a href="#">Return policy</a></li>
+<li><a href="#">Delivery & returns</a></li>
+<li><a href="#">Affiliates</a></li>
+<li><a href="#">Legal Notice</a></li>
+</ul>]]></content>
+		</item>
+		<item>
+			<title>Footer Block Instagram</title>
+			<identifier>footer_block_instagram</identifier>
+			<content><![CDATA[<h4>Instagram Feed</h4>
+<div>{{block class="MGS\Social\Block\Panel\Widget" mgs_panel_title="" mgs_panel_note="" limit="6" resolution="low_resolution" link="1" perrow="3" use_slider="0" like="0" comment="0" template="widget/instagram.phtml"}}</div>]]></content>
+		</item>
+		<item>
+			<title>Footer Block Social</title>
+			<identifier>footer_block_social</identifier>
+			<content><![CDATA[<ul class="social-link">
+<li><a href="#">&nbsp;<span class="fa fa-facebook">&nbsp;</span></a></li>
+<li><a href="#">&nbsp;<span class="fa fa-twitter">&nbsp;</span></a></li>
+<li><a href="#">&nbsp;<span class="fa fa-linkedin">&nbsp;</span></a></li>
+<li><a href="#">&nbsp;<span class="fa fa-rss">&nbsp;</span></a></li>
+<li><a href="#">&nbsp;<span class="fa fa-dribbble">&nbsp;</span></a></li>
+</ul>]]></content>
+		</item>
+		<item>
+			<title>Ethan contact information</title>
+			<identifier>ethan_contact_information</identifier>
+			<content><![CDATA[<h6>Contact Us</h6>
+<ul class="list-icon">
+<li><span class="icon fa fa-map-marker">&nbsp;</span>
+ETHAN London Oxford Street 02<br>United Kingdom.
+</li>
+<li><span class="icon fa fa-envelope">&nbsp;</span>
+<a href="mailto:emailethan@gmail.com">emailethan@gmail.com</a><br>
+<a href="mailto:emailsupport@gmail.com">emailsupport@gmail.com</a>
+</li>
+<li><span class="icon fa fa-phone">&nbsp;</span>
+<a href="tel:+9234567890">(+92) 3456 7890</a><br>
+<a href="tel:+9212345678">(+92) 1234 5678</a>
+</li>
+</ul>]]></content>
+		</item>
+		<item>
+			<title>Footer 2 About Us</title>
+			<identifier>footer_about_us</identifier>
+			<content><![CDATA[<h4>About Us</h4>
+<p class="margin-bottom25">Lorem ipsum dolor sit amete, consectetur adipisicing sed do eiusmod tempor incididunt ut labore etel dolore magna aliqua. Lorem ipsum dolor sit amete, consectetur adipisicing sed do eiusmod tempor incididunt ut labore etel dolore magna aliqua.</p>
+<ul class="social-link">
+<li><a href="#">&nbsp;<span class="fa fa-facebook">&nbsp;</span></a></li>
+<li><a href="#">&nbsp;<span class="fa fa-twitter">&nbsp;</span></a></li>
+<li><a href="#">&nbsp;<span class="fa fa-linkedin">&nbsp;</span></a></li>
+<li><a href="#">&nbsp;<span class="fa fa-rss">&nbsp;</span></a></li>
+<li><a href="#">&nbsp;<span class="fa fa-dribbble">&nbsp;</span></a></li>
+</ul>]]></content>
+		</item>
+		<item>
+			<title>Footer 2 Block Product Tag</title>
+			<identifier>footer_block_product_tag</identifier>
+			<content><![CDATA[<h4>Product Tag</h4>
+<ul class="tag-cloud">
+	<li><a href="{{store url=""}}catalogsearch/result/?q=Top">Top</a></li>
+	<li><a href="{{store url=""}}catalogsearch/result/?q=Fashion">Fashion</a></li>
+	<li><a href="{{store url=""}}catalogsearch/result/?q=Collection">Collection</a></li>
+	<li><a href="{{store url=""}}catalogsearch/result/?q=Collection+Women">Collection Women</a></li>
+	<li><a href="{{store url=""}}catalogsearch/result/?q=Winter">Winter</a></li>
+	<li><a href="{{store url=""}}catalogsearch/result/?q=New">New</a></li>
+	<li><a href="{{store url=""}}catalogsearch/result/?q=Bottom">Bottom</a></li>
+	<li><a href="{{store url=""}}catalogsearch/result/?q=Couple">Couple</a></li>
+	<li><a href="{{store url=""}}catalogsearch/result/?q=Collection+Men">Collection Men</a></li>
+	<li><a href="{{store url=""}}catalogsearch/result/?q=Collection+Shoes">Collection Shoes</a></li>
+	<li><a href="{{store url=""}}catalogsearch/result/?q=Gallery">Gallery</a></li>
+	<li><a href="{{store url=""}}catalogsearch/result/?q=Hot">Hot</a></li>
+	<li><a href="{{store url=""}}catalogsearch/result/?q=Short">Short</a></li>
+</ul>
+]]></content>
+		</item>
+		<item>
+			<title>Footer Block Newsletter</title>
+			<identifier>footer_block_newsletter</identifier>
+			<content><![CDATA[<h4>Signup For Newsletter</h4>
+<p>Lorem ipsum dolor sit amete, consectetur adipisicing sed do eiusmod tempor incididunt ut labore etel dolore magna aliqua. Lorem ipsum dolor sit amete, consectetur </p>
+<div>{{block class="Magento\Newsletter\Block\Subscribe" name="static.newsletter" template="Magento_Newsletter::subscribe_footer.phtml"}}</div>]]></content>
+		</item>
+		<item>
+			<title>Footer Block Latest New</title>
+			<identifier>footer_block_latest_new</identifier>
+			<content><![CDATA[<h4>Latest News</h4>
+<div>{{widget type="MGS\Blog\Block\Widget\Latest" mgs_panel_title="" post_category="1" number_of_posts="3" items="3" show_thumbnail="1" mgs_panel_note="" template="widget/list.phtml"}}</div>]]></content>
+		</item>
+		<item>
+			<title>Footer Block Bottom Link</title>
+			<identifier>footer_block_bottom_link</identifier>
+			<content><![CDATA[<ul>
+<li><a href="#">Contact</a></li>
+<li><a href="#">Shipping & taxes</a></li>
+<li><a href="#">Privacy Policy</a></li>
+<li><a href="#">Delivery & returns</a></li>
+<li><a href="#">F.A.Q</a></li>
+</ul>]]></content>
+		</item>
+		<item>
+			<title>Footer Service Block</title>
+			<identifier>footer_service_block</identifier>
+			<content><![CDATA[<ul class="service-block">
+<li><span class="fa fa-plane" aria-hidden="true">&nbsp;</span>Free Shipping On All Order<a href="#">Learn more</a></li>
+<li><span class="fa fa-heart" aria-hidden="true">&nbsp;</span>Amazing Customer Service<a href="#">Learn more</a></li>
+<li><span class="fa fa-reply" aria-hidden="true">&nbsp;</span>Free Money Back<a href="#">Learn more</a></li>
+</ul>]]></content>
+		</item>
+		<item>
+			<title>Footer Block Bottom Payment</title>
+			<identifier>footer_block_bottom_payment</identifier>
+			<content><![CDATA[<div class="text-center margin-bottom25"><img src="{{media url="wysiwyg/payment.png"}}" alt="" /></div>]]></content>
+		</item>
+		<item>
+			<title>Mpanel Default Sidebar Block</title>
+			<identifier>mpanel_default_sidebar_block</identifier>
+			<content><![CDATA[<div class="text-colour-white">{{widget type="MGS\Promobanners\Block\Widget\Banner" banner_id="banner_men_collection_sidebar" template="banner.phtml"}}</div>]]></content>
+		</item>
+		<item>
+			<title>Ethan Product Detail Tab</title>
+			<identifier>ethan_product_detail_tab</identifier>
+			<content><![CDATA[<div class="video-responsive"><iframe width="1024" height="768" src="https://www.youtube.com/embed/aPfHHv0spJc" frameborder="0" allowfullscreen></iframe></div>]]></content>
+		</item>
+		<item>
+			<title>Header 4 Social Block</title>
+			<identifier>bottom_block_header</identifier>
+			<content><![CDATA[<ul class="social-link">
+<li><a href="#">&nbsp;<span class="fa fa-facebook">&nbsp;</span></a></li>
+<li><a href="#">&nbsp;<span class="fa fa-twitter">&nbsp;</span></a></li>
+<li><a href="#">&nbsp;<span class="fa fa-linkedin">&nbsp;</span></a></li>
+<li><a href="#">&nbsp;<span class="fa fa-rss">&nbsp;</span></a></li>
+<li><a href="#">&nbsp;<span class="fa fa-dribbble">&nbsp;</span></a></li>
+</ul>]]></content>
+		</item>
+		<item>
+			<title>Ethan Customer Benefit</title>
+			<identifier>create_account_benefit</identifier>
+			<content><![CDATA[<h6>Registered Customers</h6>
+<ul>
+<li><span class="fa fa-check-square-o">&nbsp;</span>Speed your way through the checkout.</li>
+<li><span class="fa fa-check-square-o">&nbsp;</span>Track your orders easily.</li>
+<li><span class="fa fa-check-square-o">&nbsp;</span>Keep a record of all your purchases.</li>
+</ul>
+]]></content>
+		</item>
+	</static_block>
+	<cms_page>
+		<item>
+			<title>Ethan 404 Not Found</title>
+			<identifier>ethan-no-route</identifier>
+			<content_heading></content_heading>
+			<page_layout>1column</page_layout>
+			<content><![CDATA[<div class="bg-404 text-colour-white" style="background-image: url('pub/media/wysiwyg/bg_404.jpg');">
+<div class="content">
+<div class="logo"><a href="{{store url=""}}"><img src="{{media url="wysiwyg/logo_404.png"}}" alt="" /></a></div>
+<div class="text-center">
+<div class="title-404">404</div>
+<div class="h1">This&rsquo;s Not The Web Page You&rsquo;re Looking For</div>
+<h3><span>Please try one of the following pages</span><a class="home-page-link" href="{{store url=""}}">Home page</a></h3>
+{{block class="Magento\\Framework\\View\\Element\\Template" name="no-router-search" template="Magento_Search::form.no.advance.phtml"}}
+<div class="copyright text-colour-silver">Copyright @ 2017 <a href="{{store url=""}}"><span class="text-colour-white">ADELLA</span></a>. All rights reserved.</div>
+</div>
+</div>
+</div>]]></content>
+		</item>
+		<item>
+			<title>About Ethan</title>
+			<identifier>ethan-about-us</identifier>
+			<content_heading></content_heading>
+			<page_layout>1column</page_layout>
+			<content><![CDATA[<div class="title-cms"><span class="title h2">ABOUT US</span></div>
+<div class="row margin-bottom40">
+<div class="col-md-6 col-sm-12 col-xs-12 margin-bottom40 pull-right"><img class="img-responsive" style="min-width: 100%;" src="{{media url="wysiwyg/img_about.jpg"}}" alt="" /></div>
+<div class="col-md-6 col-sm-12 col-xs-12 margin-bottom40" style="line-height: 24px;">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat<br /><br />Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?</div>
+</div>
+<div class="title-cms"><span class="title h2">MEET OUR TEAM</span></div>
+<div class="profiles">
+<div class="row">
+<div class="profile col-md-3 col-sm-6 col-xs-12 col-xs-half first-sm-item first-xs-item">
+<div><a href="#"><img class="img-responsive" src="{{media url="wysiwyg/profile_1.jpg"}}" alt="" /></a></div>
+<div class="profile-desc text-center"><a class="profile-name" href="#">David Miller</a>
+<p><span>CEO</span></p>
+<ul class="social-connected">
+<li><a href="#" target="_blank"><i class="fa fa-facebook"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-instagram"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+</ul>
+</div>
+</div>
+<div class="profile col-md-3 col-sm-6 col-xs-12 col-xs-half">
+<div><a href="#"><img class="img-responsive" src="{{media url="wysiwyg/profile_2.jpg"}}" alt="" /></a></div>
+<div class="profile-desc text-center"><a class="profile-name" href="#">David Miller</a>
+<p><span>CEO</span></p>
+<ul class="social-connected">
+<li><a href="#" target="_blank"><i class="fa fa-facebook"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-instagram"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+</ul>
+</div>
+</div>
+<div class="profile col-md-3 col-sm-6 col-xs-12 col-xs-half first-sm-item first-xs-item">
+<div><a href="#"><img class="img-responsive" src="{{media url="wysiwyg/profile_3.jpg"}}" alt="" /></a></div>
+<div class="profile-desc text-center"><a class="profile-name" href="#">David Miller</a>
+<p><span>CEO</span></p>
+<ul class="social-connected">
+<li><a href="#" target="_blank"><i class="fa fa-facebook"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-instagram"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+</ul>
+</div>
+</div>
+<div class="profile col-md-3 col-sm-6 col-xs-12 col-xs-half">
+<div><a href="#"><img class="img-responsive" src="{{media url="wysiwyg/profile_4.jpg"}}" alt="" /></a></div>
+<div class="profile-desc text-center"><a class="profile-name" href="#">David Miller</a>
+<p><span>CEO</span></p>
+<ul class="social-connected">
+<li><a href="#" target="_blank"><i class="fa fa-facebook"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-instagram"></i></a></li>
+<li><a href="#" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>]]></content>
+		</item>
+	</cms_page>
+	<theme_setting>
+		<general>
+			<width>width1200</width>
+			<layout>wide</layout>
+			<header>header_1</header>
+			<footer>footer_1</footer>
+			<sticky_menu>1</sticky_menu>
+			<back_to_top>1</back_to_top>
+		</general>
+		<fonts>
+			<default_font><![CDATA[Roboto]]></default_font>
+			<h1><![CDATA[Roboto]]></h1>
+			<h2><![CDATA[Roboto]]></h2>
+			<h3><![CDATA[Roboto]]></h3>
+			<h4><![CDATA[Roboto]]></h4>
+			<h5><![CDATA[Roboto]]></h5>
+			<h6><![CDATA[Roboto]]></h6>
+			<price><![CDATA[Roboto]]></price>
+			<menu><![CDATA[Roboto]]></menu>
+		</fonts>
+	</theme_setting>
+</install>

@@ -1,0 +1,120 @@
+<?php
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $helper = $this->helper('MGS\Mpanel\Helper\Data') ?>
+<?php $header = $helper->getStoreConfig('mgstheme/general/header') ?>
+<?php
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$pageType = $this->getRequest()->getControllerName()."_".$this->getRequest()->getActionName();
+
+	if($pageType == 'product_view'){
+		$prodId = $this->getRequest()->getParam('id');
+		$product = $objectManager->get('\Magento\Catalog\Model\ProductRepository')->getById($prodId);
+
+		$cat_ids = $product->getCategoryIds();
+		$cat_collection = $product->getCategoryCollection();
+
+		$cat_collection->addAttributeToSelect('*')->addAttributeToFilter('entity_id',['in' => $cat_ids])->addAttributeToFilter('parent_id',1375);
+		foreach ($cat_collection as $cat) {
+		    $breadcrumbs_url =  $cat->getUrl();
+		}
+	}
+
+	if($pageType == 'listing_index'){
+		$pagelayout_block = $objectManager->get("\Fermion\Pagelayout\Block\Index");
+		$requestParams = $this->getRequest()->getParams();
+		$catId = $this->getRequest()->getParam('id');
+		$respData = $pagelayout_block->getListingFilterdata($catId,$requestParams);
+		$cat_data = isset($respData['cat_data']) ? $respData['cat_data'] : '';
+		$cat_name = $catId == 6007 ? "Eid Special" : $cat_data['cat_name'];
+	} 
+	
+?>
+<div class="breadcrumbs <?php if($header == 'header_5') echo 'breadcrumbs-no-bg';?>">
+	<div class="container">
+		<div class="breadcrumbs-content">
+			<div class="breadcrumbs-title">
+				<?php $fullActionName = $objectManager->get('Magento\Framework\App\Request\Http')->getFullActionName(); ?>
+				<?php if($fullActionName == "catalog_product_view"): ?>
+					<span class="h1"><?php echo __('Product Detail'); ?></span>
+				<?php else: ?>
+					<?php if($crumbs && is_array($crumbs)): ?>
+						<?php foreach ($crumbs as $crumbName => $crumbInfo) : ?>
+							<?php if ($crumbInfo['last']) : ?>
+								<p><?php echo $block->escapeHtml($crumbInfo['label']) ?></p>
+							<?php endif ?>
+						<?php endforeach; ?>
+					<?php else: ?>
+						<?php echo $this->getLayout()->createBlock("Magento\Theme\Block\Html\Title")->setTemplate("Magento_Theme::html/title.phtml")->toHtml(); ?>
+					<?php endif ?>
+				<?php endif ?>
+			</div>
+			<?php if ($crumbs && is_array($crumbs)) : ?>
+				<ol class="breadcrumb">
+					<?php foreach ($crumbs as $crumbName => $crumbInfo) : ?>
+						<?php if ($crumbInfo['link']) : ?>
+							<li class="item <?php /* @escapeNotVerified */ echo $crumbName ?>">
+								<a href="<?php /* @escapeNotVerified */ echo $crumbInfo['link'] ?>" title="<?php echo $block->escapeHtml($crumbInfo['title']) ?>">
+									<?php echo $block->escapeHtml($crumbInfo['label']) ?>
+								</a>
+							</li>
+						<?php elseif ($crumbInfo['last']) : ?>
+							<?php if($fullActionName == "catalog_product_view" && isset($breadcrumbs_url)): ?>
+								<li class="active">
+									<a href=<?= $breadcrumbs_url; ?> >
+										<?php echo $block->escapeHtml($crumbInfo['label']) ?>
+									</a>
+								</li>
+							<?php else: ?>
+								<li class="active">
+									<?php echo $block->escapeHtml($crumbInfo['label']) ?>
+								</li>
+							<?php endif; ?>
+						<?php else: ?>
+							<li class="item">
+								<?php echo $block->escapeHtml($crumbInfo['label']) ?>
+							</li>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</ol>
+			<?php endif ?>
+			<?php if($pageType == 'listing_index'): ?>
+				<div class="category-title-parent">
+					<h1 class="category-title"><?= $cat_name ?></h1>
+					<div class="category-sub-text"><?= $cat_data['cat_desc'] ?></div>
+				</div>
+				<div class="category-product-actions desktop">
+					<div class="toolbar toolbar-products">
+						<div class="modes"></div>
+						<div class="toolbar-sorter sorter">
+							<label class="sorter-label" for="sorter">Sort By</label>
+							<select id="sorter" data-role="sorter" class="sorter-options">
+								<option value="bestseller">
+									Bestseller
+								</option>
+								<option value="high-to-low">
+									Price - High To Low
+								</option>
+								<option value="low-to-high">
+									Price - Low To High
+								</option>
+								<option value="new-arrival" selected="selected">
+									Latest
+								</option>
+							</select>
+							<a title="Set Ascending Direction" href="#" class="action sorter-action sort-desc" data-role="direction-switcher" data-value="asc" style="display: none !important;">
+								<span>Set Ascending Direction</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			<?php endif; ?>	
+		</div>
+	</div>
+</div>

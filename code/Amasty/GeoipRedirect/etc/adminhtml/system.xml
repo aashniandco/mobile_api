@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
+ * @package Amasty_GeoipRedirect
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="amgeoipredirect" translate="label" type="text" sortOrder="70518" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>GeoIp Redirect</label>
+            <tab>amasty</tab>
+            <resource>Amasty_GeoipRedirect::amgeoipredirect</resource>
+            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="enable" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="1">
+                    <label>Enable GeoIP Redirect</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[General setting affecting all rules]]></comment>
+                </field>
+                <field id="redirection_decline" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Display Popup to Customers when Redirecting</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[The setting allows your website to be compliant with EU regulations regarding geo-blocking and country redirects. <a href="https://ec.europa.eu/digital-single-market/en/geo-blocking-digital-single-market" target="_blank">Details</a>]]></comment>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+                <field id="decline_redirection_type" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Redirect Popup Type</label>
+                    <source_model>Amasty\GeoipRedirect\Model\Source\PopupType</source_model>
+                    <depends>
+                        <field id="redirection_decline">1</field>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+                <field id="decline_redirection_notification_text" translate="label comment" type="editor" sortOrder="5" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Notification Redirect Popup Text</label>
+                    <frontend_model>Amasty\GeoipRedirect\Block\Adminhtml\System\Config\Editor</frontend_model>
+                    <tooltip>Notification Popup - a popup with information and 'Accept' - type button. A customer is only informed that he/she was redirected.</tooltip>
+                    <comment><![CDATA[<strong>Note: </strong>This text will be displayed to a customer on a popup before redirection happens.]]></comment>
+                    <depends>
+                        <field id="redirection_decline">1</field>
+                        <field id="decline_redirection_type">0</field>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+                <field id="decline_redirection_confirmation_text" translate="label comment" type="editor" sortOrder="5" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Confirmation Redirect Popup Text</label>
+                    <frontend_model>Amasty\GeoipRedirect\Block\Adminhtml\System\Config\Editor</frontend_model>
+                    <tooltip>Confirmation Popup - a popup with information, 'Accept' and 'Decline' buttons.
+                        A customer is notified about redirection and is able to decline it and stay on the initial page.
+                    </tooltip>
+                    <comment><![CDATA[<strong>Note: </strong>This text will be displayed to a customer on a popup before redirection happens. He will be allowed to decline redirection and stay at the initial website.]]></comment>
+                    <depends>
+                        <field id="redirection_decline">1</field>
+                        <field id="decline_redirection_type">1</field>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="restriction" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Restriction</label>
+                <field id="apply_logic" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Apply Logic To</label>
+                    <source_model>Amasty\GeoipRedirect\Model\Source\Logic</source_model>
+                </field>
+                <field id="accepted_urls" translate="label comment" type="textarea" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Accepted URLs</label>
+                    <depends>
+                        <field id="apply_logic">1</field>
+                    </depends>
+                    <comment><![CDATA[Please specify relative URLs (like /about-us/). Each URL on a separate line.]]></comment>
+                </field>
+                <field id="excepted_urls" translate="label comment" type="textarea" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Excepted URLs</label>
+                    <depends>
+                        <field id="apply_logic">2</field>
+                    </depends>
+                    <comment><![CDATA[Please specify relative URLs (like /about-us/). Each URL on a separate line.<br>
+Note: URLs are excluded by partial occurrence. If you specify "blog", all URL's containing "blog" will be excluded]]></comment>
+                </field>
+                <field id="user_agents_ignore" translate="label comment" type="textarea" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>User Agents to Ignore</label>
+                </field>
+                <field id="ip_restriction" translate="label comment" type="textarea" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Ip to Ignore</label>
+                    <comment><![CDATA[Each IP on a separate line.]]></comment>
+                </field>
+                <field id="first_visit_redirect" translate="label comment" type="select" sortOrder="6" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>First visit redirect only</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[<strong style="color:red">Warning!</strong> If you select "No" visitors will be not able to change Store View / currency.]]></comment>
+                </field>
+                <field id="redirect_between_websites" translate="label tooltip" type="select" sortOrder="7" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Redirect Between Websites</label>
+                    <tooltip><![CDATA[Yes - a customer will be redirected to the store view of a website from another website within your Magento.<br/>
+(e.g. a customer tried to reach the default store view of the Website A, but was redirected to the store view 2 of the Website B)<br/>
+No - a customer will be redirected to another store view only within one website. No redirection will occur if a customer reached another website of your Magento.<br/>
+(e.g. a customer tried to reach the default store view of the Website A - success. A customer tried to reach the default store view of Website B and was redirected to the store view 2 of Website B)]]></tooltip>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="restrict_by_ip" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Restriction by IP</label>
+                <field id="ip_to_block" translate="label comment" type="textarea" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>IP to block</label>
+                    <comment><![CDATA[Each IP on a separate line.]]></comment>
+                </field>
+                <field id="cms_to_show" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>CMS page to display</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Page</source_model>
+                    <comment><![CDATA[<strong>Note:</strong> the chosen CMS page will be displayed to the restricted customer]]></comment>
+                </field>
+            </group>
+            <group id="country_store" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="1">
+                <label>Redirect within your Magento instance</label>
+                <field id="enable_store" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Country --> Store View</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Use this setting to set a store view/website redirection for your Magento instance. If you need to set a redirection to a website (not store view), please set the redirection to the default store view of the website.
+Using this type of redirection a user will be redirected to the same page type. (e.g. from a product page to the same product page of another store view/website)]]></comment>
+                    <tooltip><![CDATA[<img src="Amasty_GeoipRedirect::images/geoip-1.gif">]]></tooltip>
+                </field>
+                <field id="affected_countries" translate="label comment" type="multiselect" sortOrder="2" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <label>Affected Countries</label>
+                    <can_be_empty>1</can_be_empty>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                </field>
+            </group>
+            <group id="country_currency" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Country to Currency Switch</label>
+                <field id="enable_currency" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Country --> Currency</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="currency_mapping" translate="label comment" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Country to Currency Mapping</label>
+                    <frontend_model>Amasty\GeoipRedirect\Block\Adminhtml\Form\Field\CountryCurrency</frontend_model>
+                    <backend_model>Amasty\GeoipRedirect\Model\System\Config\Backend\Currency</backend_model>
+                </field>
+            </group>
+            <group id="country_url" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Redirect to website outside your Magento instance</label>
+                <field id="enable_url" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Country --> URL</label>
+                    <comment><![CDATA[Use this setting set a redirection to an external website. A user will be redirected just to the specified URL.]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="url_mapping" translate="label comment" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Country to URL Mapping</label>
+                    <frontend_model>Amasty\GeoipRedirect\Block\Adminhtml\Form\Field\CountryUrl</frontend_model>
+                    <backend_model>Amasty\GeoipRedirect\Model\System\Config\Backend\Url</backend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

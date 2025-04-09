@@ -1,0 +1,79 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\ConfigurableProduct\Pricing\Render\FinalPriceBox$block */
+/** @var \Magento\Framework\Pricing\Price\PriceInterface $priceModel */
+$priceModel = $block->getPriceType('regular_price');
+/** @var \Magento\Framework\Pricing\Price\PriceInterface $finalPriceModel */
+$finalPriceModel = $block->getPriceType('final_price');
+$idSuffix = $block->getIdSuffix() ? $block->getIdSuffix() : '';
+$schema = ($block->getZone() == 'item_view') ? true : false;
+?>
+<?php if(!$block->getSaleableItem()->getHideprice()):?>
+<span class="normal-price">
+    <?= /* @noEscape */ $block->renderAmount($finalPriceModel->getAmount(), [
+        'price_id' => $block->getPriceId('product-price-' . $idSuffix),
+        'price_type' => 'finalPrice',
+        'include_container' => true,
+        'schema' => $schema,
+    ]);
+?>
+</span>
+
+<?php if ($block->hasSpecialPrice()) : ?>
+    <span class="old-price sly-old-price">
+        <?= /* @noEscape */ $block->renderAmount($priceModel->getAmount(), [
+            'display_label'     => __('Regular Price'),
+            'price_id'          => $block->getPriceId('old-price-' . $idSuffix),
+            'price_type'        => 'oldPrice',
+            'include_container' => true,
+            'skip_adjustments'  => true
+        ]); ?>
+    </span>
+<?php endif; ?>
+<div class="exclamation-icon-wrap">
+    <img class="exclamation-icon" src="/pub/media/wysiwyg/exclamation.svg" alt="info-icon">
+   </div>
+<div class="price-details-popup">
+
+ <div class="price-details-popup-overlay"></div>
+ <div class="price-details-popup-content">
+    <button class="close-icon" aria-label="Close">×</button>
+    <div class="price-details-txt">Price Details</div>
+    <div class="retails-price">
+       <div class="retails-price-wrap">
+          <div class="all-txt">Maximum Retail Price</div>
+          <div class="all-txt">(Incl. of all taxes)</div>
+       </div>
+       <div class="retails-price-txt"><span>₹</span>0</div>
+    </div>
+    <div class="discount-per">
+       <div class="discount-txt">Discount</div>
+       <div class="percent-off">0<span>% OFF</span></div>
+    </div>
+    <div class="selling-price">
+       <div class="selling-price-wrap">
+          <div class="all-taxes">Selling Price</div>
+          <div class="all-taxes">(Incl. of all taxes)</div>
+       </div>
+       <div class="selling-price-txt"><span>₹</span>0</div>
+    </div>
+ </div>
+</div>
+<div class="price-tax-info-msg">(inclusive of all taxes)</div>
+
+<?php if ($block->showMinimalPrice()) : ?>
+    <?php if ($block->getUseLinkForAsLowAs()) :?>
+        <a href="<?= $block->escapeUrl($block->getSaleableItem()->getProductUrl()) ?>" class="minimal-price-link">
+            <?= /* @noEscape */ $block->renderAmountMinimal() ?>
+        </a>
+    <?php else :?>
+        <span class="minimal-price-link">
+            <?= /* @noEscape */ $block->renderAmountMinimal() ?>
+        </span>
+    <?php endif?>
+<?php endif; ?>
+<?php endif; ?>

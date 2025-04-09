@@ -1,0 +1,176 @@
+
+<div class = "mageworx-giftcards-status" style="margin-top:3px;">
+  <h3>Check Gift Card Status </h3><br>
+  <div class ="giftcard-action">
+  <div class ="giftcard-field">
+  <input type="text" value="" class="checkcoupon"  placeholder="Redeem and use your Gift Card Now" />
+   <div class="coupon-error"></div>
+  </div>
+  <div class ="content">
+  <button  class="gift-status">Check Status</button>
+  </div><br>
+ 
+  <div class="coupon-info">
+    <div >Status : <span class="status"></span></div>
+    <div>Balance: <span class="balance"><span></div>
+    <div>ValidTill: <span class="validtill"><span></div>
+  </div>
+
+  <div class="gifthtml"></div>
+</div>
+</div>
+
+<script type="text/javascript">
+
+  require(['jquery'],function($){
+
+    jQuery(document).ready(function(){
+    jQuery('.gift-status').click(function(){
+    jQuery(".coupon-error").text('');
+    jQuery('.coupon-info').hide();
+    jQuery('.status').text('');
+    jQuery('.balance').text('');
+    jQuery('.validtill').text('');
+    jQuery('.gifthtml').hide();
+        
+    var couponCode = jQuery('.checkcoupon').val();
+    if(couponCode == "" || couponCode == null || couponCode == undefined){
+
+      jQuery(".coupon-error").text("Please enter Gift Card code");
+    }else{
+      jQuery.ajax({ 
+        method: "post",
+        url:'/mageworx_giftcards/cart/ajaxGiftCardInfo?giftcard_code=' +couponCode,
+        dataType: "json",
+       
+        success: function(resp) {
+          console.log(resp);
+          
+          if(resp.success == false){
+            jQuery(".coupon-error").text(resp.message);
+          }else{
+            jQuery('.coupon-info').show();
+            jQuery('.status').text(resp.status);
+            jQuery('.balance').html(resp.balance);
+            jQuery('.validtill').text(resp.validTill);
+            if(resp.status == 0){
+              jQuery('.status').text('Inactive');
+            }else if(resp.status == 1){
+              jQuery('.status').text('Active');
+            }else if(resp.status == 1){
+              jQuery('status').text('Used');
+            }
+            if(resp.is_used == 1){
+
+              var usedhtml = '<h3>GiftCard History</h3><table><tr><th>Gift Card Code</th><th>balance</th><th>validTill</th></tr>';
+              jQuery.each(resp.used_data, function( key, value ) {
+
+                usedhtml += '<tr><td>'+value.giftcode+'</td><td>'+value.currency+' '+value.balance+'</td><td>'+value.remark+'</td></tr>';
+              });
+              usedhtml += '</table>';
+              jQuery('.gifthtml').html(usedhtml);
+              jQuery('.gifthtml').show();
+
+            }
+                  
+          }
+        },
+        complete: function(response) {
+        },
+        error: function(response) {
+        }
+            
+      });
+    }
+   });
+  });
+});
+
+</script>
+
+<style type="text/css">
+  .mageworx-giftcards-status{
+  margin: 100px;
+  padding: 0px;
+  text-align: center
+}
+.mageworx-giftcards-status h3{
+  font-weight: 200;
+    font-family: 'Prata', serif;
+    color: #000;
+    font-size: 30px;
+    margin: 0px;
+    padding: 30px 0px 0px 0px;
+    text-align: center 
+}
+.mageworx-giftcards-status .giftcard-action .giftcard-field{
+    font-size: 13px;
+    color: #5f5f5f;
+    padding: 0px;
+    margin: 0 0 20px;
+    font-weight: 400;
+    text-align: left;
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+}
+.mageworx-giftcards-status .giftcard-action .giftcard-field input[type="text"]{
+   width: 50%;
+   text-align: center;
+} 
+.mageworx-giftcards-status .giftcard-action .giftcard-field .coupon-error{
+    color: #ff0000;
+    font-style: italic;
+    padding-top: 1px;
+    line-height: 1.4;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+.mageworx-giftcards-status .giftcard-action button.gift-status{
+   padding: 5px 0px !important;
+    width: 150px;
+/*    margin-top: 20px;*/
+    border: 1px solid #1a1a1a;
+    font-size: 13px;
+    background-color: #222222 !important;
+    color: #ffffff !important;
+}
+
+  .body-popup-overlay {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 999;
+    background: rgba(255,255,255,.9);
+    top: 0;
+    display: none;
+  }
+  .body-popup-overlay .center-block {
+    width: 70px;
+    margin-top: 40vh;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .coupon-info{display: none;}
+
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+</style>

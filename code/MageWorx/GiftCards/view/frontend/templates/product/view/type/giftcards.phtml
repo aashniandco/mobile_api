@@ -1,0 +1,318 @@
+<?php
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+use MageWorx\GiftCards\Api\Data\GiftCardsInterface;
+
+/* @var $block \MageWorx\GiftCards\Block\Product\View\Type\GiftCards */
+
+$product       = $block->getProduct();
+$preValues     = $product->getPreconfiguredValues();
+$step          = 1;
+?>
+
+<div class="giftcard-info">
+    <?php if ($block->displayProductStockStatus()): ?>
+        <?php if ($product->isAvailable()): ?>
+            <div class="stock available" title="<?= /* @escapeNotVerified */__('Availability') ?>">
+                <span><?= /* @escapeNotVerified */ __('In stock') ?></span>
+            </div>
+        <?php else: ?>
+            <div class="stock unavailable" title="<?= /* @escapeNotVerified */__('Availability') ?>">
+                <span><?= /* @escapeNotVerified */ __('Out of stock') ?></span>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <fieldset id="giftcard-fieldset" class="giftcard-fieldset" style="border:none">
+        <!-- <h2>
+            <div class="price-box">
+                <span class="regular-price"><?= /* @noEscape */ $block->getGiftCardPrice(); ?></span>
+            </div>
+        </h2> -->
+
+        <?php if ($block->getAdditionalPrices() || $product->getMageworxGcAllowOpenAmount()): ?>
+            <!-- <br/> -->
+            <div class="step-label">
+                <h3>
+                    <span><?php /* @noEscape */ echo $step; $step++ ?></span>
+                    <?= /* @escapeNotVerified */ __('Choose amount') ?>
+                </h3>
+                <hr/>
+            </div>
+
+            <label for="card-amount" class="required">
+                <?= /* @escapeNotVerified */ __('Card value') . '  (' . $block->getCurrentCurrencySymbol() . ') ' ?><em>*</em>:
+            </label>
+            <br/>
+
+            <?php if ($block->isAmountButtonsDisplayMode()): ?>
+
+                <div role="listbox" class="amount-options mw-clearfix">
+                    <i><?= $block->getCurrentCurrencySymbol() ?></i>
+                    <input type="number" id="card-amount">
+                    <?php if ($product->getPrice() > 0): ?>
+                        <div class="amount-option selected" role="option" tabindex="0"
+                             data-value="<?= $block->escapeHtmlAttr($product->getPrice()) ?>">
+                            <?= /* @noEscape */ $block->getConvertedProductPrice($product->getPrice())?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($block->getAdditionalPrices()): ?>
+                        <div class="amount-select-buttons">
+                            <?php foreach ($block->getAdditionalPrices() as $additionalPrice): ?>
+                                <?php if ($additionalPrice): ?>
+                                    <?php
+                                    $isSelected = ($preValues->getCardAmount() == $additionalPrice && !$product->getPrice());
+                                    ?>
+
+                                    <div class="amount-option<?php echo $isSelected ? ' selected' : '' ?>" tabindex="0"
+                                         role="option" data-value="<?= $block->escapeHtmlAttr($additionalPrice) ?>">
+                                        <?= /* @noEscape */ $block->getConvertedProductPrice($additionalPrice) ?>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($product->getMageworxGcAllowOpenAmount()): ?>
+                        <div class="amount-option custom-amount" role="option" data-value="other_amount" tabindex="0" style="display: none;">
+                            <?= /* @escapeNotVerified */ __('Other Amount...') ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <input type="text" id="card-amount" name="card_amount" hidden>
+            <?php else: ?>
+
+                <select id="card-amount" name="card_amount" class="validate-select">
+
+                    <?php if ($product->getPrice() > 0): ?>
+                        <option value="<?= $block->escapeHtmlAttr($product->getPrice()); ?>" selected>
+                            <?= /* @noEscape */ $block->getConvertedProductPrice($product->getPrice()) ?>
+                        </option>
+                    <?php endif; ?>
+
+                    <?php if ($block->getAdditionalPrices()): ?>
+
+                        <?php foreach ($block->getAdditionalPrices() as $additionalPrice): ?>
+                            <?php if ($additionalPrice): ?>
+                                <?php
+                                $isSelected = ($preValues->getCardAmount() == $additionalPrice && !$product->getPrice());
+                                ?>
+
+                                <option value="<?= $block->escapeHtmlAttr($additionalPrice); ?>" <?php echo $isSelected ? 'selected' : '' ?>>
+                                    <?= /* @noEscape */ $block->getConvertedProductPrice($additionalPrice) ?>
+                                </option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
+                    <?php if ($product->getMageworxGcAllowOpenAmount()): ?>
+                        <option value="other_amount">
+                            <?= /* @escapeNotVerified */ __('Other Amount...') ?>
+                        </option>
+                    <?php endif; ?>
+                </select>
+            <?php endif; ?>
+
+            <?php if ($product->getMageworxGcAllowOpenAmount()): ?>
+                <div class="field">
+                    <input type="text" id="other_amount" name="card_amount_other" class="input-text required-entry"
+                           placeholder="<?= $block->escapeHtmlAttr($block->getAmountPlaceholder()) ?>"/>
+                    <div class="warnings">
+                        <div id="max" class="mage-error"><?= /* @escapeNotVerified */ __("Entered amount is too high") ?></div>
+                        <div id="min" class="mage-error"><?= /* @escapeNotVerified */ __("Entered amount is too low") ?></div>
+                        <div id="invalid" class="mage-error"><?= /* @escapeNotVerified */ __("Entered amount is incorrect") ?></div>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+        <br/>
+        <div class="step-label">
+            <h3>
+                <?php if ($step > 1) : ?>
+                    <span><?php /* @noEscape */ echo $step; $step++ ?></span>
+                <?php endif; ?>
+                <?= /* @escapeNotVerified */ __('Send Information') ?>
+            </h3>
+            <hr/>
+        </div>
+
+        <div class="field">
+            <label for="mail-from"><?= /* @escapeNotVerified */ __('From Name') ?>:</label><br/>
+            <input name="<?= /* @noEscape */ GiftCardsInterface::MAIL_FROM ?>"
+                   placeholder="<?= $block->escapeHtmlAttr($block->getFromNamePlaceholder()) ?>" type="text"
+                   id="mail-from" class="input-text" value="<?= $block->escapeHtmlAttr($preValues->getMailFrom()) ?>"/>
+        </div>
+        <div class="field">
+            <label for="mail-to"><?= /* @escapeNotVerified */ __('To Name') ?>:</label><br/>
+            <input name="<?= /* @noEscape */ GiftCardsInterface::MAIL_TO ?>" id="mail-to" class="input-text"
+                   placeholder="<?= $block->escapeHtmlAttr($block->getToNamePlaceholder()) ?>"
+                   type="text" value="<?= $block->escapeHtmlAttr($preValues->getMailTo()) ?>"/>
+        </div>
+
+        <?php if ($block->getCardType() == \MageWorx\GiftCards\Model\GiftCards::TYPE_EMAIL): ?>
+            <div class="field">
+                <label for="mail-to-email" class="required"><?= /* @escapeNotVerified */ __('To E-mail') ?><em>*</em>:</label><br/>
+                <input type="text" placeholder="<?= $block->escapeHtmlAttr($block->getToEmailPlaceholder()) ?>"
+                       name="<?= /* @noEscape */ GiftCardsInterface::MAIL_TO_EMAIL ?>"
+                       class="input-text required-entry validate-email" id="mail-to-email"
+                       value="<?= $block->escapeHtmlAttr($preValues->getMailToEmail()) ?>"/>
+            </div>
+        <?php endif; ?>
+
+        <div class="field">
+            <label for="mail-message"><?= /* @escapeNotVerified */ __('Message') ?>:</label><br/>
+            <textarea placeholder="<?= $block->escapeHtmlAttr($block->getMessagePlaceholder()) ?>" id="mail-message"
+                      name="<?= /* @noEscape */ GiftCardsInterface::MAIL_MESSAGE ?>"><?= $block->escapeHtml($preValues->getMailMessage()) ?></textarea>
+        </div>
+
+        <?php if ($block->getCardType() == \MageWorx\GiftCards\Model\GiftCards::TYPE_EMAIL): ?>
+            <div class="field">
+                <label for="delivery-date"><?= /* @escapeNotVerified */ __('Delivery Date') ?>:</label><br/>
+                <input id="delivery-date" name="<?= /* @noEscape */ GiftCardsInterface::MAIL_DELIVERY_DATE . '_user_value' ?>"
+                       class="input-text" type="text" value="<?= $block->escapeHtmlAttr($preValues->getMailDeliveryDateUserValue()) ?>"/>
+                <div class="calendar-icon"></div>
+            </div>
+
+            <script>
+                require([
+                    "jquery",
+                    "mage/calendar"
+                ], function($){
+                    $("#delivery-date").calendar({
+                        dateFormat: "d/M/yy",
+                        autoComplete: false
+                    });
+                });
+            </script>
+        <?php endif; ?>
+
+        <script>
+            require(['jquery', 'Magento_Ui/js/modal/alert', 'mage/translate'], function ($, alert, $t) {
+
+                $(document).ready(function () {
+
+                    <?php if ($block->isAmountButtonsDisplayMode()): ?>
+                        setCardAmountValue();
+                    <?php else: ?>
+                        showOtherAmountBlock();
+                    <?php endif; ?>
+                });
+
+                <?php if ($block->isAmountButtonsDisplayMode()): ?>
+                    $('.amount-option').on('click', function () {
+                        amountOptionClickAction(this);
+                    });
+                <?php endif; ?>
+
+                $('#card-amount').on('change', function () {
+                    cardAmountChangeAction();
+                });
+
+                $('#other_amount').on('change', function () {
+                    otherAmountValidate(<?php /* @noEscape */
+                    echo $block->getAmountValidateFrom($product) ?>, <?php /* @noEscape */
+                    echo $block->getAmountValidateTo($product)?>);
+                })
+            });
+        </script>
+
+        <?php if ($block->getCardType() == \MageWorx\GiftCards\Model\GiftCards::TYPE_EMAIL) : ?>
+            <!--Preview-->
+            <br/>
+            <a href="#" id="card-preview"> <?= /* @escapeNotVerified */ __('Preview my gift card') ?>. </a>
+
+            <script>
+                require(['jquery', 'Magento_Ui/js/modal/alert', 'mage/translate'], function ($, alert, $t) {
+                    $('#card-preview').on('click', function () {
+
+                        var price;
+                        var otherAmount = $('#other_amount');
+                        var cardAmount  = $('#card-amount');
+
+                        if (otherAmount.is(':visible')) {
+                            price = otherAmount.val();
+                        } else if (cardAmount.length > 0) {
+                            price = cardAmount.val();
+                        } else {
+                            price = $('div.price-box span.regular-price span.price');
+                            price = price[0].innerHTML;
+                            price = price.slice(1);
+                        }
+
+                        var obj = new Object();
+                        obj.mailFrom = $('#mail-from').val();
+                        obj.mailTo = $('#mail-to').val();
+                        obj.mailToEmail = $('#mail-to-email').val();
+                        obj.mailMessage = $('#mail-message').val();
+                        obj.cardType = <?= (int)$this->getCardType(); ?>;
+                        obj.product = <?= (int)$product->getId() ?>;
+                        obj.price = price;
+
+                        $.ajax({
+                            showLoader: true,
+                            url: '<?php /* @noEscape */ echo $this->getUrl('mageworx_giftcards/preview/preview'); ?>',
+                            data: obj,
+                            type: "POST"
+                        }).done(function (data) {
+                            $('.loading-mask').hide();
+                            alert({
+                                title: '<?= $block->escapeJs($product->getName()) ?>',
+                                content: data,
+                                innerScroll: true,
+                                modalClass: ''
+                            });
+                        }.bind(this));
+                        return false;
+                    })
+                });
+            </script>
+
+        <?php endif; ?>
+    </fieldset>
+</div>
+
+<script>
+    require(['jquery'], function ($){
+        $(document).ready(function() {
+            $('#mail-to-email').on('keyup', function() {
+                $('#mail-to-email').parent().children('#mail-to-email-error').remove();
+                let newMailVal = $('#mail-to-email').val();
+                if(validateEmail(newMailVal) && newMailVal.length > 0){
+                    $('#mail-to-email').parent().children('#mail-to-email-error').remove();
+                }
+                else{
+                    $('#mail-to-email').parent().append('<div for="mail-to-email" generated="true" class="mage-error" id="mail-to-email-error">Enter a valid Email.</div>');
+                }
+            });
+            function validateEmail(mail){
+                var validMailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+                var validEmail = validMailRegex.test(mail);{
+                    if(validEmail){
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+            }
+        })
+        $(document).on('click', '#card-amount', function(){
+            $('#card-amount').keyup(function() {
+                var amount = $('#card-amount').val();
+                $('.amount-option').removeClass('selected');
+                $('.custom-amount').addClass('selected');
+                $('#other_amount').attr('data-value', amount);
+                $('.warnings #invalid').css('display', 'none');
+            })
+        })
+        $(document).on('click', '.amount-option', function() {
+            if(!$(this).hasClass('custom-amount')){
+                $('#other_amount').removeAttr('data-value');
+            }
+        })
+    });
+</script>

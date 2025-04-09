@@ -1,0 +1,86 @@
+<?php
+$product = $block->getProduct();
+$prodId = $product->getId();
+$objectManager   = \Magento\Framework\App\ObjectManager::getInstance();
+$categoryRepository = $objectManager->get('\Magento\Catalog\Api\CategoryRepositoryInterface');
+$parent = $objectManager->get('Magento\Catalog\Model\Product')->load($prodId);
+$sizeChartImg = $parent->getData('prod_size_chart_img');
+$genderValue = $product->getData('men_women');
+
+if(empty($sizeChartImg) || $sizeChartImg == 'no_selection'){
+    $cats = $parent->getCategoryIds();
+    $cats_count = count($cats);
+    $cat_names = [];
+    $belts = "Belts";
+    $shoe = "Shoes";
+    $men = "Men";
+    $accessories = "Accessories";
+    $jewelry = "Jewelry";
+    $kids = "Kidswear";
+    $women = "Women's Clothing";
+    $size_chart_template = 'dresses';          //name of template file is stored in this variable 
+    if($cats_count <= 0){
+    	error_log(":::::::::NO CATEGORIES FOUND!!!::::::::::");
+    }
+    for($i = 0 ; $i < $cats_count ; $i++){
+    	$category_id = $cats[$i];
+    	$category = $categoryRepository->get($category_id);
+        $category_name = $category->getName();
+        $cat_names[$i] = $category_name;
+    }
+    //print_r($cat_names);die;
+    if((in_array($accessories, $cat_names) && !in_array($shoe, $cat_names) && !in_array($belts, $cat_names)) || in_array($jewelry, $cat_names)){
+    	$size_chart_template = 'bags';
+    }
+    else{
+        if(in_array('Sabyasachi', array_map('trim', $cat_names)) && in_array('Belts', array_map('trim', $cat_names)) && (6301 == $genderValue)){
+            $size_chart_template = "sabyasachi_men_belts";
+        }
+        elseif(in_array('Sabyasachi', array_map('trim', $cat_names)) && in_array('Belts', array_map('trim', $cat_names)) && (6302 == $genderValue)){
+            $size_chart_template = "sabyasachi_women_belts";
+        }
+    	elseif(in_array($belts, $cat_names)){
+    		$size_chart_template = 'bags';
+    		$noSizeArr = ['Free Size', 'One Size', 'No Size'];
+    
+    		$configurableOptions = $parent->getTypeInstance()->getConfigurableOptions($parent);
+    		foreach ($configurableOptions as $key => $options) {
+    			if(count($options) == 1){
+    				$size_chart_template = 'bags';
+    				$size = $options[0]['option_title'];
+    				if(!in_array($size, $noSizeArr)){
+    	             	$size_chart_template = 'belts';
+    	            }
+    			}
+    			else{
+    				$size_chart_template = 'belts';
+    			}
+    		}
+    	}
+    	elseif(in_array($shoe, $cat_names)){
+    		$size_chart_template = "shoes";
+    	}
+    	elseif(in_array($men, $cat_names)){
+    		$size_chart_template = "men";
+    	}
+    	elseif(in_array($women, $cat_names)){
+    		$size_chart_template = "women";
+    	}
+    	elseif(in_array($kids, $cat_names)){
+    		$size_chart_template = "kidswear";
+    	}
+
+}
+}
+else{
+	$size_chart_template = "customProductChart";
+}
+$loadThis = "Mec_Customtab::".$size_chart_template.".phtml";
+
+?>
+
+<div class="size-chart" style="padding-top:10px">
+       <div  class="size-chart-content <?php echo isset($category_name) ? strtolower($category_name) : "" ?>" >
+               <?php echo $this->getLayout()->createBlock("Magento\Catalog\Block\Product\View")->setTemplate($loadThis)->toHtml(); ?>
+       </div>
+</div>

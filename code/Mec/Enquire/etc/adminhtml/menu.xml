@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+    <menu>
+        <add id="Mec_Enquire::parent" title="Enquire" module="Mec_Enquire" sortOrder="100" resource="Mec_Enquire::parent"/>
+        <add id="Mec_Enquire::index" title="Enquire Index" module="Mec_Enquire" sortOrder="10" action="enquire/index" resource="Mec_Enquire::index" parent="Mec_Enquire::parent"/>
+		<add id="Mec_Enquire::enquire" title="Enquire Enquire" module="Mec_Enquire" sortOrder="20" parent="Mec_Enquire::parent" action="enquire/enquire" resource="Mec_Enquire::enquire"/>
+
+    </menu>
+</config>

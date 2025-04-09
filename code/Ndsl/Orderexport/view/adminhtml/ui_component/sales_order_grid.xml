@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="../../../../Ui/etc/ui_configuration.xsd">
+	<listingToolbar name="listing_top">
+		<!-- add export mass action -->
+		<massaction name="listing_massaction">
+			<action name="export">
+				<argument name="data" xsi:type="array">
+					<item name="config" xsi:type="array">
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Export Order</item>
+                            <item name="message" xsi:type="string" translate="true">Export selected orders?</item>
+                        </item>					
+						<item name="type" xsi:type="string">export</item>
+						<item name="label" xsi:type="string" translate="true">Pick List Csv</item>
+						<item name="url" xsi:type="url" path="orderexport/order/massExport"/>
+					</item>
+				</argument>
+			</action>
+			<action name="order_status_export">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Export Order Status</item>
+                            <item name="message" xsi:type="string" translate="true">Export status of selected orders?</item>
+                        </item>                 
+                        <item name="type" xsi:type="string">order_status_export</item>
+                        <item name="label" xsi:type="string" translate="true">Order Status Export</item>
+                        <item name="url" xsi:type="url" path="orderexport/order/exportorderstatus"/>
+                    </item>
+                </argument>
+            </action>
+		</massaction>
+	</listingToolbar>	
+</listing>
+
+
+

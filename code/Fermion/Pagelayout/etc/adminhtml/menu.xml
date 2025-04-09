@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        
+         <!--fermion menu -->
+        <add id="Fermion_Pagelayout::fermion_menu" title="Fermion" module="Fermion_Pagelayout" sortOrder="9999" resource="Fermion_Pagelayout::fermion_menu" />
+ 
+        <add id="Fermion_Pagelayout::script" title="Manual Script Run" module="Fermion_Pagelayout" sortOrder="131" parent="Fermion_Pagelayout::fermion_menu" action="pagelayout/script/" resource="Fermion_Pagelayout::script"/> 
+
+        <add id="Fermion_Pagelayout::report" title="Sales Report" module="Fermion_Pagelayout" sortOrder="131" parent="Fermion_Pagelayout::fermion_menu" action="pagelayout/report/" resource="Fermion_Pagelayout::report"/>   
+
+    </menu>
+</config>

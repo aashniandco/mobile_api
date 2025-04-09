@@ -1,0 +1,103 @@
+<?php
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+$helper =  \Magento\Framework\App\ObjectManager::getInstance()->get('MGS\Mpanel\Helper\Data');
+$url = $helper->getCssUrl();
+$canUsePanel = $helper->acceptToUsePanel()
+?>
+<!doctype html>
+<html <?php /* @escapeNotVerified */ echo $htmlAttributes ?>>
+    <head <?php /* @escapeNotVerified */ echo $headAttributes ?>>
+        <?php /* @escapeNotVerified */ echo $requireJs ?>
+        <?php /* @escapeNotVerified */ echo $headContent ?>
+        <?php /* @escapeNotVerified */ echo $headAdditional ?>
+		<?php echo $helper->getLinksFont() ?>
+		<link  rel="stylesheet" type="text/css"  media="all" href="<?php echo $url ?>" /> 
+		<?php if($helper->showButton()): ?>
+		<link  rel="stylesheet" type="text/css"  media="all" href="<?php echo $helper->getPanelCssUrl() ?>" /> 
+		<?php endif ?>
+		<script>
+			var WEB_URL = "<?php echo $helper->getUrlBuilder()->getUrl() ?>";
+		</script>
+    </head>
+    <body data-container="body" data-mage-init='{"loaderAjax": {}, "loader": { "icon": "<?php /* @escapeNotVerified */ echo $loaderIcon; ?>"}}' <?php /* @escapeNotVerified */ echo $bodyAttributes ?>>
+		<?php if($helper->showButton() && !$helper->isPopup()): ?>
+			<?php echo $topPanel ?>
+		<?php endif ?>
+		<div class="page-wrapper">
+			<?php if(isset($headerContent)): ?>
+				<?php if($helper->getStoreConfig('mgstheme/general/sticky_menu')): ?>
+					<div id="placeholder-header"></div>
+				<?php endif ?>
+				<header class="header <?php echo $helper->getHeaderClass() ?>">
+					<?php if($canUsePanel): ?>
+						<div class="edit-panel edit-header"><ul><li><a class="popup-link" href="<?php echo $helper->getUrlBuilder()->getUrl('mpanel/edit/header', ['type'=>'header']) ?>" title="<?php echo __('Edit Header') ?>"><em class="fa fa-gear"></em></a></li></ul></div>
+					<?php endif ?>
+					
+					<?php echo $headerContent ?>
+				</header>
+			<?php endif ?>
+			
+			<?php if($helper->useBuilder() && $helper->isHomepage()): ?>
+				<div class="page messages container">
+					<div data-placeholder="messages"></div>
+					<div data-bind="scope: 'messages'">
+						<div data-bind="foreach: { data: cookieMessages, as: 'message' }" class="messages">
+							<div data-bind="attr: {
+								class: 'message-' + message.type + ' ' + message.type + ' message',
+								'data-ui-id': 'message-' + message.type
+							}">
+								<div data-bind="html: message.text"></div>
+							</div>
+						</div>
+						<div data-bind="foreach: { data: messages().messages, as: 'message' }" class="messages">
+							<div data-bind="attr: {
+								class: 'message-' + message.type + ' ' + message.type + ' message',
+								'data-ui-id': 'message-' + message.type
+							}">
+								<div data-bind="html: message.text"></div>
+							</div>
+						</div>
+					</div>
+				
+					<script type="text/x-magento-init">
+						{
+							"*": {
+								"Magento_Ui/js/core/app": {
+									"components": {
+											"messages": {
+												"component": "Magento_Theme/js/view/messages"
+											}
+										}
+									}
+								}
+						}
+					</script>
+				</div>
+				<?php echo $builderContent ?>
+			<?php else: ?>
+				<?php echo $mainContent ?>
+			<?php endif ?>
+			
+			<?php if(isset($footerContent)): ?>
+				<footer class="footer <?php echo $helper->getFooterClass($canUsePanel) ?>">
+					<?php if($canUsePanel): ?>
+						<div class="edit-panel edit-footer"><ul><li><a class="popup-link" href="<?php echo $helper->getUrlBuilder()->getUrl('mpanel/edit/footer', ['type'=>'footer']) ?>" title="<?php echo __('Edit Footer') ?>"><em class="fa fa-gear"></em></a></li></ul></div>
+					<?php endif ?>
+					<?php echo $footerContent ?>
+				</footer>
+			<?php endif ?>
+			<?php if(isset($scriptContent)): ?>
+				<?php echo $scriptContent ?>
+			<?php endif ?>
+		</div>
+		
+		<?php if($canUsePanel): ?>
+			<script  type="text/javascript" src="<?php echo $this->getViewFileUrl('MGS_Mpanel::js/panel.js') ?>"></script>
+		<?php endif ?>
+    </body>
+</html>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:MageWorx_GiftCards:etc/catalog_attributes.xsd">
+    <group name="catalog_product">
+        <attribute name="mageworx_gc_additional_price"/>
+        <attribute name="mageworx_gc_type"/>
+    </group>
+    <group name="quote_item">
+        <attribute name="mageworx_gc_lifetime_value"/>
+        <attribute name="mageworx_gc_customer_groups"/>
+    </group>
+</config>

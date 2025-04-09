@@ -1,0 +1,48 @@
+<div class="ma-wrapper">
+    <div class="form-wrapper">
+        <div class="login-header">
+           <h2 class="login-title">Sign in</h2>
+        </div>
+        <div class="login-content">
+            <form class="login-registration-form" action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>" method="post" data-mage-init='{"validation":{}}'>
+                <?= $block->getBlockHtml('formkey') ?>
+                <div class="input-wrap">
+                    <label for="email" class="label">Email</label>
+                    <input name="login[username]" id="email" type="email" class="input" required="true">
+                </div>
+                <div class="input-wrap">
+                    <label for="pass"  class="label">Password</label>
+                    <div class="password-input">
+                        <input name="login[password]" type="password" id="pass" class="pass-input" placeholder="Enter your password" required="true">
+                        <i class="fa fa-eye toggle-password"></i>
+                    </div>
+                </div>
+                <div class="forgot-password">
+                    <a class="forgot-password-link" href="/customer/account/forgotpassword">Forgot your password?</a>
+                </div>
+                <div class="sign-in">
+                    <button class="sign-in-button">Sign In</button>
+                </div>
+                <div class="login-footer">
+                    <div class="login-footer-title">Don't have an account?</div>
+                    <div class="create-account">
+                        <a href="/customer/account/create" class="create-account-link">Create Account</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+     </div>
+</div>
+<script>
+    require(['jquery'], function($){
+        jQuery(document).ready(function(){
+            $('.toggle-password').click(function(){
+                let input = $(this).siblings('.pass-input');
+                let type = input.attr('type') === 'password' ? 'text' : 'password';
+                input.attr('type', type);
+                
+                $(this).toggleClass('fa-eye fa-eye-slash');
+            });
+        });
+    })
+</script>

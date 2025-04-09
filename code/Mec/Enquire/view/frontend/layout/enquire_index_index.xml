@@ -1,0 +1,20 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+
+	<head>
+        <title>Titlename</title>
+    </head>
+
+    <body>
+
+
+        <referenceContainer name="sidebar.main">
+            <block class="Mec\Enquire\Block\Index\Sidebar" name="enquire_index_sidebar" before="-" template="Mec_Enquire::enquire_index_sidebar.phtml"/>
+        </referenceContainer>
+
+        <referenceContainer name="content">
+            <block class="Mec\Enquire\Block\Index\Index" name="enquire_index_index" template="Mec_Enquire::enquire_index_index.phtml"/>
+        </referenceContainer>
+
+
+    </body>
+</page>

@@ -1,0 +1,1674 @@
+<?php 
+$mediaUrl = $block->getMediaUrl();
+//print_r($mediaUrl);die();
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="shortcut icon" type="image/x-icon" href="<?php echo $mediaUrl;?>Homepage/Banner/img/aashniandco_favicon.ico">
+</head>
+<?php
+$mediaUrl = $block->getMediaUrl();
+
+//var_dump($baseUrl);
+// print_r($_SESSION);
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $customerSession = $objectManager->create('Magento\Customer\Model\Session');
+    $cart = $objectManager->create('\Magento\Checkout\Model\Session');
+    $_productRepository = $objectManager->create('\Magento\Catalog\Model\ProductRepository');
+    $imageHelper = $objectManager->create('\Magento\Catalog\Helper\Image');
+    $quote = $cart->getQuote();
+    $subtotal = $quote->getSubtotal();
+    $totalItems = $cart->getQuote()->getItemsCount();
+    $items = $cart->getQuote()->getAllItems();
+    $visibleItem = $quote->getAllVisibleItems();
+    $isLoggedIn = $customerSession->isLoggedIn();  
+    $formKey = $this->getFormKey();  
+    $carthtml = ''; 
+    $subtotalhtml = '';
+    // $_Symbol = $objectManager->create('Magento\Directory\Model\CurrencyFactory')->create()->load($_code);
+    $currencysymbol = $objectManager->get('Magento\Store\Model\StoreManagerInterface');
+    $currency = $currencysymbol->getStore()->getCurrentCurrency();
+    //print_r(get_class_methods($currency));die("mithi");
+    $getCurrencyCode = $currency->getCurrencyCode();
+    $getCurrencySymbol = $currency->getCurrencySymbol();
+    //print_r($getCurrencySymbol);die();
+    //print_r($getCurrencyCode);die();
+    $scopeConfig = $objectManager->get('\Magento\Framework\App\Config\ScopeConfigInterface');
+    $jsVersion   = $scopeConfig->getValue('general/jcversioning_setting/version_no', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+
+
+foreach($visibleItem as $item) {
+     
+    $configurableProductObject = $_productRepository->get($item->getData('sku'));
+    $configurableProductSizeObject = $configurableProductObject->getResource()->getAttribute('size');
+    $configurableSize = $configurableProductSizeObject->getFrontend()->getValue($configurableProductObject);
+    $product = $_productRepository->getById($item->getProductId());
+    $designer = $product->getResource()->getAttribute('designer');
+    $designerName = $designer->getFrontend()->getValue($product);
+    $productName = $product->getName();
+    $productUrl = $product->getProductUrl();
+    $itemQuantity = $item->getQty(); 
+    $itemId = $item->getId(); 
+    $specialPrice = $item->getSpecialPrice();
+    $actualPrice = $item->getPrice();
+    $productImageUrl = $imageHelper->init($product, 'product_page_image_small')->setImageFile($product->getFile())->resize('85', '128')->getUrl();
+
+
+    
+
+    $carthtml.= '<div class="product-blog">
+                                        <div class="content">
+                                            <div class="del-item"><img src="https://aashniandco.com\pub\media\Homepage\Banner\img\remove.svg"></div>
+                                            <div class="product-detail">
+                                            <a href = "'.$productUrl.'">
+                                                <div class="designer-name">'.$designerName.'</div></a>
+                                                <input type="hidden" id="item-id" value="'.$itemId.'">
+                                                <input type="hidden" id="form-key" value="'.$formKey.'">
+                                                <!-- <div class="description"></div> -->
+                                            </div>
+                                            <div class="pricing">
+                                                <div class="price">₹ '.number_format($actualPrice,2).'</div>';
+    if($actualPrice !=$specialPrice && $specialPrice >0){                                    
+
+    $carthtml.= '<div class="price slash-price">₹ '.number_format($specialPrice,2).'</div>';
+   }
+                                           
+                                           $carthtml.= '</div>
+                                            <div class="size-n-price">
+                                                <div class="size">
+                                                    <div class="label">Size:</div>
+                                                    <div class="value">'.$configurableSize.'</div>
+                                                </div>
+                                                <div class="size">
+                                                    <div class="label">Qty:</div>
+                                                    <div class="value">'.$itemQuantity.'</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a href="'.$productUrl.'" class="img-plot">
+                                            <img src="'.$productImageUrl.'">
+                                        </a>
+                                    </div>';
+
+   
+   
+            
+}
+
+
+$baseUrl = $block->getBaseUrl(); 
+$mediaUrl = $block->getMediaUrl(); 
+//print_r($mediaUrl);die("mithi");
+if($isLoggedIn)
+{
+    $customerObj=$objectManager->create('Magento\Customer\Model\Customer')->load($customerSession->getCustomerId());
+    $custEmailId=$customerObj->getEmail();
+    $custName=$customerObj->getName();     
+}
+ echo "<input type='hidden' id='isLoggedIn' value='".$isLoggedIn."'>";
+?>
+
+<head>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
+    <link rel="stylesheet" type="text/css" media="all" href="<?php echo $baseUrl."pub/static/frontend/Mgs/ethan/en_US/css/bootstrap.min.css?v=$jsVersion"?>">
+    <title>AASHNI + CO - Online Indian Luxury Fashion shopping</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="p:domain_verify" content="ff8a82a93fc7467292ab2be39c8e3b3f"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" media="all" href="<?php echo $baseUrl."pub/static/frontend/Mgs/ethan/en_US/Fermion_Pagelayout/css/header.css?v=$jsVersion"?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" media="all" href="<?php echo $baseUrl."pub/static/frontend/Mgs/ethan/en_US/Fermion_Pagelayout/css/home.css?v=$jsVersion"?>">
+    <link rel="stylesheet" type="text/css" media="all" href="<?php echo $baseUrl."pub/static/frontend/Mgs/ethan/en_US/Fermion_Pagelayout/css/footer.css?v=$jsVersion"?>">
+    <link rel="stylesheet" type="text/css" media="all" href="<?php echo $baseUrl."pub/static/frontend/Mgs/ethan/en_US/Fermion_Pagelayout/css/slick.css?v=$jsVersion"?>">
+    <link rel="stylesheet" type="text/css" media="all" href="<?php echo $baseUrl."pub/static/frontend/Mgs/ethan/en_US/Fermion_Pagelayout/css/slick-theme.css?v=$jsVersion"?>">
+</head>
+<body>
+<input type='hidden' id='websitebaseUrl' value=<?php echo $baseUrl;?>>
+<input type='hidden' id='formkey' value=<?php echo $formKey;?>>
+<input id="search" type="hidden" value="<?php echo isset($_GET['q']) ? $_GET['q'] : '';?>">
+    <header>
+<?php if($isLoggedIn == 1){
+
+    echo "<div class='welcome-text'>Welcome $custName</div>";
+}?>
+        <!-- <div class="welcome-text">Welcome to Aashni Website</div> -->
+        <div class="top-header-content">
+            <div class="contain">
+                <div class="login-block">
+                    <div class="log-cont">
+                        <a href="<?php echo $baseUrl;?>customer/account/login/">
+                            <div class="log-img">
+                                <img src=<?php echo $mediaUrl."Homepage/Banner/img/02_H.png"?> style="height: 12px;">
+                            </div>
+                            <span class="text">Sign In</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="login-block">
+                    <div class="log-cont">
+                        <a href="<?php echo $baseUrl;?>wishlist/">
+                            <div class="log-img wish-img">
+                                <img src=<?php echo $mediaUrl."Homepage/Banner/img/03_H.png"?> style="height: 12px;">
+                            </div>
+                            <span class="text">Wishlist</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="login-block">
+                    <div class="log-cont">
+                        <form>
+                            <input type="text" name="search" id ="search_Mobile_input" placeholder="Type your search here...">
+                            <div class="log-img search-img">
+                                <img src="<?php echo $mediaUrl;?>Homepage/Banner/img/search-icon.svg">
+                            </div>
+<!-- mobile---auto search -->
+                            <div class="search-plot">
+                                <ul class="product-search-plot"></ul>
+                            </div> 
+                            <!-- endmobile---auto search -->
+                        </form>
+                        
+                    </div>
+                </div>
+                <!-- <div class="login-block wishlist-block">
+                    <div class="wish-cont">
+                        <a href="#">
+                            <div class="log-img wish-img"></div>
+                            <span class="text">Wishlist</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="login-block search-block">
+                    <div class="search-cont">
+                        <a href="#">
+                            <input type="text" name="search" placeholder="Type your search here...">
+                            <div class="log-img search-img"></div>
+                        </a>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="middle-header-content">
+            <div class="header-top">
+                <div class="left-section">
+                    <div class="currency-plot">
+                        <div class="currency-pod">
+                            <div class="currency-text"><?php echo $getCurrencyCode; ?> | <?php echo $getCurrencySymbol; ?> </div>
+                            <div class="rupee-symbol"><img src=<?php echo $mediaUrl."logo/whatsapp.svg"?>></div>
+                        </div>
+                    </div>
+
+                    <div class="whatsapp-icon">
+                        <a href="https://api.whatsapp.com/send?phone=918375036648&amp;text=https://aashniandco.com/ Hello Aashni + Co ! I have a question I would like to ask."><img src="<?php echo $mediaUrl;?>logo/whatsapp.svg"></a>
+                    </div>
+                </div>
+                <div class="logo"><a href="https://aashniandco.com/"><img src="<?php echo $mediaUrl;?>logo/stores/1/A_CO-LOGO-318-x-55-_02_.png" alt=""></a></div>
+                <div class="right-section">
+                    <div class="web-search">
+                        <form>
+                            <div class="form-search">
+                                <input type="text" name="search" id='search_input' placeholder="Type your search here...">
+                                <div class="search-icon"><img src="<?php echo $mediaUrl;?>Homepage/Banner/img/search-icon.svg"></div>
+                            </div>
+
+                            <div class="search-plot">
+                                <ul class="product-search-plot"> </ul>
+                            </div>
+                            
+                        </form>
+                    </div>
+                    <div class="icon">                      
+                        <div class="wishlist-icon"><img src=<?php echo $mediaUrl."Homepage/Banner/img/03_H.png"?> style="height: 12px;"></div>
+                        <?php if($isLoggedIn == 1) {
+                            echo "<div class='unlock-icon'><img src= $mediaUrl./Homepage/Banner/img/07_H.png style='height: 12px;'></div>";
+                        }
+                        ?>
+                        <div class="profile-icon"><img src=<?php echo $mediaUrl."Homepage/Banner/img/02_H.png"?> style="height: 12px;"></div>
+                        <div class="cart-icon">
+                            <img src=<?php echo $mediaUrl."Homepage/Banner/img/01_H.png"?> style="height: 12px;">
+                             <div class="mini-cart"><div class="cart-block"></div></div>  
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-head">
+                <ul class="menu-plot">
+                    <li><a href="<?php echo $baseUrl;?>new-in.html" class="menu-slot">New In</a>
+
+                        <div class="menu-drop">
+                            <div class="block">
+                                <div class="wrap-menu">
+                                    <div class="link-block">
+                                        <div class="block-wrap">
+                                            <div class="common-plot">
+                                                <div class="title">Shop by</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="<?php echo $baseUrl;?>new-in.html?firstAttemptedFilter=calenderFilter&amp;calenderFilter=6204"> This Week </a></li>
+                                                        <li><a href="<?php echo $baseUrl;?>new-in.html?firstAttemptedFilter=calenderFilter&amp;calenderFilter=6205"> This Month </a></li>
+                                                        <li><a href="<?php echo $baseUrl;?>new-designers.html"> New Designers </a></li>
+                                                        <li><a href="<?php echo $baseUrl;?>new-in.html?firstAttemptedFilter=acoeditFilter&amp;acoeditFilter=6219"> Top Finds </a></li>
+                                                        <li><a href="<?php echo $baseUrl;?>new-in.html?firstAttemptedFilter=acoeditFilter&amp;acoeditFilter=6208"> Exclusives </a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="component-block">
+                                        <div class="title">EDITOR’S PICKS</div>
+                                        <div class="block-wrap">                                
+                                            <div class="menu-plot">
+                                                <div class="menu-product custom">
+                                                    <a href="https://aashniandco.com/sawan-gandhi-almond-floral-embellished-lehenga-set-sasnov2226.html" class="image-pod" target="_blank">
+                                                       <img src="pub/media/wysiwyg/homepage/28-11-22/sasnov2226__1_.avif">
+                                                    </a>
+
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="https://aashniandco.com/sawan-gandhi-almond-floral-embellished-lehenga-set-sasnov2226.html" target="_blank" class="title">SAWAN GANDHI</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="menu-product custom">
+                                                    <a href="https://aashniandco.com/ridhima-bhasin-black-palazzo-and-jacket-set-rbsnov2212.html" class="image-pod" target="_blank">
+                                                       <img src="pub/media/wysiwyg/homepage/28-11-22/rbsnov2212__1_.avif">
+                                                    </a>
+
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="https://aashniandco.com/ridhima-bhasin-black-palazzo-and-jacket-set-rbsnov2212.html" target="_blank" class="title"> RIDHIMA BHASIN </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="menu-product custom">
+                                                    <a href="https://aashniandco.com/masaba-yellow-crepe-saree-msbnovwon2207.html" class="image-pod" target="_blank">
+                                                       <img src="pub/media/wysiwyg/homepage/28-11-22/msbnovwon2207__1_.avif">
+                                                    </a>
+
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="https://aashniandco.com/masaba-yellow-crepe-saree-msbnovwon2207.html" target="_blank" class="title"> MASABA </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="menu-product custom">
+                                                    <a href="https://aashniandco.com/punit-balana-purple-embellished-anarkali-set-pubnov2204.html" class="image-pod" target="_blank">
+                                                       <img src="pub/media/wysiwyg/homepage/28-11-22/pubnov2204__1_.avif">
+                                                    </a>
+
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="https://aashniandco.com/punit-balana-purple-embellished-anarkali-set-pubnov2204.html" target="_blank" class="title"> PUNIT BALANA </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li><a href="https://aashniandco.com/designer" class="menu-slot">Designer</a>
+
+                        <div class="menu-drop">
+                            <div class="block">
+                                <div class="wrap-menu">
+                                    <div class="link-block">
+                                        <div class="block-wrap">
+                                            <div class="common-plot divide">
+                                                <div class="title">FEATURED DESIGNERS</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/designer/"> Designer A-Z </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/abhinav-mishra.html">  Abhinav Mishra  </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/aisha-rao.html">  Aisha Rao  </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/ak-ok.html">  AK-OK  </a></li>
+                                                        <li><a href="https://aashniandco.com/catalog/category/view/s/amit-aggarwal/id/3694/">  Amit Aggarwal </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/anamika-khanna.html">  Anamika Khanna </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/anita-dongre.html"> Anita Dongre </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/anushree-reddy.html"> Anushree Reddy </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/archana-jaju.html"> Archana Jaju </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/jayanti-reddy.html"> Jayanti Reddy </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/mahima-mahajan.html"> Mahima Mahajan </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/manish-malhotra.html"> Manish Malhotra </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/masaba.html"> Masaba </a></li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/designers/nidhi-tholia.html.html">  Nidhi Tholia  </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/rajdeep-ranawat.html"> Rajdeep Ranawat </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/ridhi-mehra.html"> Ridhi Mehra </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/ridhima-bhasin.html"> Ridhima Bhasin </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/ritika-mirchandani.html">  Ritika Mirchandani </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/ritu-kumar.html"> Ritu Kumar </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/rohit-bal.html"> Rohit Bal </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/sabyasachi.html"> Sabyasachi </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/seema-gujral.html">Seema Gujral</a></li>
+                                                        <li><a href="https://aashniandco.com/designers/tarun-tahiliani.html"> Tarun Tahiliani </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/house-of-torani.html"> Torani </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/varun-bahl.html"> Varun Bahl </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/vvani-by-vani-vats.html"> Vvani by Vani Vats</a></li>
+                                                    </ul>
+                                                </div>
+
+                                                <!-- <div class="menu-list">
+                                                    
+                                                </div> -->
+                                            </div>
+                                            <div class="common-plot discover">
+                                                <div class="title">DISCOVER</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/designer#sustainable"> Sustainable Designers </a></li>
+                                                        <li><a href="https://aashniandco.com/designer#bridal_list"> Bridal Designers </a></li>
+                                                        <li><a href="https://aashniandco.com/designer#exclusive_list"> Exclusives  </a></li>
+                                                        <li><a href="https://aashniandco.com/designer#hero_designers"> Hero Designers</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="title tit-le">A+C LOVES</div>
+                                                <div class="menu-list">
+                                                    <ul>                                                    
+                                                        <li><a href="https://aashniandco.com/designers/astha-narang.html"> Astha Narang </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/baise-gaba.html"> Baise Gaba </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/dolly-j.html.html"> Dolly J </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/kalista.html.html"> Kalista </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/punit-balana.html"> Punit Balana </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/sheetal-batra.html"> Sheetal Batra </a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="component-block">
+                                        <div class="block-wrap">
+                                            <div class="menu-plot">
+                                                <div class="menu-product custom">
+                                                    <a href="https://aashniandco.com/tarun-tahiliani-orange-crushed-chanderi-lehenga-set-tatrr2219.html" class="image-pod" target="_blank">
+                                                       <img src="pub/media/wysiwyg/homepage/28-11-22/tatrr2219__1_.avif">
+                                                    </a>
+
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="https://aashniandco.com/tarun-tahiliani-orange-crushed-chanderi-lehenga-set-tatrr2219.html" target="_blank" class="title">TARUN TAHILIANI</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li><a href="https://aashniandco.com/clothing.html" class="menu-slot">Women</a>
+
+                        <div class="menu-drop">
+                            <div class="block">
+                                <div class="wrap-menu">
+                                    <div class="link-block">
+                                        <div class="block-wrap">
+                                            <div class="common-plot divide">
+                                                <div class="title">SHOP BY</div>
+
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/clothing.html">  All Clothing  </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/lehengas.html">  Lehengas  </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/anarkalis-kurtas.html?firstAttemptedFilter=categoryFilter&categoryFilter=3380"> Anarkalis </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/anarkalis-kurtas.html?firstAttemptedFilter=categoryFilter&categoryFilter=3385%2B3389">  Kurtas </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/anarkalis-kurtas.html?firstAttemptedFilter=categoryFilter&categoryFilter=3388"> Shararas </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/saris.html">  Saris </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/gowns.html"> Gowns </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/dresses.html">  Dresses  </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing/kaftans.html"> Kaftans  </a></li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/tops.html"> Tops </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/tunics-kurtis.html"> Tunics & Kurtis </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/jumpsuits.html"> Jumpsuits </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/pants.html"> Pants </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/skirts.html">  Skirts </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/co-ords.html"> Co-ords </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/jackets-and-capes.html"> Jackets & Capes </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/beach.html">  Beachwear </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing/loungewear.html"> Loungewear </a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="common-plot divide">
+                                                <div class="title">ESSENTIAL EDITS</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/clothing.html"> Just In </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6219"> Cult Finds </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6210"> Kurtas under $200 </a></li>
+                                                        <li><a href="https://aashniandco.com/celebrity-spotting.html"> Celebrity Spotting  </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6222"> Everyday Staples </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6209"> Sustainable Fashion </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing.html?firstAttemptedFilter=deliveryFilter&deliveryFilter=Immediate"> Ready to ship </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6208"> Exclusives </a></li>
+                                                    </ul>
+                                                </div>                                          
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="component-block">
+                                        <div class="block-wrap">
+                                            <div class="menu-plot">
+                                                <div class="menu-product custom">
+                                                    <a href="https://aashniandco.com/pooja-keyur-red-printed-kaftan-and-pants-pokwon2217.html" class="image-pod" target="_blank">
+                                                       <img src="pub/media/wysiwyg/homepage/28-11-22/pokwon2217__1_.avif">
+                                                    </a>
+
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="https://aashniandco.com/pooja-keyur-red-printed-kaftan-and-pants-pokwon2217.html" target="_blank" class="title">POOJA KEYUR</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li><a href="https://aashniandco.com/accessories.html" class="menu-slot">Accessories</a>
+
+                        <div class="menu-drop">
+                            <div class="block">
+                                <div class="wrap-menu">
+                                    <div class="link-block">
+                                        <div class="block-wrap">
+                                            <div class="common-plot accessory">
+                                                <div class="title">ACCESSORIES</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/accessories.html"> All Accessories  </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=1407"> Bags </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=1498"> Belts </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=1408"> Scarves & Stoles </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=1409"> Footwears </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=2071"> Masks </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2631"> Hair accessories </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2317">  Cufflinks </a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="common-plot divide">
+                                                <div class="title">JEWELRY</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2251"> Earrings </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2252"> Necklaces </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2253">  Rings  </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2321"> Tikkas & Passas </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2254"> Bangles & Bracelets </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2258"> Brooches </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2322"> Nose rings </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2611"> Hand harness </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2261"> Head harness </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories/fine-jewelry.html.html"> Fine Jewelry </a></li>
+                                                    </ul>
+                                                </div>                                          
+                                            </div>
+
+                                            <div class="common-plot accessory">
+                                                <div class="title">ESSENTIAL EDITS</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/accessories.html"> Just In </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=3180"> Bridal sets </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6211"> Festive Potlis </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=deliveryFilter&deliveryFilter=Immediate">Ready to ship</a></li>
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6219">Cult Finds</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="title tit-le">A+C LOVES</div>
+                                                <div class="menu-list">
+                                                    <ul>                                                    
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=designerFilter&designerFilter=5920">Moh-Maya by Disha</a></li>
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=designerFilter&designerFilter=5687"> Outhouse</a></li>
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=designerFilter&designerFilter=5560"> Prerto </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=designerFilter&designerFilter=5548"> Sabyasachi </a></li>
+                                                        <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=designerFilter&designerFilter=5658"> Zevar by Geeta</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="component-block">
+                                        <div class="block-wrap">
+                                            <div class="menu-plot">
+                                                <div class="menu-product custom">
+                                                    <a href="https://aashniandco.com/sabyasachi-sactl000117bl.html" class="image-pod" target="_blank">
+                                                       <img src="pub/media/wysiwyg/homepage/28-11-22/sactl000117bla....avif">
+                                                    </a>
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="https://aashniandco.com/sabyasachi-sactl000117bl.html" target="_blank" class="title">SABYASACHI</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li><a href="https://aashniandco.com/men.html" class="menu-slot">Men</a>
+
+                        <div class="menu-drop">
+                            <div class="block">
+                                <div class="wrap-menu">
+                                    <div class="link-block">
+                                        <div class="block-wrap">
+                                            <div class="common-plot accessory">
+                                                <div class="title">SHOP BY</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/men.html"> All Clothing </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=1703"> Kurta sets </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=1705"> Sherwani </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=1704"> Bandi </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=3048"> Bandi Sets </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=3928"> Nehru jacket </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=3173"> Bandhgalas </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=3287"> Jackets </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=1730"> Shirts </a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="common-plot divide">
+                                                <div class="title">FEATURED DESIGNERS</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5967"> Itrh </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5660"> Mahima Mahajan </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5814"> Masaba </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=6135"> Pratap </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=6116"> Punit Arora </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5725"> Punit Balana </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5928"> Qbik </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5548"> Sabyasachi </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=6151"> Seema Gujral </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5575"> Tarun Tahiliani </a></li>
+                                                    </ul>
+                                                </div>                                          
+                                            </div>
+
+                                            <div class="common-plot accessory">
+                                                <div class="title">ESSENTIAL EDITS</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/men.html"> Just In </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6218"> Off the Runway </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6210"> Kurtas under $200 </a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="title tit-le">ACCESSORIES</div>
+                                                <div class="menu-list">
+                                                    <ul>                                                    
+                                                        <li><a href="https://aashniandco.com/men/mens-accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=2609"> Cufflinks </a></li>
+                                                        <li><a href="https://aashniandco.com/men/mens-accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=2610"> Pocket Square </a></li>
+                                                        <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=1714"> Footwears </a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="component-block">
+                                        <div class="block-wrap">
+                                            <div class="menu-plot">
+                                                <div class="menu-product custom">
+                                                    <a href="https://aashniandco.com/balance-by-rohit-bal-ivory-floral-print-nehru-jackets-brbnov2005.html" class="image-pod" target="_blank">
+                                                       <img src="pub/media/wysiwyg/homepage/28-11-22/brbnov2005__1_.avif">
+                                                    </a>
+
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="https://aashniandco.com/balance-by-rohit-bal-ivory-floral-print-nehru-jackets-brbnov2005.html" target="_blank" class="title">BALANCE BY ROHIT BAL</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="https://aashniandco.com/bridal" class="menu-slot">Wedding</a>
+
+                        <div class="menu-drop">
+                            <div class="block">
+                                <div class="wrap-menu">
+                                    <div class="link-block">
+                                        <div class="block-wrap">
+                                            <div class="common-plot accessory">
+                                                <div class="title">SHOP BY</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/clothing.html"> All Clothing </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/lehengas.html"> Lehengas </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal/women-s-clothing.html?firstAttemptedFilter=categoryFilter&categoryFilter=3132"> Anarkalis and Kurtas </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal/women-s-clothing.html?firstAttemptedFilter=categoryFilter&categoryFilter=3133"> Saris </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal/women-s-clothing.html?firstAttemptedFilter=categoryFilter&categoryFilter=3580"> Gowns </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal/women-s-clothing/anarkalis-kurtas.html?firstAttemptedFilter=categoryFilter&categoryFilter=3200"> Sharara Sets </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal/women-s-clothing.html?firstAttemptedFilter=categoryFilter&categoryFilter=3137"> Jackets and Capes </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=3150"> Sherwanis </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=3149"> Bandi Sets </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal/men/jackets-and-blazers.html?firstAttemptedFilter=categoryFilter&categoryFilter=3561"> Formal Jackets </a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="common-plot divide">
+                                                <div class="title">FEATURED DESIGNERS</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5707"> Abhinav Mishra </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=6197"> Aisha Rao </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5526"> Anita Dongre </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5517"> Anushree Reddy </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5531"> Manish Malhotra </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=6151"> Seema Gujral </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5548"> Sabyasachi </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=6462"> Sulakshana Monga </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5575"> Tarun Tahiliani </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5856"> Torani </a></li>
+                                                    </ul>
+                                                </div>                                          
+                                            </div>
+
+                                            <div class="common-plot accessory">
+                                                <div class="title">OCCASION</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=occasionFilter&occasionFilter=6050"> Haldi & Mehendi </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=occasionFilter&occasionFilter=6052"> Engagement </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=occasionFilter&occasionFilter=6053"> Cocktail </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=occasionFilter&occasionFilter=6046"> Wedding </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=occasionFilter&occasionFilter=6049"> Reception </a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="title tit-le">ESSENTIAL EDITS</div>
+                                                <div class="menu-list">
+                                                    <ul>                                                    
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=bridalFilter&bridalFilter=6252"> Heritage Weaves</a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=bridalFilter&bridalFilter=6396"> Lehengas Under $2000</a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=bridalFilter&bridalFilter=6254"> Trousseau Essentials </a></li>
+                                                        <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=bridalFilter&bridalFilter=6262"> Finishing Touches</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="component-block">
+                                        <div class="block-wrap">
+                                            <div class="menu-plot">
+                                                <div class="menu-product custom">
+                                                    <a href="https://aashniandco.com/seema-gujral-red-embellished-lehenga-set-segopera003.html" class="image-pod" target="_blank">
+                                                       <img src="pub/media/wysiwyg/homepage/28-11-22/segopera003__1_.avif">
+                                                    </a>
+
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="https://aashniandco.com/seema-gujral-red-embellished-lehenga-set-segopera003.html" target="_blank" class="title">SEEMA GUJRAL</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li><a href="https://aashniandco.com/kids-wear.html" class="menu-slot">kids</a>
+
+                        <div class="menu-drop">
+                            <div class="block">
+                                <div class="wrap-menu">
+                                    <div class="link-block">
+                                        <div class="block-wrap">
+                                            <div class="common-plot divide">
+                                                <div class="title">SHOP BY</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html"> All Clothing </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=categoryFilter&categoryFilter=3324"> Kurtas for girls </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=categoryFilter&categoryFilter=2135"> Lehengas </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=categoryFilter&categoryFilter=2137"> Anarkalis </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=categoryFilter&categoryFilter=2144"> Sherwanis </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=categoryFilter&categoryFilter=3328"> Kurtas for boys </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=categoryFilter&categoryFilter=2142"> Bandi sets </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear/kids-accessories.html"> Kids Accessories  </a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="common-plot divide">
+                                                <div class="title">FEATURED DESIGNERS</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=6329">Daddy's Princess by Priyanka Jain</a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=5654">Fayon Kids by Preeti Jatia</a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=5941"> Mulmul </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=6476">Nitya Bajaj Mini</a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=5796"> Payal Singhal </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=6117"> The Plum bum </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=5856"> Torani </a></li>
+                                                    </ul>
+                                                </div>                                          
+                                            </div>
+                                            <div class="common-plot divide">
+                                                <div class="title">ESSENTIAL EDITS</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html"> Just In  </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6213"> Ruffle Lehengas </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6226"> Easy Kurtas </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6214"> Wedding Edit </a></li>
+                                                        <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6229"> Floral Edit </a></li>
+                                                    </ul>
+                                                </div>                                          
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="component-block">
+                                        <div class="block-wrap">
+                                            <div class="menu-plot">
+                                                <div class="menu-product custom">
+                                                    <a href="https://aashniandco.com/mulmul-mustard-embroidered-kurta-and-pants-mulnov2204.html" class="image-pod" target="_blank">
+                                                       <img src="pub/media/wysiwyg/homepage/28-11-22/mulnov2204__1_.avif">
+                                                    </a>
+
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="https://aashniandco.com/mulmul-mustard-embroidered-kurta-and-pants-mulnov2204.html" target="_blank" class="title">MULMUL</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li><a href="#" class="menu-slot">Homeware</a>
+
+                        <div class="menu-drop">
+                            <div class="block">
+                                <div class="wrap-menu">
+                                    <div class="link-block">
+                                        <div class="block-wrap">
+                                            <div class="common-plot divide">
+                                                <div class="title">SHOP BY</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/homeware.html"> All Homeware </a></li>
+                                                        <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=categoryFilter&categoryFilter=2011">Decorative accessories</a></li>
+                                                        <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=categoryFilter&categoryFilter=2010"> Dining </a></li>
+                                                        <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=categoryFilter&categoryFilter=2012"> Linen </a></li>
+                                                    </ul>
+                                                </div>
+
+                                                <div class="title">FEATURED DESIGNERS</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=designerFilter&designerFilter=6468"> Rias Jaipur</a></li>
+                                                        <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=designerFilter&designerFilter=6155"> Ritu Kumar Home</a></li>
+                                                        <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=designerFilter&designerFilter=6315"> P-TAL</a></li>
+                                                        <li><a href="https://aashniandco.com//homeware.html?firstAttemptedFilter=designerFilter&designerFilter=5846"> Shivan & Narresh</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="common-plot divide">
+                                                <div class="title">ESSENTIAL EDITS</div>
+                                                <div class="menu-list">
+                                                    <ul>
+                                                        <li><a href="https://aashniandco.com/homeware.html"> Just In  </a></li>
+                                                        <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6216"> Housewarming Gifts </a></li>
+                                                    </ul>
+                                                </div>                                          
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="component-block">
+                                        <div class="block-wrap">
+                                            <div class="menu-plot">
+                                                <div class="menu-product custom">
+                                                    <a href="https://aashniandco.com/amalfiee-pink-and-blue-leaf-platter-bowl-set-of-2-amesep2211.html" class="image-pod" target="_blank">
+                                                       <img src="pub/media/wysiwyg/homepage/28-11-22/amesep2211__1_.avif">
+                                                    </a>
+
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="https://aashniandco.com/amalfiee-pink-and-blue-leaf-platter-bowl-set-of-2-amesep2211.html" target="_blank" class="title"> AMALFIEE </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="menu-product custom">
+                                                    <a href="https://aashniandco.com/shivan-&-narresh-shnsntltbr05-red-printed-table-runner.html" class="image-pod" target="_blank">
+                                                       <img src="pub/media/wysiwyg/homepage/28-11-22/shnsntltbr05_a_.avif">
+                                                    </a>
+
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="https://aashniandco.com/shivan-&-narresh-shnsntltbr05-red-printed-table-runner.html" target="_blank" class="title"> SHIVAN & NARRESH </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="menu-product custom">
+                                                    <a href="https://aashniandco.com/ritu-kumar-home-rust-self-design-cushion-and-filler-ritoct2221.html" class="image-pod" target="_blank">
+                                                       <img src="pub/media/wysiwyg/homepage/28-11-22/ritoct2221__1_.avif">
+                                                    </a>
+
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="https://aashniandco.com/ritu-kumar-home-rust-self-design-cushion-and-filler-ritoct2221.html" target="_blank" class="title"> RITU KUMAR HOME </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li><a href="https://aashniandco.com/sale.html" class="menu-slot">Sale</a></li>
+                    <li><a href="https://aashniandco.com/new-in.html?firstAttemptedFilter=categoryFilter&deliveryFilter=Immediate" class="menu-slot">Ready to ship</a></li>
+                    <li><a href="https://journal.aashniandco.com/" class="menu-slot">Journal</a></li>              
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="mobile-header-content">
+            <div class="menu-content">
+                <div class="left-sec">
+                    <div class="humburger-icon">
+                        <a href="#"><img src="<?php echo $mediaUrl;?>logo/hamburger-icon.svg"></a>
+                    </div>
+                    <div class="whatsapp-icon">
+                        <a href="https://api.whatsapp.com/send?phone=918375036648&amp;text=https://aashniandco.com/ Hello Aashni + Co ! I have a question I would like to ask."><img src="<?php echo $mediaUrl;?>logo/whatsapp.svg"></a>
+                    </div>
+                </div>
+
+                <div class="left-sec logo">
+                    <a href="https://aashniandco.com/">
+                        <img src="<?php echo $mediaUrl;?>logo/stores/1/A_CO-LOGO-318-x-55-_02_.png" alt="">
+                    </a>
+                </div>  
+
+                <div class="left-sec shopping-bag">
+                    <div class="shopping-icon">
+                        <!-- <a href="#"><img src="<?php echo $mediaUrl;?>Homepage/Banner/img/01_H.png"></a> -->
+                        <a href="https://aashniandco.com/checkout/cart/"><img src=<?php echo $mediaUrl."Homepage/Banner/img/01_H.png"?>></a>
+                        
+                    </div>
+                </div>  
+            </div>
+        </div>
+        <div class="popup-cover-black"></div>
+
+        <div class="mobile-menu">
+            <div class="close-menu"><img src=<?php echo $mediaUrl."Homepage/Banner/img/cls-btn.svg"?>></div>
+            <ul class="tabs">
+                <li class="tab-link current head-1" data-tab="tab-1"><span class="donor-amnt">Menu</span> </li>
+                <li class="tab-link  head-2" data-tab="tab-2"><span class="donor-amnt">My Account</span> </li>
+            </ul>
+
+            <div class="tab-content">
+                <div  id="tab-1" class="card-block-tab current">
+                    <div class="menu-card-wrap">
+                        <div class="navigation">
+                            <ul class="nav">
+                                <li class="static-menu">
+                                    <a href="#" class="dropdown-toggle">
+                                        <span>NEW IN</span></a>
+                                        <span class="plusminus"></span>
+
+                                    <div class="menu-featured">
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="title">SHOP BY</div>
+                                                
+                                                <li><a href="<?php echo $baseUrl;?>new-in.html?firstAttemptedFilter=calenderFilter&amp;calenderFilter=6204" class="sub-menu">This Week</a></li>
+                                                <li><a href="<?php echo $baseUrl;?>new-in.html?firstAttemptedFilter=calenderFilter&amp;calenderFilter=6205" class="sub-menu">This Month</a></li>
+                                                <li><a href="<?php echo $baseUrl;?>new-designers.html" class="sub-menu">New Designers</a></li>
+                                                <li><a href="<?php echo $baseUrl;?>new-in.html?firstAttemptedFilter=acoeditFilter&amp;acoeditFilter=6219" class="sub-menu">Top Finds</a></li>
+                                                <li><a href="<?php echo $baseUrl;?>new-in.html?firstAttemptedFilter=acoeditFilter&amp;acoeditFilter=6208" class="sub-menu">Exclusives</a></li>
+
+
+                                            </ul>
+                                        </div>
+
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="title">EDITOR’S PICKS</div>
+                                                <div class="sub-img">
+                                                    <div class="menu-product custom">
+                                                        <a href="https://aashniandco.com/sawan-gandhi-almond-floral-embellished-lehenga-set-sasnov2226.html" class="image-pod" target="_blank">
+                                                           <img src="pub/media/wysiwyg/homepage/28-11-22/sasnov2226__1_.avif">
+                                                        </a>
+
+                                                        <div class="product-content">
+                                                            <div class="new-prod-wrap">
+                                                                <a href="https://aashniandco.com/sawan-gandhi-almond-floral-embellished-lehenga-set-sasnov2226.html" target="_blank" class="title">SAWAN GANDHI</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="menu-product custom">
+                                                        <a href="https://aashniandco.com/ridhima-bhasin-black-palazzo-and-jacket-set-rbsnov2212.html" class="image-pod" target="_blank">
+                                                           <img src="pub/media/wysiwyg/homepage/28-11-22/rbsnov2212__1_.avif">
+                                                        </a>    
+
+                                                        <div class="product-content">
+                                                            <div class="new-prod-wrap">
+                                                                <a href="https://aashniandco.com/ridhima-bhasin-black-palazzo-and-jacket-set-rbsnov2212.html" target="_blank" class="title"> RIDHIMA BHASIN </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="menu-product custom">
+                                                        <a href="https://aashniandco.com/masaba-yellow-crepe-saree-msbnovwon2207.html" class="image-pod" target="_blank">
+                                                           <img src="pub/media/wysiwyg/homepage/28-11-22/msbnovwon2207__1_.avif">
+                                                        </a>
+
+                                                        <div class="product-content">
+                                                            <div class="new-prod-wrap">
+                                                                <a href="https://aashniandco.com/masaba-yellow-crepe-saree-msbnovwon2207.html" target="_blank" class="title"> MASABA </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="menu-product custom">
+                                                        <a href="https://aashniandco.com/punit-balana-purple-embellished-anarkali-set-pubnov2204.html" class="image-pod" target="_blank">
+                                                           <img src="pub/media/wysiwyg/homepage/28-11-22/pubnov2204__1_.avif">
+                                                        </a>
+
+                                                        <div class="product-content">
+                                                            <div class="new-prod-wrap">
+                                                                <a href="https://aashniandco.com/punit-balana-purple-embellished-anarkali-set-pubnov2204.html" target="_blank" class="title"> PUNIT BALANA </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="static-menu">
+                                    <a href="#" class="dropdown-toggle">
+                                    <span>DESIGNER</span></a>
+                                    <span class="plusminus"></span>
+
+                                    <div class="menu-featured">
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="title">FEATURED DESIGNERS</div>
+                                                <li><a href="https://aashniandco.com/designer/" class="sub-menu"> Designer A-Z </a></li>
+                                                <li><a href="https://aashniandco.com/designers/abhinav-mishra.html" class="sub-menu">  Abhinav Mishra  </a></li>
+                                                <li><a href="https://aashniandco.com/designers/aisha-rao.html" class="sub-menu">  Aisha Rao  </a></li>
+                                                <li><a href="https://aashniandco.com/designers/ak-ok.html" class="sub-menu">  AK-OK  </a></li>
+                                                <li><a href="https://aashniandco.com/catalog/category/view/s/amit-aggarwal/id/3694/" class="sub-menu">  Amit Aggarwal </a></li>
+                                                <li><a href="https://aashniandco.com/designers/anamika-khanna.html" class="sub-menu">  Anamika Khanna </a></li>
+                                                <li><a href="https://aashniandco.com/designers/anita-dongre.html" class="sub-menu"> Anita Dongre </a></li>
+                                                <li><a href="https://aashniandco.com/designers/anushree-reddy.html" class="sub-menu"> Anushree Reddy </a></li>
+                                                <li><a href="https://aashniandco.com/designers/archana-jaju.html" class="sub-menu"> Archana Jaju </a></li>
+                                                <li><a href="https://aashniandco.com/designers/jayanti-reddy.html" class="sub-menu"> Jayanti Reddy </a></li>
+                                                <li><a href="https://aashniandco.com/designers/mahima-mahajan.html" class="sub-menu"> Mahima Mahajan </a></li>
+                                                <li><a href="https://aashniandco.com/designers/manish-malhotra.html" class="sub-menu"> Manish Malhotra </a></li>
+                                                <li><a href="https://aashniandco.com/designers/masaba.html" class="sub-menu"> Masaba </a></li>
+                                            </ul>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="https://aashniandco.com/designers/nidhi-tholia.html.html" class="sub-menu">  Nidhi Tholia  </a></li>
+                                                <li><a href="https://aashniandco.com/designers/rajdeep-ranawat.html" class="sub-menu"> Rajdeep Ranawat </a></li>
+                                                <li><a href="https://aashniandco.com/designers/ridhi-mehra.html" class="sub-menu"> Ridhi Mehra </a></li>
+                                                <li><a href="https://aashniandco.com/designers/ridhima-bhasin.html" class="sub-menu"> Ridhima Bhasin </a></li>
+                                                <li><a href="https://aashniandco.com/designers/ritika-mirchandani.html" class="sub-menu">  Ritika Mirchandani </a></li>
+                                                <li><a href="https://aashniandco.com/designers/ritu-kumar.html" class="sub-menu"> Ritu Kumar </a></li>
+                                                <li><a href="https://aashniandco.com/designers/rohit-bal.html" class="sub-menu"> Rohit Bal </a></li>
+                                                <li><a href="https://aashniandco.com/designers/sabyasachi.html" class="sub-menu"> Sabyasachi </a></li>
+                                                <li><a href="https://aashniandco.com/designers/seema-gujral.html" class="sub-menu">Seema Gujral</a></li>
+                                                <li><a href="https://aashniandco.com/designers/tarun-tahiliani.html" class="sub-menu"> Tarun Tahiliani </a></li>
+                                                <li><a href="https://aashniandco.com/designers/house-of-torani.html" class="sub-menu"> Torani </a></li>
+                                                <li><a href="https://aashniandco.com/designers/varun-bahl.html" class="sub-menu"> Varun Bahl </a></li>
+                                                <li><a href="https://aashniandco.com/designers/vvani-by-vani-vats.html" class="sub-menu"> Vvani by Vani Vats</a></li>
+                                            </ul>
+
+                                            <ul class="dropdown-menu">
+                                                <div class="title">DISCOVER</div>
+                                                <li><a href="https://aashniandco.com/designer#sustainable" class="sub-menu"> Sustainable Designers </a></li>
+                                                <li><a href="https://aashniandco.com/designer#bridal_list" class="sub-menu"> Bridal Designers </a></li>
+                                                <li><a href="https://aashniandco.com/designer#exclusive_list" class="sub-menu"> Exclusives  </a></li>
+                                                <li><a href="https://aashniandco.com/designer#hero_designers" class="sub-menu"> Hero Designers</a></li>
+                                            </ul>
+                                            <ul class="dropdown-menu">
+                                                <div class="title">A+C LOVES</div>
+                                                <li><a href="https://aashniandco.com/designers/astha-narang.html" class="sub-menu"> Astha Narang </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/baise-gaba.html" class="sub-menu"> Baise Gaba </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/dolly-j.html.html" class="sub-menu"> Dolly J </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/kalista.html.html" class="sub-menu"> Kalista </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/punit-balana.html" class="sub-menu"> Punit Balana </a></li>
+                                                        <li><a href="https://aashniandco.com/designers/sheetal-batra.html" class="sub-menu"> Sheetal Batra </a></li>
+
+
+                                            </ul>
+                                        </div>
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="sub-img">
+                                                    <div class="menu-product custom">
+                                                        <a href="https://aashniandco.com/tarun-tahiliani-orange-crushed-chanderi-lehenga-set-tatrr2219.html" class="image-pod" target="_blank">
+                                                           <img src="pub/media/wysiwyg/homepage/28-11-22/tatrr2219__1_.avif">
+                                                        </a>
+
+                                                        <div class="product-content">
+                                                            <div class="new-prod-wrap">
+                                                                <a href="https://aashniandco.com/tarun-tahiliani-orange-crushed-chanderi-lehenga-set-tatrr2219.html" target="_blank" class="title">TARUN TAHILIANI</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="static-menu">
+                                    <a href="#" class="dropdown-toggle"><span>WOMEN</span></a>
+
+                                    <span class="plusminus"></span>
+
+                                    <div class="menu-featured">
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="title">SHOP BY</div>
+                                                <li><a href="https://aashniandco.com/clothing.html" class="sub-menu"> All Clothing  </a></li>
+                                                <li><a href="https://aashniandco.com/women-s-clothing/lehengas.html" class="sub-menu"> Lehengas  </a></li>
+                                                <li><a href="https://aashniandco.com/women-s-clothing/anarkalis-kurtas.html?firstAttemptedFilter=categoryFilter&categoryFilter=3380" class="sub-menu">Anarkalis </a></li>
+                                                <li><a href="https://aashniandco.com/women-s-clothing/anarkalis-kurtas.html?firstAttemptedFilter=categoryFilter&categoryFilter=3385%2B3389" class="sub-menu">  Kurtas </a></li>
+                                                <li><a href="https://aashniandco.com/women-s-clothing/anarkalis-kurtas.html?firstAttemptedFilter=categoryFilter&categoryFilter=3388" class="sub-menu"> Shararas </a></li>
+                                                <li><a href="https://aashniandco.com/women-s-clothing/saris.html" class="sub-menu">  Saris </a></li>
+                                                <li><a href="https://aashniandco.com/women-s-clothing/gowns.html" class="sub-menu"> Gowns </a></li>
+                                                <li><a href="https://aashniandco.com/women-s-clothing/dresses.html" class="sub-menu">  Dresses  </a></li>
+                                                <li><a href="https://aashniandco.com/clothing/kaftans.html" class="sub-menu"> Kaftans  </a></li>
+                                                <li><a href="https://aashniandco.com/women-s-clothing/tops.html" class="sub-menu"> Tops </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/tunics-kurtis.html" class="sub-menu"> Tunics & Kurtis </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/jumpsuits.html" class="sub-menu"> Jumpsuits </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/pants.html" class="sub-menu"> Pants </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/skirts.html" class="sub-menu">  Skirts </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/co-ords.html" class="sub-menu"> Co-ords </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/jackets-and-capes.html" class="sub-menu"> Jackets & Capes </a></li>
+                                                        <li><a href="https://aashniandco.com/women-s-clothing/beach.html" class="sub-menu">  Beachwear </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing/loungewear.html" class="sub-menu"> Loungewear </a></li>
+
+                                            </ul>
+                                            <ul class="dropdown-menu">
+                                                <div class="title">ESSENTIAL EDITS</div>
+                                                <ul>
+
+                                                <li><a href="https://aashniandco.com/clothing.html" class="sub-menu"> Just In </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6219" class="sub-menu"> Cult Finds </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6210" class="sub-menu"> Kurtas under $200 </a></li>
+                                                        <li><a href="https://aashniandco.com/celebrity-spotting.html" class="sub-menu"> Celebrity Spotting  </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6222" class="sub-menu"> Everyday Staples </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6209" class="sub-menu"> Sustainable Fashion </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing.html?firstAttemptedFilter=deliveryFilter&deliveryFilter=Immediate" class="sub-menu"> Ready to ship </a></li>
+                                                        <li><a href="https://aashniandco.com/clothing.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6208" class="sub-menu"> Exclusives </a></li>
+
+                                            </ul>
+                                        </div>
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="sub-img">
+                                                    <div class="menu-product custom">
+                                                        <a href="https://aashniandco.com/tarun-tahiliani-orange-crushed-chanderi-lehenga-set-tatrr2219.html" class="image-pod" target="_blank">
+                                                           <img src="pub/media/wysiwyg/homepage/28-11-22/pokwon2217__1_.avif">
+                                                        </a>
+
+                                                        <div class="product-content">
+                                                            <div class="new-prod-wrap">
+                                                                <a href="https://aashniandco.com/tarun-tahiliani-orange-crushed-chanderi-lehenga-set-tatrr2219.html" target="_blank" class="title">POOJA KEYUR</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="static-menu">
+                                    <a href="#" class="dropdown-toggle"><span>ACCESSORIES</span></a>
+
+                                    <span class="plusminus"></span>
+
+                                    <div class="menu-featured">
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="title">ACCESSORIES</div>
+                                                <li><a href="https://aashniandco.com/accessories.html" class="sub-menu">All Accessories</a></li>
+                                                <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=1407" class="sub-menu">Bags </a></li>
+                                                <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=1498" class="sub-menu">Belts </a></li>
+                                                <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=1408" class="sub-menu">Scarves &amp; Stoles</a></li>
+                                                <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=1409" class="sub-menu">Footwears</a></li>
+                                                <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2631" class="sub-menu">Masks</a></li>
+                                                <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2631" class="sub-menu">Hair accessories</a></li>
+                                               <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2317" class="sub-menu">Cufflinks</a></li>
+
+
+                                               <ul class="dropdown-menu">
+                                                <div class="title">JEWELRY</div>
+                                                <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2251" class="sub-menu"> Earrings </a></li>
+                                                <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2252" class="sub-menu"> Necklaces </a></li>
+                                                <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2253" class="sub-menu"> Rings</a></li>
+                                                <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2321" class="sub-menu">Tikkas & Passas</a></li>
+                                                <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2254" class="sub-menu"> Bangles & Bracelets</a></li>
+                                                <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2258" class="sub-menu"> Brooches </a></li>
+                                                <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2322" class="sub-menu"> Nose rings </a></li>
+                                                <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2611" class="sub-menu"> Hand harness</a></li>
+                                                <li><a href="https://aashniandco.com/accessories/jewelry.html?firstAttemptedFilter=categoryFilter&categoryFilter=2261" class="sub-menu"> Head harness </a></li>
+                                                <li><a href="https://aashniandco.com/accessories/fine-jewelry.html.html" class="sub-menu"> Fine jewelry</a></li>
+                                            </ul>
+
+                                                    
+                                            </ul>
+                                            <ul class="dropdown-menu">
+                                                <div class="title">ESSENTIAL EDITS</div>
+                                                <li><a href="https://aashniandco.com/accessories.html" class="sub-menu"> Just In </a></li>
+                                                <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=3180" class="sub-menu"> Bridal sets </a></li>
+                                                <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6211" class="sub-menu"> Festive Potlis </a></li>
+                                                <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=deliveryFilter&deliveryFilter=Immediate" class="sub-menu">Ready to ship</a></li>
+                                                <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6219" class="sub-menu">Cult Finds</a></li>
+                                            </ul>
+
+                                            <ul class="dropdown-menu">
+                                                <div class="title">A+C LOVES</div>  
+                                                <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=designerFilter&designerFilter=5920" class="sub-menu"> Moh-Maya by Disha Khatri</a></li>
+                                                <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=designerFilter&designerFilter=5687" class="sub-menu"> Outhouse</a></li>
+                                                <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=designerFilter&designerFilter=5560" class="sub-menu"> Prerto </a></li>
+                                                <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=designerFilter&designerFilter=5548" class="sub-menu"> Sabyasachi </a></li>
+                                                <li><a href="https://aashniandco.com/accessories.html?firstAttemptedFilter=designerFilter&designerFilter=5658" class="sub-menu"> Zevar by Geeta</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="sub-img">
+                                                    <div class="menu-product custom">
+                                                        <a href="#" class="image-pod" target="_blank">
+                                                           <img src="skin/img/sicnov2217__1_.jpg">
+                                                        </a>
+                                                        <div class="product-content">
+                                                            <div class="new-prod-wrap">
+                                                                <a href="#" target="_blank" class="title">SABYASACHI</a>
+                                                            </div>
+                                                        </div>  
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="static-menu">
+                                    <a href="#" class="dropdown-toggle"><span>MEN</span></a>
+                                    <span class="plusminus"></span>
+
+                                    <div class="menu-featured">
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="title">SHOP BY</div>
+                                                <li><a href="https://aashniandco.com/men.html" class="sub-menu">All Clothing </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=1703" class="sub-menu">Kurta sets </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=1705" class="sub-menu">Sherwani </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=1704" class="sub-menu">Bandi </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=3048" class="sub-menu">Bandi Sets </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=3928" class="sub-menu">Nehru jacket </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=3173" class="sub-menu">Bandhgalas </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=3287" class="sub-menu">Jackets </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=1730" class="sub-menu">Shirts </a></li>
+                                            </ul>
+
+                                            <ul class="dropdown-menu">
+                                                <div class="title">FEATURED DESIGNERS</div>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5967" class="sub-menu"> Itrh </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5660" class="sub-menu"> Mahima Mahajan </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5814" class="sub-menu"> Masaba </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=6135" class="sub-menu"> Pratap </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=6116" class="sub-menu"> Punit Arora</a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5725" class="sub-menu"> Punit Balana</a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5928" class="sub-menu"> Qbik </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5548" class="sub-menu"> Sabyasachi </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=6151" class="sub-menu"> Seema Gujral </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=designerFilter&designerFilter=5575" class="sub-menu"> Tarun Tahiliani </a></li>
+                                            </ul>
+                                            <ul class="dropdown-menu">
+                                                <div class="title">ESSENTIAL EDITS</div>    
+                                                <li><a href="https://aashniandco.com/men.html" class="sub-menu"> Just In </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6218" class="sub-menu"> Off the Runway </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6210" class="sub-menu"> Kurtas under $200 </a></li>
+                                                
+                                            </ul>
+                                            <ul class="dropdown-menu">      
+                                            <div class="title">ACCESSORIES</div>    
+                                                <li><a href="https://aashniandco.com/men/mens-accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=2609" class="sub-menu"> Cufflinks </a></li>
+                                                <li><a href="https://aashniandco.com/men/mens-accessories.html?firstAttemptedFilter=categoryFilter&categoryFilter=2610" class="sub-menu"> Pocket Square </a></li>
+                                                <li><a href="https://aashniandco.com/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=1714" class="sub-menu"> Footwears </a></li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="sub-img">
+                                                    <div class="menu-product custom">
+                                                        <a href="#" class="image-pod" target="_blank">
+                                                       <img src="skin/img/robnov2009__1_.jpg">
+                                                    </a>
+                                                    <div class="product-content">
+                                                        <div class="new-prod-wrap">
+                                                            <a href="#" target="_blank" class="title">BALANCE BY ROHIT BAL</a>
+                                                        </div>
+                                                    </div>  
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="static-menu">
+                                    <a href="#" class="dropdown-toggle"><span>WEDDINGS</span></a>
+
+                                    <span class="plusminus"></span>
+
+                                    <div class="menu-featured">
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="title">SHOP BY</div>
+                                                <li><a href="https://aashniandco.com/clothing.html" class="sub-menu"> All Clothing </a></li>
+                                                <li><a href="https://aashniandco.com/women-s-clothing/lehengas.html" class="sub-menu"> Lehengas </a></li>
+                                                <li><a href="https://aashniandco.com/bridal/women-s-clothing.html?firstAttemptedFilter=categoryFilter&categoryFilter=3132" class="sub-menu"> Anarkalis and Kurtas </a></li>
+                                                <li><a href="https://aashniandco.com/bridal/women-s-clothing.html?firstAttemptedFilter=categoryFilter&categoryFilter=3133" class="sub-menu"> Saris </a></li>
+                                                <li><a href="https://aashniandco.com/bridal/women-s-clothing.html?firstAttemptedFilter=categoryFilter&categoryFilter=3580" class="sub-menu"> Gowns </a></li>
+                                                <li><a href="https://aashniandco.com/bridal/women-s-clothing/anarkalis-kurtas.html?firstAttemptedFilter=categoryFilter&categoryFilter=3200" class="sub-menu"> Sharara Sets </a></li>
+                                                <li><a href="https://aashniandco.com/bridal/women-s-clothing.html?firstAttemptedFilter=categoryFilter&categoryFilter=3137" class="sub-menu"> Jackets and Capes </a></li>
+                                                <li><a href="https://aashniandco.com/bridal/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=3150" class="sub-menu"> Sherwanis </a></li>
+                                                <li><a href="https://aashniandco.com/bridal/men.html?firstAttemptedFilter=categoryFilter&categoryFilter=3149" class="sub-menu"> Bandi Sets</a></li>
+                                                <li><a href="https://aashniandco.com/bridal/men/jackets-and-blazers.html?firstAttemptedFilter=categoryFilter&categoryFilter=3561" class="sub-menu"> Formal Jackets </a></li>
+                                            </ul>
+
+                                            <ul class="dropdown-menu">
+                                                <div class="title">FEATURED DESIGNERS</div>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5707" class="sub-menu"> Abhinav Mishra </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=6197" class="sub-menu"> Aisha Rao </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5526" class="sub-menu"> Anita Dongre </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5517" class="sub-menu"> Anushree Reddy </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5531" class="sub-menu"> Manish Malhotra </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=6151" class="sub-menu"> Seema Gujral </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5548" class="sub-menu"> Sabyasachi </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=6462" class="sub-menu"> Sulakshana Monga </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5575" class="sub-menu"> Tarun Tahiliani </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=designerFilter&designerFilter=5856" class="sub-menu"> Torani </a></li>
+                                            </ul>
+                                            <ul class="dropdown-menu">
+                                                <div class="title">OCCASION</div>   
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=occasionFilter&occasionFilter=6050" class="sub-menu"> Haldi &amp; Mehendi </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=occasionFilter&occasionFilter=6052" class="sub-menu"> Engagement </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=occasionFilter&occasionFilter=6053" class="sub-menu"> Cocktail </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=occasionFilter&occasionFilter=6046" class="sub-menu"> Wedding </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=occasionFilter&occasionFilter=6049" class="sub-menu"> Reception </a></li>
+                                                
+                                            </ul>
+                                            <ul class="dropdown-menu">      
+                                            <div class="title">ESSENTIAL EDITS</div>    
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=bridalFilter&bridalFilter=6252" class="sub-menu"> Heritage Weaves</a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=bridalFilter&bridalFilter=6396" class="sub-menu"> Lehengas Under $2000</a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=bridalFilter&bridalFilter=6254" class="sub-menu"> Trousseau Essentials </a></li>
+                                                <li><a href="https://aashniandco.com/bridal.html?firstAttemptedFilter=bridalFilter&bridalFilter=6262" class="sub-menu"> Finishing Touches</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="sub-img">
+                                                    <div class="menu-product custom">
+                                                        <a href="#" class="image-pod" target="_blank">
+                                                           <img src="skin/img/hotcoutre004__1_.jpg">
+                                                        </a>
+
+                                                        <div class="product-content">
+                                                            <div class="new-prod-wrap">
+                                                                <a href="#" target="_blank" class="title">SEEMA GUJRAL</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="static-menu">
+                                    <a href="#" class="dropdown-toggle"><span>KIDS</span></a>
+                                    <span class="plusminus"></span>
+
+                                    <div class="menu-featured">
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="title">SHOP BY</div>
+                                                <li><a href="https://aashniandco.com/kids-wear.html" class="sub-menu"> All Clothing </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=categoryFilter&categoryFilter=3324" class="sub-menu"> Kurtas for girls </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=categoryFilter&categoryFilter=2135" class="sub-menu"> Lehengas </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=categoryFilter&categoryFilter=2137" class="sub-menu"> Anarkalis </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=categoryFilter&categoryFilter=2144" class="sub-menu"> Sherwanis </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=categoryFilter&categoryFilter=3328" class="sub-menu"> Kurtas for boys </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=categoryFilter&categoryFilter=2142" class="sub-menu"> Bandi sets </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear/kids-accessories.html" class="sub-menu"> Kids Accessories  </a></li>
+                                            </ul>
+
+                                            <ul class="dropdown-menu">
+                                                <div class="title">FEATURED DESIGNERS</div>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=6329" class="sub-menu"> Daddy's Princess by Priyanka Jain </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=5654" class="sub-menu"> Fayon Kids by Preeti Jatia </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=5941" class="sub-menu"> Mulmul </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=6476" class="sub-menu"> Nitya Bajaj Mini </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=5796" class="sub-menu"> Payal Singhal </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=6117" class="sub-menu"> The Plum bum </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=designerFilter&designerFilter=5856" class="sub-menu"> Torani </a></li>
+                                               
+                                             </ul>
+                                             <ul class="dropdown-menu">
+                                                <div class="title">ESSENTIAL EDITS</div>    
+                                                <li><a href="https://aashniandco.com/kids-wear.html" class="sub-menu"> Just In  </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6213" class="sub-menu"> Ruffle Lehengas </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6226" class="sub-menu"> Easy Kurtas </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6214" class="sub-menu"> Wedding Edit </a></li>
+                                                <li><a href="https://aashniandco.com/kids-wear.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6229" class="sub-menu"> Floral Edit </a></li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="sub-img">
+                                                    <div class="menu-product custom">
+                                                        <a href="#" class="image-pod" target="_blank">
+                                                           <img src="skin/img/fkwfk2499__1_.jpg">
+                                                        </a>
+
+                                                        <div class="product-content">
+                                                            <div class="new-prod-wrap">
+                                                                <a href="#" target="_blank" class="title">MULMUL</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>  
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="static-menu">
+                                    <a href="#" class="dropdown-toggle"><span>HOMEWARE</span></a>
+                                    <span class="plusminus"></span>
+
+                                    <div class="menu-featured">
+                                        <div class="menu-block">
+                                            <ul class="dropdown-menu">
+                                                <div class="title">SHOP BY</div>
+                                                <li><a href="https://aashniandco.com/homeware.html" class="sub-menu"> All Homeware </a></li>
+                                                <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=categoryFilter&categoryFilter=2011" class="sub-menu">Decorative accessories</a></li>
+                                                <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=categoryFilter&categoryFilter=2010" class="sub-menu"> Dining </a></li>
+                                                <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=categoryFilter&categoryFilter=2012" class="sub-menu"> Linen </a></li>
+                                            </ul>
+
+                                            <ul class="dropdown-menu">
+                                                <div class="title">FEATURED DESIGNERS</div>
+                                                <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=designerFilter&designerFilter=6468" class="sub-menu"> Rias Jaipur</a></li>
+                                                <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=designerFilter&designerFilter=6155" class="sub-menu"> Ritu Kumar Home</a></li>
+                                                <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=designerFilter&designerFilter=6315" class="sub-menu"> P-TAL</a></li>
+                                                <li><a href="https://aashniandco.com//homeware.html?firstAttemptedFilter=designerFilter&designerFilter=5846" class="sub-menu"> Shivan &amp; Narresh</a></li>
+                                             </ul>
+                                             <ul class="dropdown-menu">
+                                                <div class="title">ESSENTIAL EDITS</div>    
+                                                <li><a href="https://aashniandco.com/homeware.html" class="sub-menu"> Just In  </a></li>
+                                                <li><a href="https://aashniandco.com/homeware.html?firstAttemptedFilter=acoeditFilter&acoeditFilter=6216" class="sub-menu"> Housewarming Gifts </a></li>
+                                             </ul>
+                                          </div>
+
+                                          <div class="menu-block">
+                                             <ul class="dropdown-menu">
+                                                <div class="sub-img">
+                                                    <div class="menu-product custom">
+                                                        <a href="#" class="image-pod" target="_blank">
+                                                           <img src="skin/img/amesep2211__1_.jpg">
+                                                        </a>
+
+                                                        <div class="product-content">
+                                                            <div class="new-prod-wrap">
+                                                                <a href="#" target="_blank" class="title"> AMALFIEE </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="menu-product custom">
+                                                        <a href="#" class="image-pod" target="_blank">
+                                                           <img src="skin/img/shnsntltbr05_a_.jpg">
+                                                        </a>
+
+                                                        <div class="product-content">
+                                                            <div class="new-prod-wrap">
+                                                                <a href="#" target="_blank" class="title"> SHIVAN & NARRESH </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="menu-product custom">
+                                                        <a href="#" class="image-pod" target="_blank">
+                                                           <img src="skin/img/ritoct2221__1_.jpg">
+                                                        </a>
+
+                                                        <div class="product-content">
+                                                            <div class="new-prod-wrap">
+                                                                <a href="#" target="_blank" class="title"> RITU KUMAR HOME </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="static-menu">
+                                    <a href="#" class="dropdown-toggle"><span>SALE</span></a>
+                                </li>
+                                <li class="static-menu">
+                                    <a href="#" class="dropdown-toggle"><span>READY TO SHIP</span></a>
+                                </li>
+                                <li class="static-menu">
+                                    <a href="#" class="dropdown-toggle"><span>JOURNAL</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div  id="tab-2" class="card-block-tab">
+                    <div class="menu-card-wrap">
+
+                            <div class="navigation">
+                                <ul class="nav">
+                                    <li class="static-menu">
+                                        <a href="<?php echo $baseUrl;?>customer/account/" class="dropdown-toggle"><span>My Account</span></a>
+                                    </li>
+                                    <li class="static-menu">
+                                        <a href="<?php echo $baseUrl;?>wishlist/" class="dropdown-toggle"><span>My Wish List</span></a>
+                                    </li>
+                                    <li class="static-menu">
+                                        <a href="<?php echo $baseUrl;?>customer/account/create/" class="dropdown-toggle"><span>Create an Account</span></a>
+                                    </li>
+                                    <li class="static-menu">
+                                        <a href="<?php echo $baseUrl;?>customer/account/login/" class="dropdown-toggle"><span>Sign In</span></a>
+                                    </li>                                   
+                                </ul>
+
+                            <ul class="nav">
+                                <li class="static-menu">
+                                    <a href="#" class="dropdown-toggle"><span>Track Your Order</span></a>
+                                </li>
+                                <li class="static-menu">
+                                    <a href="#" class="dropdown-toggle"><span>Store Locator</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <div style="display: none;" class="pop-outer">
+            <div class="pop-inner">
+                <!-- <button class="close-popup">X</button> -->
+                <p>Are you sure you would like to remove this item from the shopping cart?.</p>
+                <button class="close-popup" >Close</button>
+        <button class="remove-item">OK</button>
+            </div>          
+        </div>
+
+        <!-- <div class="white-bg" id="newsletter-plot" style="display: none;">   
+            <div class="block-popup-subscribe">
+                <div class="newsletters">
+                    <div class="close"><img src=<?php echo $mediaUrl."Homepage/Banner/img/cls-btn.svg"?>></div>
+                    <div class="newsletter_plot">
+                        <div class="news-letter-img"><img src="pub/media/wysiwyg/homepage/28-11-22/newsletters.avif"></div>
+                        <div class="content-block">
+                            <div class="content">
+                                <form class="form subscribe">
+                                    <div class="field">
+                                        <div class="control">
+                                            <input name="email" type="email" placeholder="Enter your email address" id="newsletter-email">
+                                        </div>
+                                    </div>
+                                    <div class="actions">
+                                        <button class="action subscribe btn btn-primary" title="Subscribe" type="submit" id="newsletter-subscribe">
+                                            <span>Subscribe</span>
+                                        </button>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label for="dont_show">
+                                            <input type="checkbox">
+                                            Don't show this popup again
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>                                  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    
+
+    
+
+
+    
+
+    <script type="text/javascript">
+        // $('.tabs li').click(function(){
+        //     var tab_id = $(this).attr('data-tab');
+
+        //     $('.tabs li').removeClass('current');
+        //     $('.card-block-tab ').removeClass('current');
+
+        //     $(this).addClass('current');
+        //     $("#"+tab_id).addClass('current');
+        // });
+
+        // if($('.left-sec .humburger-icon').length > 0)
+        // {
+        //     $('.humburger-icon').on('click',function(){
+        //         $('.mobile-menu').animate({left: '0'},300);
+        //         $('.mobile-menu').fadeIn();
+        //         $('.popup-cover-black').fadeIn();
+                
+        //        $('html, body').css({overflow: 'hidden', position: 'fixed'});
+        //     });
+
+        //     $('.close-menu').on('click',function(){
+        //         // $('html, body').css({overflow: 'auto', position: 'unset'});
+        //         $('.mobile-menu').animate({left: '-90%'},300);
+        //         $('.popup-cover-black').fadeOut();
+        //         // $('.mobile-menu').fadeIn();
+        //     });
+        // }
+
+        // $('.mobile-menu .menu-card-wrap .navigation .nav .static-menu a.dropdown-toggle').on('click',function(e){
+        //     e.preventDefault();
+        //     if($(this).attr('aria-expanded') == 'false'){
+        //         $(this).attr('aria-expanded','true');
+        //         $(this).parent().find('.menu-block').slideDown();
+        //         $(this).addClass('active');
+        //         console.log('dropdown');
+        //     }
+        //     else{
+        //         $(this).attr('aria-expanded','false');
+        //         $(this).parent().find('.menu-block').slideUp();
+        //         $(this).removeClass('active');
+        //     }
+            
+        // });
+
+         // $(document).ready(function(){ 
+         //    $('#newsletter-plot').fadeIn(1000);
+         // });
+
+         // $(".close").click(function(){
+         //   $('#newsletters').css("display", "none");
+         // });
+
+       
+
+ </script> 
+    <script type="text/javascript" src="<?php echo $baseUrl;?>pub/static/frontend/Mgs/ethan/en_US/Fermion_Pagelayout/js/header.js"></script> 
+
+<!-- cart pop-up css code start -->
+       
+<style>
+            .pop-outer {
+                transform: translate(0,0);
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;jui
+                text-align: center;
+                z-index: 101;
+                
+            }
+            .pop-inner {
+                background-color: #fff;
+                width: 450px;
+                height: 250px;
+                padding: 25px;
+                margin: 5% auto;
+            }
+        </style>
+
+    <!-- cart pop-up css code end -->
+

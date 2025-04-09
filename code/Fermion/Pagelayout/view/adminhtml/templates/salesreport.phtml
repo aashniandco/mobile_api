@@ -1,0 +1,352 @@
+<?php
+/** @var \Vendor\Module\Block\Adminhtml\CustomBlock $block */
+$options = $block->getMultiselectAttributeOptions('designer');
+?>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet"/>
+
+<script src='<?php echo $block->getViewFileUrl("Fermion_Pagelayout::js/salesreport.js"); ?>'>
+</script>
+
+<style>
+	ul{
+		list-style-type: none;
+	}
+	.checkbox-menu li label {
+    display: block;
+    padding: 3px 10px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+    margin:0;
+    transition: background-color .4s ease;
+}
+.checkbox-menu li input {
+    margin: 0px 5px;
+    top: 2px;
+    position: relative;
+}
+
+.checkbox-menu li.active label {
+    background-color: #cbcbff;
+    font-weight:bold;
+}
+
+.checkbox-menu li label:hover,
+.checkbox-menu li label:focus {
+    background-color: #f5f5f5;
+}
+
+.checkbox-menu li.active label:hover,
+.checkbox-menu li.active label:focus {
+    background-color: #b8b8ff;
+}
+.filter-head {
+	float: left;
+	width: 115px;
+	border-color: #adadad;
+    margin: 20px 0;
+}
+.filter {
+    float: left;
+    width: auto;
+    display: flex;
+    align-items: center;
+    padding: 5px 33px;
+    border: 1px solid #cecece;
+    cursor: auto;
+}
+.filter-options{
+	float: left;
+	width: 100%;
+	/*height: 40%;*/
+	position: absolute;
+    top: 55px;
+    left: 0;
+	background-color: #fff;
+	border: 1px solid #cecece;
+	padding: 10px;
+	z-index: 3;
+	display: none;
+}
+.options-wrap{
+	float: left;
+	width: 100%;
+	margin-bottom: 20px;
+}
+.col-one{
+	float: left;
+	width: calc((100% - 60px) / 4);
+	margin-right: 20px;
+}
+.col-one:nth-child(3n){
+	margin-right: 0;
+}
+.col-one .title{
+	float: left;
+	width: auto;
+	font-weight: bold;
+	color: #111111;
+	margin-right: 5px;
+	margin-bottom: 10px;
+}
+.form{
+	float: left;
+	width: calc(100% - 5px);
+}
+.form .input-plot{
+	float: left;
+	width: 100%;
+	margin-bottom: 20px;
+}
+.form .input-plot:last-child{
+	margin-bottom: 0px;
+}
+.form .input-plot label{
+	float: left;
+	width: 45px;
+	color: #777;
+	font-weight: 200;
+	font-size: 14px;
+	margin-right: 5px;
+}
+.custom-input{
+	float: left;
+	width: 100%;
+	border: 1px solid #cecece;
+	padding: 5px 5px;
+}
+.selection-div .dropdown{
+	float: left;
+    width: 230px;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+.dropdown .btn-col{
+	float: left;
+    width: 115px;
+    /*background-color: #fff;*/
+}
+.dropdown .btn-col: focus{
+	outline: 0;
+}
+.dropdown .dropdown-menu{display: none;
+    float: left;
+    width: 100%;
+    /*position: unset;*/
+}
+.col-wrap {
+    float: left;
+    width: 100%;
+    position: relative;
+}
+.salesreport {
+	font-weight: bold;
+    float: left;
+    margin: 20px 40px;
+}
+</style>
+
+<div class="selection-div">
+	
+		<h4>Product Reports</h4> 
+		  <!--  <label for="salesreport" style="font-weight: bold;">Date From:</label>
+		   <input type="date" id="startdate" name="salesreport">
+
+		   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		   <label for="salesreport" style="font-weight: bold;">Date To:</label>
+		   <input type="date" id="enddate" name="salesreport"> -->
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+	<div class="col-wrap">
+	
+
+	<div class="dropdown">
+	   <button class="btn-col" type="button" 
+	          id="dropdownMenu1" data-toggle="dropdown" 
+	          aria-haspopup="true" aria-expanded="true">
+	    	<i class="glyphicon glyphicon-cog"></i>Columns
+	    	<span class="caret"></span>
+	</button> 
+	<div class="dropdown-menu">
+		  <ul class="checkbox-menu allow-focus" aria-labelledby="dropdownMenu1" id="salesreportdropdown">
+		  		
+			    <li><label><input type="checkbox" name="column" value="product_name"> product name </label></li>
+
+			    <li><label><input type="checkbox" name="column" value="short_description">short description</label></li>
+			     <li><label><input type="checkbox" name="column" value="description" checked="checked">description</label></li>
+			     <li><label><input type="checkbox" name="column" value="size" checked="checked">size</label></li>
+
+
+			    <li><label><input type="checkbox" name="column" value="men_women">men_women</label></li>
+
+			    <li><label><input type="checkbox" name="column" value="color"> color</label></li>
+
+			    <li><label><input type="checkbox" name="column" value="theme">theme</label></li>
+
+			    <li><label><input type="checkbox" name="column" value="patterns"> patterns</label></li>
+
+			    <li><label><input type="checkbox" name="column" value="kids"> kids</label></li>
+
+			    <li><label><input type="checkbox" name="column" value="weight">weight</label></li>
+
+			    <li><label><input type="checkbox" name="column" value="status">status</label></li>
+
+		    	<li><label><input type="checkbox" name="column" value="deliverytimes" checked="checked">deliverytimes</label></li>
+			    
+			    <li><label><input type="checkbox" name="column" value="delivery" checked="checked">delivery</label></li>
+			    
+			    <li><label><input type="checkbox" name="column" value="composition">composition</label></li>
+			    
+			    <li><label><input type="checkbox" name="column" value="price" checked="checked">price</label></li>
+
+			    <li><label><input type="checkbox" name="column" value="special_price">special_price</label></li>
+
+			    <li><label><input type="checkbox" name="column" value="designer_code" checked="checked">designer_code</label></li>
+
+			    <li><label><input type="checkbox" name="column" value="designer_name">designer_name</label></li>
+
+			    <li><label><input type="checkbox" name="column" value="categories">categories</label></li>
+
+			    <li><label><input type="checkbox" name="column" value="qty" checked="checked">quantity</label></li>
+			   
+			    <li><label><input type="checkbox" name="column" value="stock_status">stock status</label></li>
+			   
+			    <li><label><input type="checkbox" name="column" value="bridal">bridal</label></li>
+
+			    <li><label><input type="checkbox" name="column" value="edits">A+CO Edits</label></li>
+
+			    <li><label><input type="checkbox" name="column" value="occasions">Occasions</label></li>
+
+		  </ul>
+	</div>
+	</div>
+
+
+	
+	<div class="filter-head">
+		<button class="filter">
+			 <i class="glyphicon glyphicon-filter"></i>
+			Filter
+		</button>
+<div class="filter-options">
+			<form id="filter-form">
+		<div class="options-wrap">
+				<div class="col-one">
+					<div class="title">Designer</div>
+					<div class="form">						
+							<!-- <input type="input" id="designer_name" name="designer" class="custom-input"> -->
+							<select name="designer" id="designer_name">
+    <?php foreach ($options as $option): ?>
+        <option value="<?php echo $option['label']; ?>">
+            <?php echo $option['label']; ?>
+        </option>
+    <?php endforeach; ?>
+</select>
+
+							
+					</div>
+				</div>
+		
+	</div>
+	<div class="options-wrap">
+				<div class="col-one">
+					<div class="title">Product Type</div>
+					<div class="form">	
+					<label>					
+							<input type="radio" id="product_type" name="product_type" value="simple" checked="checked" class="custom-input">Simple
+					</label>
+					<br/>
+					<label>				
+							<input type="radio" id="product_type" name="product_type" value="configurable" class="custom-input">Configurable
+					</label>
+					</div>
+				</div>
+		
+	</div>
+			<!-- <div class="col-one">
+					<div class="title">Bridal</div>
+					<div class="form">						
+							<input type="input" id="bridal_name" name="brida" class="custom-input">
+					</div>
+				</div> -->
+		
+	</div>
+
+		 
+ 
+
+	<!-- <div class="options-wrap">
+				<div class="col-one">
+					<div class="title">Order Item Status Date</div>
+					<div class="form">						
+						<div class="input-plot">
+							<label for="Order_Item_Status_Date">From</label>
+							<input type="date" id="startdate" name="Order_Item_Status_Date_From" class="custom-input">
+						</div>
+
+						
+					</div>
+				</div>
+				<div class="col-one" >
+					<div class="form">						
+						<div class="input-plot" style="margin-top: 30px;">
+							<label for="Order_Item_Status_Date">To</label>
+							<input type="date" id="enddate" name="Order_Item_Status_Date_To" class="custom-input">
+						</div>
+						
+						
+					</div>
+				</div>
+			</div> -->
+</form>
+</div>
+</div>
+
+	<button  class="salesreport" style="font-weight: bold;">Export Product Report</button>
+	<div class="csv_upload_form" style="display: none;">
+		<form method="POST" enctype="multipart/form-data" id="csv_form">
+			<input type="hidden" name="form_keyy" id="form_keyy" value=" <?php echo $block->getFormKey()?>"/>
+			
+
+
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<div class="downloadexportcsv">Download Csv</div>
+		</form>
+	</div>
+
+	
+
+<script type="text/javascript">
+	require(['jquery'], function ($) {
+		$(document).ready(function () {
+
+		$('.filter').on("click", function() {
+			//console.log("filter");
+			$('.dropdown-menu').hide();
+			$('.filter-options').toggle();
+			
+		});
+		$('.filter_product_type').on("click", function() {
+			//console.log("filter");
+			$('.dropdown-menu').hide();
+			$('.filter-options_product_type').toggle();
+			
+		});
+		$('.btn-col').on("click", function() {
+			//console.log("filter");
+			$('.filter-options').hide();
+			$('.filter-options_product_type').hide();
+			$('.dropdown-menu').toggle();
+			
+		});
+
+});
+});
+
+
+	
+</script>

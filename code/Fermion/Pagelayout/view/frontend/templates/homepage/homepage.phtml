@@ -1,0 +1,6 @@
+<?php
+$blockId = 'homepage_desktop';
+// Load the CMS block content
+$blockContent = $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId($blockId)->toHtml();
+echo $blockContent; ?>
+

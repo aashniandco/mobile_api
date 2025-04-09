@@ -1,0 +1,30 @@
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<ul class="giftcards-applied-template items">
+    <!-- ko if: isAvailable() -->
+    <!-- ko foreach: getAppliedGiftCards() -->
+    <li class="main-line">
+        <span class="applied-container giftcard-item">
+            <span class="price-wrapper">
+                <span class="price"><!-- ko text: $parent.getFormattedPrice(applied)--><!-- /ko --></span>
+            </span>
+        </span>
+        <!-- ko i18n: 'applied from Gift Card'--><!-- /ko -->
+        <!-- ko text: code + '.'--><!-- /ko -->
+    </li>
+    <li class="item">
+        <!-- ko i18n: 'Remaining card balance:'--><!-- /ko -->
+        <span class="remaining-container giftcard-item">
+            <span class="price-wrapper">
+                <span class="price"><!-- ko text: $parent.getFormattedPrice(remaining) + '.'--><!-- /ko --></span>
+                (<a href="#" class="action" data-bind="text: $t('Remove'), click: function(data, event) { $parent.removeGiftCard(code, event); }"></a>)
+            </span>
+        </span>
+    </li>
+    <!-- /ko -->
+    <!-- /ko -->
+</ul>

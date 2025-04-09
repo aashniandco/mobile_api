@@ -1,0 +1,849 @@
+
+<?php
+
+
+
+//error_log("-------index--phtml----------");
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$enquire_block = $objectManager->create('Mec\Enquire\Block\EnquireFormPdp');
+
+$requestParams = $this->getRequest()->getParams();
+$catId = $this->getRequest()->getParam('id');
+$category = $objectManager->create('Magento\Catalog\Model\Category')
+->load($catId);
+$category_status = $category->getIsActive();
+if($catId == 4369 && $category_status == 0){
+header("Location: https://aashniandco.com/occasion/eid/eid-clothes-for-kids.html");
+}if($catId == 4366 && $category_status == 0){
+header("Location: https://aashniandco.com/occasion/eid.html");
+}if($catId == 4367 && $category_status == 0){
+header("Location: https://aashniandco.com/occasion/eid/eid-clothes-for-womens.html");
+}if($catId == 4368 && $category_status == 0){
+header("Location: https://aashniandco.com/occasion/eid/eid-clothes-for-mens.html");
+}
+$respData = array();
+$respData = $block->getListingFilterdata($catId,$requestParams);
+$htmlData = isset($respData['prod_grid_html']) ? $respData['prod_grid_html'] : '';
+$noOfPages = isset($respData['no_of_pages']) ? $respData['no_of_pages'] : '';
+$cat_data = isset($respData['cat_data']) ? $respData['cat_data'] : '';
+
+$cat_name = $catId == 6007 ? "Eid Special" : $cat_data['cat_name'];
+$schema_cat_url = isset($cat_data['cat_url'])?$cat_data['cat_url']:'';
+$parent_cat_name = isset($cat_data['parent_cat_name']) ? $cat_data['parent_cat_name']:'';
+$parent_cat_url = isset($cat_data['parent_cat_url']) ? $cat_data['parent_cat_url']:'';
+
+// $categoryId = $catId;
+
+$category_plp = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$parent_catId = $category_plp->getParentIds();
+// print_r($parent_catId);
+$catDesc = isset($cat_data['cat_desc']) ? $cat_data['cat_desc'] : '';
+if(!in_array(1375, $parent_catId)){
+   ?> <?php echo '<div class="category-title">' . $cat_name . '</div>'; 
+    //echo $cat_name=$cat_data['cat_name'];
+           //echo "<br>";
+
+    ?> <?php echo '<div class="category-sub-text">' . $catDesc . '</div>';
+            //$cat_desc = $cat_data['cat_desc'];
+            //echo $cat_desc;
+}
+
+$facets = isset($respData['facets']) ? $respData['facets'] : '';
+$currentPageUrl = $block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]);
+$url = strtok($currentPageUrl, "?");
+
+
+?>
+
+<style type="text/css">
+  /*.category-product-actions{
+    width: 50%;
+    float: left;
+  }*/
+  .toolbar>.toolbar-sorter.sorter .sorter-label{
+        margin-right: 3px;
+  }
+  .toolbar select{
+    padding: 0 0px 0 5px;
+  }
+
+  .faq_main h1 {
+    color: #2f383d;
+    font-family: "Prata", serif;
+    font-size: 26px;
+    font-weight: 300;
+    text-transform: uppercase;
+    margin: 0px;
+    padding: 30px 0px 15px 0px;
+} 
+.faq_page .accordion {
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+    border-bottom: 2px #000 solid; font-family: 'Lato', sans-serif !important;
+}
+
+.faq_page .active, .accordion:hover {
+    background-color: #efefef;
+}
+
+.faq_page .accordion:after {
+    content: '\002B';
+    color: #777;
+    font-weight: normal;
+    float: right;
+    margin-left: 5px;
+    font-size: 30px;
+    line-height: 23px;
+}
+
+.faq_page .active:after {
+    content: "\2212";
+}
+
+.faq_page .panel {
+    margin:0px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out; 
+}
+.faq_page .panel p {
+    font-family: 'Raleway', sans-serif !important;
+    font-size: 14px;
+    color: #000;
+}
+</style>
+
+<?php $userAgent =  $_SERVER['HTTP_USER_AGENT']; ?>
+<?php if($userAgent != 'android' && $userAgent != 'ios') : ?>
+<div class="row designer_listprofile">
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$category =  $objectManager->create('\Magento\Catalog\Model\CategoryRepository')->get($catId);
+$catbgimg = $category->getData('designer_image');
+$catinfo = $category->getData('designer_information');
+$mediaurl = '/media/catalog/category/';
+if (strpos($catbgimg, '_1') !== false){
+        $catbgimg = str_replace('_1', '', $catbgimg);
+        //$catbgimg = str_replace('_1', '', $catbgimg);
+    }
+
+if(isset($_GET['otest'])){
+
+     // if(!preg_match($mediaurl, $catbgimg)){
+     //        $catbgimg = $mediaurl.$catbgimg;
+     //    }
+    
+     echo $catbgimg;die;
+}
+$check = strpos($catbgimg, $mediaurl);
+  if($catbgimg != ''){
+     if($catbgimg !='' && $catinfo !=''){
+        
+     if($check !== false){
+                // $catbgimg = $mediaurl.$catbgimg;
+            }else{
+                $catbgimg = $mediaurl.$catbgimg;
+            }
+       
+        
+?>
+<div class="col-sm-3">
+<?php echo '<img class="designer-info-image" style="width: 80%;" src="' . $catbgimg . '" />'; ?>
+</div>
+<div class="col-sm-9">
+<?php 
+    $h1start = strpos($catinfo, '<h1>');
+    $h1end = strpos($catinfo, '</h1>') + 5;
+    $h1rem = substr($catinfo, $h1start, $h1end);
+    $catinfo = str_replace($h1rem, '<br>', $catinfo);
+?>
+<?php echo $catinfo; ?>
+<div class="news-designer"><?php echo $this->getLayout()
+    ->createBlock('Magento\Cms\Block\Block')
+    ->setBlockId('newsletter_all')
+    ->toHtml(); ?>
+</div>
+</div>
+<?php } } ?>
+</div>
+<?php endif; ?>
+
+
+<input type="hidden" id="current_page" value="1">
+<input type="hidden" id="no-of-pages" value="<?php echo $noOfPages;?>">
+<input type="hidden" id="cat-id" value="<?php echo $catId; ?>">
+<input type="hidden" id="cat-level" value="<?= isset($cat_data['cat_level']) ? $cat_data['cat_level'] : '' ?>" />
+<input type="hidden" id="cat-has-child" value="<?= isset($cat_data['cat_has_child']) ? $cat_data['cat_has_child'] : '' ?>"/>
+<input type="hidden" id="cat-name" value="<?= isset($cat_data['cat_name']) ? $cat_data['cat_name'] : '' ?>"/>
+<input type="hidden" id="cat-pare-id" value="<?= isset($cat_data['pare_cat_id']) ? $cat_data['pare_cat_id'] : '' ?>" />
+<input type="hidden" id="cat-url-key" value="<?= isset($cat_data['cat_url_key']) ? $cat_data['cat_url_key'] : '' ?>" />
+<input type="hidden" id="cat-url-path" value="<?= isset($cat_data['cat_url_path']) ? $cat_data['cat_url_path'] : '' ?>" />
+<input type="hidden" id="cat-path" value="<?= isset($cat_data['cat_path']) ? $cat_data['cat_path'] : '' ?>" />
+<input type="hidden" id="is_searched_activity" value="0" />
+<input type="hidden" id="stopAjax" value="0" />
+<input type="hidden" id="isRequestSent" value="0" />
+
+
+
+
+<input type="hidden" id="is_searched_activity" value="0" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="column main col-lg-9 col-md-9 col-sm-12 col-xs-12 pull-right"> -->
+
+
+    <div class="catalog-topnav amasty-catalog-topnav">
+</div><div class="row designer_listprofile">
+</div>
+<input name="form_key" type="hidden" value="i7mOGFqfGkS9PGNh">
+
+
+
+
+<div id="monkey_campaign" style="display:none;">
+</div>    
+<div id="amasty-shopby-product-list">    <div class="category-product-actions">
+<div class="toolbar toolbar-products">
+<div class="modes"></div>
+
+<div class="toolbar-sorter sorter">
+<label class="sorter-label" for="sorter">Sort By</label>
+<select id="sorter" data-role="sorter" class="sorter-options">
+<option value="high-to-low">
+Price - High To Low            </option>
+<option value="low-to-high">
+Price - Low To High            </option>
+<option value="new-arrival" selected="selected">
+Latest            </option>
+</select>
+<a title="Set Ascending Direction" href="#" class="action sorter-action sort-desc" data-role="direction-switcher" data-value="asc" style="display: none !important;">
+<span>Set Ascending Direction</span>
+</a>
+</div>
+</div>
+
+</div>
+
+
+<style>
+@media only screen and (min-width: 600px) {
+#listEnquiryModal .modal-dialog {
+width: 450px;
+}
+}
+#listEnquiryModal .modal-title {
+font-family: 'Prata', serif;
+text-align: center;
+}
+#listEnquiryModal .modal-footer {
+display: none;
+}
+#listEnquiryModal .close {
+color: #000;
+border: 1px #000 solid;
+padding: 5px 10px;
+position: absolute;
+right: -16px;
+top: -18px;
+background: #000 !important;
+opacity: unset !important;
+border-radius: 21px;
+border: 2px #ccc solid;
+}
+#listEnquiryModal .close span {
+color: #fff;
+}
+#listEnquiryModal .button {
+background: #000;
+border: 1px #000 solid;
+color: #fff;
+padding: 8px 25px;
+margin-top: 15px;
+}
+</style>
+<div class="products_new_ga4" id="newly_added_products_in_productGrid" style="display: none !important;">
+    <ol class="list_new_ga4" id="ol_newly_added_products_in_productGrid"></ol>
+</div>
+<div class="products wrapper grid products-grid" id="product-wrapper">
+<ol class="products list items product-items row row-col-lg-4">
+
+                              <?php echo $htmlData['prod_html'];?>          
+                                                                            
+                               
+                </ol>
+<div id="amasty-shopby-overlay"><div class="loader"></div></div></div>
+<!-- <div class="bottom-pagination">
+<div class="toolbar toolbar-products">
+
+
+<div class="toolbar-sorter sorter">
+<label class="sorter-label" for="sorter">Sort By</label>
+<select id="sorter" data-role="sorter" class="sorter-options">
+<option value="high_to_low">
+Price - High To Low            </option>
+<option value="low_to_high">
+Price - Low To High            </option>
+<option value="latest" selected="selected">
+Latest            </option>
+</select>
+<a title="Set Ascending Direction" href="#" class="action sorter-action sort-desc" data-role="direction-switcher" data-value="asc">
+<span>Set Ascending Direction</span>
+</a>
+</div>
+</div>
+</div> -->
+
+<!---Enqury on List Page--->
+<div class="modal fade" id="listEnquiryModal" tabindex="-1" role="dialog" aria-labelledby="listEnquiryModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<div class="modal-title" id="listEnquiryModalLabel">New message</div>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">×</span>
+</button>
+</div>
+<div class="modal-body">
+                <form action="/enquire" method="post" enctype="multipart/form-data" autocomplete="off" data-hasrequired="* Required Fields" novalidate="novalidate" data-mage-init='{"validation":{}}'>
+    <input type="hidden" id="product_sku" name="sku" value="">
+    <input type="hidden" id="designer_name" name="designer_name" value="">
+    <input type="hidden" id="product_desc" name="product_desc" value="">
+    <input type="hidden" name="remote_ip" id="remote_ip" title="Client IP" class="input-text required-entry" value="172.31.5.217">
+    <?php echo $enquire_block->getFormKeyHtml(); ?>
+    <ul class="form-list">
+        <li>
+            <div class="field">
+                <label for="name" class="required">Name</label>
+                <div class="input-box">
+                    <input name="customer_name" id="customer_name" title="Name" value="" class="input-text required-entry" type="text" data-validate="{required:true}">
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="field">
+                <label for="email" class="required">Email</label>
+                <div class="input-box">
+                    <input name="customer_email" id="customer_email" title="Email" value="" class="input-text required-entry validate-email" type="text">
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="field">
+                <label for="country" class="required">Country</label>
+                <div class="input-box">
+                    <select name="country" id="country" title="Country" class="input-text required-entry">
+                        <option value="">Select Country</option>
+                        <?php foreach ($enquire_block->getCountryOptions() as $country): ?>
+                            <option data-dialcode="<?php echo $country['dial_code']; ?>" value="<?php echo $country['name']; ?>"><?php echo $country['name']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="field">
+                <label for="phone" class="required">Phone</label>
+                <div class="input-box" style="display: flex;justify-content: space-between;">
+                    <input name="country_code" id="country_code" title="Country code" value="" class="input-text" type="text" readonly  style="width: 75px;float: left;">
+                    <input name="customer_phone" id="customer_phone" title="Phone" value="" class="input-text validate-number required-entry" type="text" style="width: 80%">
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="field">
+                <label for="phone" class="required">Your Query</label>
+                <div class="input-box">
+                    <input name="query" id="query" title="Comments" value="" class="input-text required-entry" type="text">
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <button type="submit" title="Submit" class="button"><span><span>Submit</span></span></button>
+</form>
+</div>
+<!--<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<button type="button" class="btn btn-primary">Send message</button>
+</div>-->
+</div>
+</div>
+</div>
+<!---Enquiry on List Page--->
+<script>
+require(['jquery'],function($) {
+$(document).ready(function () {
+
+console.log('Hello');
+$('#listEnquiryModal').on('show.bs.modal', function (event) {
+var button = $(event.relatedTarget); // Button that triggered the modal
+var product_name = button.data('name'); // Extract info from data* attributes
+    var product_sku = button.data('sku');
+var product_description = button.data('description');
+// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+var modal = $(this);
+    console.log('product_name'+product_name);
+modal.find('.modal-title').text(product_name);
+modal.find('.modal-body #designer_name').val(product_name);
+    modal.find('.modal-body #product_sku').val(product_sku);
+modal.find('.modal-body #product_desc').val(product_description);
+});
+});
+});
+</script>
+</div>
+
+<!-- eid code for footer seo -->
+<!-- code for christmas description start: -->
+
+<?php
+$link_1 = "Eid Clothes & Accessories Sale at Aashni & Co";
+$link_2 = "Eid Clothes for Women Sale";
+$link_3 = "Men's Eid Clothes Sale";
+$link_4 = "Eid Clothes for Kids Sale";
+$link_5 = "Eid Homeware Sale";
+$link_6 = "Eid Accessories Sale";
+$link_7 = "Anarkalis For Eid Sale";
+$link_8 = "Lehengas For Eid Sale";
+$link_9 = "Shararas For Eid Sale";
+$link_10 = "Eid Sarees Sale";
+$link_11 = "Eid Kurtas For Men Sale";
+if($catId == 4392){ 
+echo "<div class='category-title'>".$link_1."</div><p>Discover Aashni & Co's Eid Sale on designer dresses and accessories for women, men, and kids with up to 25% off and be set for the ideal festive look. Pick up your favorite Eid clothing for yourself and your loved ones from a wide selection of styles while taking advantage of excellent deals and offers on eid ethnic wear. Buy luxury Eid outfits for men, women, and kids exclusively at Aashni & Co and shop like never before. You may discover and buy your favorite designer clothing and accessories because we have got it all! Browse the most amazing deals up to 25% off on homeware and accessories at Aashni & Co.</p>"; 
+}elseif($catId == 4410){
+echo "<div class='category-title'>".$link_2."</div><p>Aashni & Co's Eid clothes for women's sale is live! Explore our curated selection of designer women's clothing ranging from lehengas, Shararas, dresses, and more, you will get everything you need. With all the latest designer Eid clothes for women available, you'll find the ideal piece for yourself at Aashni & Co, all at incredible prices and offers. So, what are you waiting for, get your favorites with up to 25% off today and shop like never before while enjoying our Eid clothing for women sale!</p>";
+}elseif($catId == 4396){
+echo "<div class='category-title'>".$link_3."</div><p>Shop for luxury men's Eid clothes online at Aashni & Co and stay ahead of the emerging fashion with us. Find a variety of ethnic wear and stylish outfits that suit your style and preference; with so many options to choose from, you're sure to discover what your Eid closet wants. Check out Aashni & Co's fantastic Eid sale for curated Eid clothing for men with incredible deals and have great effortless shopping with up to 25% off on your favorites.</p>";
+}elseif($catId == 4397){
+echo "<div class='category-title'>".$link_4."</div><p>Shop premium Eid dresses for kids to add a bit of festive ambience to their closets. Aashni & Co has got an amazing collection of Eid clothes for kids, with a plethora of designs, colors, and patterns.Discover our Eid sale and buy curated designer Eid outfits for kids by high-end Indian designers and let your little one shine. A thrilling shopping experience awaits you with all the fantastic offers and discounts up to 25% off made exclusively for you!</p>";
+}elseif($catId == 4409){
+echo "<div class='category-title'>".$link_5."</div><p>Discover the most luxurious collection of Eid homeware only at Aashni & Co, the wide range of premium assortment will surely elevate your collection of dishes this festive season. Charm your relatives and guests with the most authentic Eid homeware dishes that are stunningly made from brass and copper. Get your hands on the most exclusive offers at best prices and amazing discounts of up25% off for decor and dining available especially for you. Buy designer Eid homeware accessories and tableware for Eid now at Aashni & Co.</p>";
+}elseif($catId == 4408){
+echo "<div class='category-title'>".$link_6."</div><p>Aashni & Co offers the most exquisite range of Eid accessorise to flaunt your style like a diva. With the wide range of designs and patterns available for premium Eid jewellery collection you can now browse through all of your favourite Eid jewelry. This season elevate your style with luxurious accessorise collection for Eid as designer necklaces, earrings, bracelets, rings, choker sets, maagtikkas, and more to make you and your loved ones look glamourous for this festive season.<br>Grab the most exciting discounts and amazing offers with up to 25% off that are now available on our Eid footwear accessories sale as shoes, sandal, heels, wedges flats and more for limited time period only. Shop the designer footwear accessorise for eid now at Aashni & Co.</p>";
+}elseif($catId == 4411){
+echo "<div class='category-title'>".$link_7."</div><p>Discover Aashni & Co's exciting offers on designer Anarkali dresses for Eid. The modern anarkali suits for Eid are the ideal outfit for this festive occasion. With contemporary Eid anarkali, you can surely elevate your appearance. Choose the most magnificent Eid clothing for you and your loved ones from the curated selection of designs, styles and patterns while taking full advantage of the amazing Eid special sale and offers up to 25% off like never before. Shop luxury Eid anarkalis exclusively at Aashni & Co. You can also explore the most famous designer clothing collection here.</p>";
+}elseif($catId == 4412){
+echo "<div class='category-title'>".$link_8."</div><p>Explore the exquisite range of Eid lehengas at Aashni & Co to elevate your style this season. Grab the biggest opportunity, as the women's clothes Eid sale is coming up to please you with exciting offers of up to 25% off, shop all your favorite luxury lehengas for Eid to appear more glamorous and to flaunt your sense of style with pride. Stay aligned with the latest trends by choosing one of these modern lehengas from the stunning curated designer collection at Aashni & Co, to make a statement and suit your fashion needs and requirements.</p>";
+}elseif($catId == 4413){
+echo "<div class='category-title'>".$link_9."</div><p>Discover Sharara dresses for Eid curated by our most fabulous designers and their collection at Aashni & Co. Buy all your favorite Eid Sharara dresses that are crafted with intricate designs and unique patterns to help you appear more desirable for your functions. With Eid special sale is around the corner to offer you with some of the most exciting deals up to 25% off and fill your wardrobe with a magnificent range of Shararas and other Eid ethnic wear selections from Aashni & Co, to upgrade your style effortlessly.</p>";
+}elseif($catId == 4414){
+echo "<div class='category-title'>".$link_10."</div><p>The most luxurious collection of designer sarees for Eid can be found at Aashni & Co. The Eid special deal is now available, and it is even more exciting than it looks. Shop the most stylish and curated collection of designer Eid sarees, which are now available in an exquisite range of patterns and colors. Choose your faves from our Eid clothing sale up to 25% off for yourself and your loved ones, and you will receive everything you need, plus more, to enhance your appearance during this festive season.</p>";
+}elseif($catId == 4402){
+echo "<div class='category-title'>".$link_11."</div><p>Aashni & Co's exquisite selection of designer kurtas for Eid offers the most stunning and fashionable Eid clothing for men. The latest patterns, colors and styles of Eid kurtas are now easily accessible and available under one roof. Get additional offers that too at the best prices this festive season. What are you waiting for? Grab the most exclusive offers and unique discounts of upto 25% created just for you. Shop amazing Eid kurtas now at Aashni & Co.</p>";
+}
+?>
+
+
+
+<div class="amshopby-filters-bottom-cms">
+</div>
+
+<div data-am-js="js-init">
+
+</div>
+<!-- </div> -->
+
+
+<script>
+  var acc = document.getElementsByClassName("accordion");
+  var i;
+
+  for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      } 
+    });
+  }
+</script>
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+#layered-filter-block .item input {float:left; margin-right:5px !important}
+input[type=checkbox] {
+margin-right:5px !important;
+}
+.am-ranges input {
+float: left;
+margin-right: 6px;
+}
+
+.items.am-filter-items-attr_category_ids.am-labels-folding {
+left: 0px !important;
+}
+
+/*.am-collapse-icon{display:none;}*/
+/*.filter-current{display:none;}*/
+/*.filter-actions{display:none;}*/
+
+
+.block.filter .filter-content .block-actions.filter-actions+.block-subtitle.filter-subtitle{margin-top: 0;}
+.block.filter .filter-content .block-actions.filter-actions{margin-bottom: 30px;}
+</style>
+
+
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        $('#country').change(function() {
+            var selectedOption = $(this).find('option:selected');
+            var dialCode = selectedOption.data('dialcode');
+            
+            $('#country_code').val(dialCode);
+        });
+    });
+</script>
+
+<script>
+    require(["jquery"], function ($) {
+        var collapseSelector = ".sidebar"
+            + " .am-collapse-icon";
+        if (!$(collapseSelector).length) {
+            collapseSelector = '.am-collapse-icon';
+        }
+
+        $(collapseSelector).nextAll('ul').each(function() {
+            if($(this).find('input[checked]').length === 0) {
+                if ($(this).siblings(".amshopby-filter-parent")
+                        .find('input[name^="amshopby[cat]"]').first().prop("checked")) {
+                    return true;
+                }
+                $(this).hide();
+            } else {
+                $(this).prevAll('.am-collapse-icon').toggleClass('_active');
+            }
+        });
+
+        $(collapseSelector).click(function (e) {
+            $(this).nextAll('ul').toggle();
+            $(this).toggleClass('_active');
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    });
+</script>
+
+
+<script>
+    require(["jquery"], function ($) {
+        $(document).on("click", ".towishlist", function(){
+            gtag("event", "add_to_wishlist", {
+                currency: "<?php echo $this->getLayout()->createBlock('\Magento\Directory\Block\Currency')->getCurrentCurrencyCode(); ?>",
+                value: this.getAttribute('data-value'),
+                items: [
+                    {
+                        item_id: this.getAttribute('data-sku'),
+                        item_name: this.getAttribute('data-shortDesc'),
+                        affiliation: "",
+                        coupon: "",
+                        discount: "",
+                        index: 0,
+                        item_brand: this.getAttribute('data-brand'),
+                        item_category: this.getAttribute('data-category'),
+                        item_variant: "",
+                        price: this.getAttribute('data-value'),
+                        quantity: 1
+                    }
+                ],
+            });
+        });
+
+        $(document).on("click", ".item.product.product-item-info.product-item", function() {
+            var dataSku = $(this).data('sku');
+            var dataShortDesc = $(this).data('shortdesc');
+            var dataBrand = $(this).data('brand');
+            var dataCategory = $(this).data('category');
+            var dataValue = $(this).data('value');
+            gtag("event", "select_item", {
+                items: [
+                    {
+                        item_id: dataSku,
+                        item_name: dataShortDesc,
+                        affiliation: "",
+                        coupon: "",
+                        discount: "",
+                        index: 0,
+                        item_brand: dataBrand,
+                        item_category: dataCategory,
+                        item_variant: "",
+                        Location_id: "",
+                        price: dataValue,
+                        quantity: 1
+                    }
+                ]
+            });
+        })
+
+        $(document).ready(function() {
+            var i = 0;
+            var items = [];
+            var itemlistschemaArr=[];
+            var breadcrumblistschemaArr=[];
+            var itemArray = [];
+            $(".item.product.product-item-info.product-item").each(function() {
+                    var dataSku = $(this).data('sku');
+                    var dataShortDesc = $(this).data('shortdesc');
+                    var dataBrand = $(this).data('brand');
+                    var dataCategory = $(this).data('category');
+                    var dataValue = $(this).data('value');
+                    var dataUrl = $(this).find('.product-top a').attr('href');
+                    
+                    var item = {
+                        dataSku: dataSku,
+                        dataShortDesc: dataShortDesc,
+                        dataBrand: dataBrand,
+                        dataCategory: dataCategory,
+                        dataValue: dataValue
+                    }
+
+                    items.push(item);
+            });
+            console.log(items);
+            items.forEach(function(item){
+                var arr = {
+                    item_id :  item.dataSku,
+                    item_name : item.dataShortDesc,
+                    affiliation : "",
+                    coupon : "",
+                    discount : "",
+                    index : i,
+                    item_brand : item.dataBrand,
+                    item_category : item.dataCategory,
+                    item_variant : "",
+                    price : item.dataValue,
+                    quantity : 1
+                }
+                itemArray.push(arr);
+                var itemlistschema={
+                    '@type':'ListItem',
+                      'position': i,
+                      'url': item.dataUrl,
+                      'name': item.dataBrand,
+                      'description': item.dataShortDesc
+                }
+                itemlistschemaArr.push(itemlistschema);
+                i++;
+            });
+            //gtag("event", "view_item_list", {
+               // currency: "<?php //echo $this->getLayout()->createBlock('\Magento\Directory\Block\Currency')->getCurrentCurrencyCode(); ?>",
+                //items : itemArray
+            //});
+            //item list schema
+            var el = document.createElement('script');
+            el.type = 'application/ld+json';
+
+            el.text = JSON.stringify({
+                   "@context": "https://schema.org",
+                    "@type": "ItemList",
+                    "itemListElement": itemlistschemaArr
+                });
+            document.getElementsByTagName('head')[0].appendChild(el);
+
+            //breadcumb schema
+            var inc = 2;
+            var breadcrumblistschema1 = {
+            "@type": "ListItem",  
+            "position": "1",
+            "name": "Home",
+            "item": "https://aashniandco.com/"
+            }
+            breadcrumblistschemaArr.push(breadcrumblistschema1);
+            <?php if(isset($cat_data['parent_cat_name'])): ?>
+                var breadcrumblistschemaDynamic={
+                    '@type':'ListItem',
+                    'position':inc,
+                    'name': "<?php echo $parent_cat_name;?>",
+                    'item': "<?php echo $parent_cat_url;?>"
+                }
+                breadcrumblistschemaArr.push(breadcrumblistschemaDynamic);
+                inc++;
+            <?php endif ?>
+
+            var breadcrumblistschema2={
+                '@type':'ListItem',
+                'position':2,
+                'name': "<?php echo $cat_name; ?>",
+                'item': "<?php echo $schema_cat_url;?>"
+            }
+            breadcrumblistschemaArr.push(breadcrumblistschema2);
+            
+            var el3 = document.createElement('script');
+            el3.type = 'application/ld+json';
+
+            el3.text = JSON.stringify({
+                   "@context": "https://schema.org",
+                    "@type": "BreadcrumbList",
+                    "itemListElement": breadcrumblistschemaArr
+                });
+            document.getElementsByTagName('head')[0].appendChild(el3);
+        });
+    });
+</script>
+<?php if($catId == 5574): ?>
+    <script type="application/ld+json"> { "@context": "http://schema.org/", "@type": "ItemList", "itemListElement": [{ "@type": "ListItem", "position": "1", "url": "https://aashniandco.com/suhani-pittie-denim-silver-motif-tulsi-bead-rakhi-sufjul23rk19.html", "name": "Denim silver motif tulsi bead rakhi by Suhani Pittie", "description": "Suhani Pittie designs this new-age rakhi for your brother embraced in a 92.5 silver finish with an intricately carved motif, braided ring centre, denim threads, tulsi and chandan beads." },{ "@type": "ListItem", "position": "2", "url": "https://aashniandco.com/suhani-pittie-green-ganesh-tulsi-bead-rakhi-sufjul23rk13.html", "name": "Green Ganesh tulsi bead rakhi by Suhani Pittie", "description": "Suhani Pittie designs this festive-ready rakhi for your brother crafted in 22kt gold plating with a Ganesh motif laser engraved on a disc charm, green threads and tulsi beads." },{ "@type": "ListItem", "position": "3", "url": "https://aashniandco.com/suhani-pittie-brown-betel-nut-jute-rakhi-sufjul23rk01.html", "name": "Brown betel nut jute rakhi by Suhani Pittie", "description": "Suhani Pittie designs this traditional rakhi crafted in 22kt gold plating with jute threads and betel nut, an exemplary choice for your brother." },{ "@type": "ListItem", "position": "4", "url": "https://aashniandco.com/suhani-pittie-red-swastika-thread-rakhi-sufjul23rk04.html", "name": "Red Swastika thread rakhi by Suhani Pittie", "description": "Suhani Pittie designs this trendy rakhi in a 22kt gold finish accentuated with a Swastika motif in a disc shape, circular highlights, beads, red and glitter threads, an exemplary pick for your brother." },{ "@type": "ListItem", "position": "5", "url": "https://aashniandco.com/suhani-pittie-yellow-floral-chandan-and-tulsi-bead-rakhi-sufjul23rk03.html", "name": "Yellow floral chandan and tulsi bead rakhi by Suhani Pittie", "description": "Suhani Pittie designs this festive rakhi for your brother in 22kt gold plating enhanced with a floral motif, circular highlights, yellow glitter threads, tulsi and chandan beads." },{ "@type": "ListItem", "position": "6", "url": "https://aashniandco.com/suhani-pittie-green-om-chandan-bead-rakhi-sufjul23rk09.html", "name": "Green Om chandan bead rakhi by Suhani Pittie", "description": "Suhani Pittie designs this vivid rakhi embraced in 22kt gold plating with an Om motif on an oval charm, green threads and chandan beads, an exemplary choice for the Raksha Bandhan celebration." },{ "@type": "ListItem", "position": "7", "url": "https://aashniandco.com/suhani-pittie-mustard-om-chandan-bead-rakhi-sufjul23rk10.html", "name": "Mustard Om chandan bead rakhi by Suhani Pittie", "description": "Suhani Pittie designs this elegant rakhi for your brother in a 22kt gold finish rendered with an Om motif on a round charm, mustard threads and chandan beads." },{ "@type": "ListItem", "position": "8", "url": "https://aashniandco.com/suhani-pittie-green-shree-thread-rakhi-sufjul23rk05.html", "name": "Green Shree thread rakhi by Suhani Pittie", "description": "Suhani Pittie designs this vibrant rakhi crafted in a 22kt gold finish for your brother with a Shree motif in a disc shape, circular highlights, beads and green and glitter threads." },{ "@type": "ListItem", "position": "9", "url": "https://aashniandco.com/suhani-pittie-green-shree-hand-painted-tulsi-bead-rakhi-sufjul23rk14.html", "name": "Green Shree hand painted tulsi bead rakhi by Suhani Pittie", "description": "Suhani Pittie designs this stunning rakhi embraced in a 22kt gold finish with texture detailing, a hand-painted Shree motif on a rounded square shape, green threads and tulsi beads, an exemplary pick for your brother." },{ "@type": "ListItem", "position": "10", "url": "https://aashniandco.com/suhani-pittie-gold-betel-nut-and-pearl-lumba-rakhi-sufjul23rk25.html", "name": "Gold betel nut and pearl lumba rakhi by Suhani Pittie", "description": "Suhani Pittie designs this distinctive lumba rakhi for your sister-in-law in 22kt gold plating crafted with betel nut, chain detailing, delicate pearl and chandan beads." },{ "@type": "ListItem", "position": "11", "url": "https://aashniandco.com/suhani-pittie-silver-rudraksha-chain-lumba-rakhi-sufjul23rk23.html", "name": "Silver rudraksha chain lumba rakhi by Suhani Pittie", "description": "Suhani Pittie designs this traditional lumba rakhi in 92.5 silver plating encapsulated with rudraksha, chain detailing and chandan beads. Express your love with it to your sister-in-law." },{ "@type": "ListItem", "position": "12", "url": "https://aashniandco.com/suhani-pittie-gold-rudraksha-and-pearl-lumba-rakhi-sufjul23rk26.html", "name": "Gold rudraksha and pearl lumba rakhi by Suhani Pittie", "description": "Suhani Pittie designs this magnificent lumba rakhi customised in a 22kt gold finish with rudraksha, chain detailing, delicate pearl and chandan beads, an exemplary pick for your sister-in-law." } ] } </script>
+<?php elseif(($catId == 5587)): ?>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org/", 
+            "@type": "BreadcrumbList", 
+            "itemListElement": [{
+                "@type": "ListItem", 
+                "position": 1, 
+                "name": "Anniversary Sale 2023",
+                "item": "https://aashniandco.com/anniversary-sale-2023"  
+            },{
+                "@type": "ListItem", 
+                "position": 2, 
+                "name": "Women's Clothing",
+                "item": "https://aashniandco.com/anniversary-sale-2023/womens-clothing.html"  
+            }]
+        }
+    </script>
+<?php elseif(($catId == 5588)): ?>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org/", 
+            "@type": "BreadcrumbList", 
+            "itemListElement": [{
+                "@type": "ListItem", 
+                "position": 1, 
+                "name": "Anniversary Sale 2023",
+                "item": "https://aashniandco.com/anniversary-sale-2023.html"  
+            },{
+                "@type": "ListItem", 
+                "position": 2, 
+                "name": "Men's Clothing",
+                "item": "https://aashniandco.com/anniversary-sale-2023/mens-clothing.html"  
+            }]
+        }
+    </script>
+<?php elseif(($catId == 5589)): ?>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org/", 
+            "@type": "BreadcrumbList", 
+            "itemListElement": [{
+                "@type": "ListItem", 
+                "position": 1, 
+                "name": "Anniversary Sale 2023",
+                "item": "https://aashniandco.com/anniversary-sale-2023.html"
+            },{
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Kidswear",
+                "item": "https://aashniandco.com/anniversary-sale-2023/kids-clothing.html"
+            }]
+        }
+    </script>
+<?php elseif(($catId == 5590)): ?>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org/", 
+            "@type": "BreadcrumbList", 
+            "itemListElement": [{
+                "@type": "ListItem", 
+                "position": 1, 
+                "name": "Anniversary Sale 2023",
+                "item": "https://aashniandco.com/anniversary-sale-2023.html"
+            },{
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Accessories",
+                "item": "https://aashniandco.com/anniversary-sale-2023/accessories.html"
+            }]
+        }
+    </script>
+<?php elseif(($catId == 5591)): ?>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org/", 
+            "@type": "BreadcrumbList", 
+            "itemListElement": [{
+                "@type": "ListItem", 
+                "position": 1, 
+                "name": "Anniversary Sale 2023",
+                "item": "https://aashniandco.com/anniversary-sale-2023.html"
+            },{
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Jewelry",
+                "item": "https://aashniandco.com/anniversary-sale-2023/jewelry.html"
+            }]
+        }
+    </script>
+<?php elseif(($catId == 5592)): ?>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org/", 
+            "@type": "BreadcrumbList", 
+            "itemListElement": [{
+                "@type": "ListItem", 
+                "position": 1, 
+                "name": "Anniversary Sale 2023",
+                "item": "https://aashniandco.com/anniversary-sale-2023.html"
+            },{
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Footwear",
+                "item": "https://aashniandco.com/anniversary-sale-2023/footwear.html"
+            }]
+        }
+</script>
+<?php elseif(($catId == 5958)): ?>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Diwali Sale 2023",
+  "description": "Aashni & Co offers upto 40% off on diwali festive clothing and accessories with Diwali sale offer. Avail of the best Diwali offers on branded clothes by top Indian designers. Shop Now!",
+  "startDate": "2023-10-20",
+  "endDate": "2023-11-10",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+  "location": {
+    "@type": "VirtualLocation",
+    "url": "https://aashniandco.com/diwali-sale-2023.html"
+  }
+}
+</script>
+<?php endif ?>

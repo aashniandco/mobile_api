@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1column">
+    <head>
+        <link src="Fermion_NativeApp::css/mobileweblogin.css"/>
+        <title>Customer Login</title>
+    </head>
+    <referenceContainer name="content">
+        <block class="Magento\Customer\Block\Form\Login"
+           name="mobile.login.browser" as="mobile.login.web" template="Fermion_NativeApp::mobileLoginWeb.phtml" cacheable="false"/>
+    </referenceContainer>
+    <referenceBlock name="footer" remove="true" />
+</page>

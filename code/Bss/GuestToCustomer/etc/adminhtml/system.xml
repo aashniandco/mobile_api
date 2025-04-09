@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * BSS Commerce Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://bsscommerce.com/Bss-Commerce-License.txt
+ *
+ * @category   BSS
+ * @package    Bss_GuestToCustomer
+ * @author     Extension Team
+ * @copyright  Copyright (c) 2017-2018 BSS Commerce Co. ( http://bsscommerce.com )
+ * @license    http://bsscommerce.com/Bss-Commerce-License.txt
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="bss" translate="label" sortOrder="300">
+            <label><![CDATA[Bss Commerce]]></label>
+        </tab>
+        <section id="bss_guest_to_customer" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Guest To Customer</label>
+            <tab>bss</tab>
+            <resource>Bss_GuestToCustomer::config_guest</resource>
+            <group id="bss_guest_to_customer_general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Configuration</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Version 1.1.4]]></comment>
+                </field>
+                <field id="auto_convert" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Auto Convert To Customer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="customer_group" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer Group</label>
+                    <source_model>Bss\GuestToCustomer\Model\Config\Customer\CustomerGroup</source_model>
+                    <depends>
+                        <field id="auto_convert">1</field>
+                    </depends>
+                </field>
+                <field id="assign_orders" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Assign Orders With The Same CheckOut Email To Customer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="async_address" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sync address</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Synchronize customer's address when billing address and shipping address are identical.]]></comment>
+                </field>
+            </group>
+            <group id="bss_guest_to_customer_email" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Notification Email</label>
+                <field id="enable_email" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Notification Email to Customer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="email_sender" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="email_template" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Templates</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+            <group id="bss_guest_to_customer_import" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Import Guest</label>
+                <field id="from" translate="label" type="date" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>From</label>
+                    <config_path>bss_guest_to_customer/bss_guest_to_customer_import/from</config_path>
+                    <frontend_model>Bss\GuestToCustomer\Block\Adminhtml\System\Config\Form\Field\Date</frontend_model>
+                </field>
+                <field id="to" translate="label" type="date" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>To</label>
+                    <config_path>bss_guest_to_customer/bss_guest_to_customer_import/to</config_path>
+                    <frontend_model>Bss\GuestToCustomer\Block\Adminhtml\System\Config\Form\Field\Date</frontend_model>
+                </field>
+                <field id="button_import" translate="button_label" sortOrder="68" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label/>
+                    <button_label>Import</button_label>
+                    <frontend_model>Bss\GuestToCustomer\Block\Adminhtml\System\Config\Form\Import</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

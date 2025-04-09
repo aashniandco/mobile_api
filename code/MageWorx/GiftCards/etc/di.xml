@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="MageWorx\GiftCards\Api\ExportHandlerInterface" type="MageWorx\GiftCards\Model\ImportExport\ExportHandler" />
+    <preference for="MageWorx\GiftCards\Api\ImportHandlerInterface" type="MageWorx\GiftCards\Model\ImportExport\ImportHandler" />
+    <type name="Magento\Quote\Model\Cart\TotalsConverter">
+        <plugin name="add_front_options_to_mageworx_giftcards_quote_total" type="MageWorx\GiftCards\Plugin\Api\AddFrontOptionsToGiftCardsQuoteTotalPlugin"/>
+    </type>
+    <type name="Magento\Sales\Api\OrderRepositoryInterface">
+        <plugin name="add_mageworx_giftcards_to_order" type="MageWorx\GiftCards\Plugin\Api\AddGiftCardsToOrderPlugin" />
+    </type>
+    <type name="Magento\Quote\Api\CartManagementInterface">
+        <plugin name="mageworx_giftcards_validate_before_place_order"
+                type="MageWorx\GiftCards\Plugin\Api\ValidateGiftCardsBeforePlaceOrderPlugin" />
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\Repository">
+        <arguments>
+            <argument name="cartItemProcessors" xsi:type="array">
+                <item name="mageworx_giftcards" xsi:type="object">MageWorx\GiftCards\Model\Quote\Item\CartItemProcessor\Proxy</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Klarna\Core\Model\Checkout\Orderline\Giftcard">
+        <plugin name="mageworx_giftcards_collect_giftcards" type="MageWorx\GiftCards\Plugin\Klarna\CollectGiftCardsPlugin"/>
+        <plugin name="mageworx_giftcards_add_giftcards_to_order_lines" type="MageWorx\GiftCards\Plugin\Klarna\AddGiftCardsToOrderLinesPlugin"/>
+    </type>
+
+    <type name="Klarna\Base\Model\Checkout\Orderline\Items\Giftcard">
+        <plugin name="mageworx_giftcards_collect_giftcards_pre_purchase" type="MageWorx\GiftCards\Plugin\Klarna\CheckoutExt\CollectGiftCardsPrePurchasePlugin"/>
+        <plugin name="mageworx_giftcards_collect_giftcards_post_purchase" type="MageWorx\GiftCards\Plugin\Klarna\CheckoutExt\CollectGiftCardsPostPurchasePlugin"/>
+    </type>
+
+    <preference for="MageWorx\GiftCards\Api\Data\GiftCardDetailsInterface" type="MageWorx\GiftCards\Model\GiftCardDetails" />
+    <preference for="MageWorx\GiftCards\Api\Data\GiftCardsInterface" type="MageWorx\GiftCards\Model\GiftCards" />
+    <preference for="MageWorx\GiftCards\Api\Data\GiftCardsOrderInterface" type="MageWorx\GiftCards\Model\Order" />
+    <preference for="MageWorx\GiftCards\Api\Data\GiftCardOptionInterface" type="MageWorx\GiftCards\Model\GiftCard\Option" />
+
+    <preference for="MageWorx\GiftCards\Api\GiftCardsRepositoryInterface" type="MageWorx\GiftCards\Model\GiftCardsRepository" />
+    <preference for="MageWorx\GiftCards\Api\GiftCardsOrderRepositoryInterface" type="MageWorx\GiftCards\Model\OrderRepository" />
+    <preference for="MageWorx\GiftCards\Api\GiftCardManagementInterface" type="MageWorx\GiftCards\Model\GiftCardManagement" />
+    <preference for="MageWorx\GiftCards\Api\GuestGiftCardManagementInterface" type="MageWorx\GiftCards\Model\GuestGiftCardManagement" />
+
+    <preference for="MageWorx\GiftCards\Api\Data\GiftCardsSearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
+    <preference for="MageWorx\GiftCards\Api\Data\GiftCardsOrderSearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
+
+    <virtualType name="GiftcardsOrderGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="GiftcardsOrderGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">MageWorx\GiftCards\Model\ResourceModel\Order\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">GiftcardsOrderGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MageWorx\GiftCards\Model\ResourceModel\Order\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">mageworx_giftcard_order</argument>
+            <argument name="resourceModel" xsi:type="string">MageWorx\GiftCards\Model\ResourceModel\Order</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Store\Ui\Component\Listing\Column\Store">
+        <arguments>
+            <argument name="storeKey" xsi:type="string">store_id</argument>
+        </arguments>
+    </type>
+
+    <type name="MageWorx\GiftCards\Model\ResourceModel\GiftCards\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">mageworx_giftcards_card</argument>
+            <argument name="resourceModel" xsi:type="string">MageWorx\GiftCards\Model\ResourceModel\GiftCards</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="giftcards_giftcards_listing_data_source" xsi:type="string">MageWorx\GiftCards\Model\ResourceModel\GiftCards\Grid\Collection</item>
+                <item name="giftcards_order_listing_data_source" xsi:type="string">MageWorx\GiftCards\Model\ResourceModel\Order\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

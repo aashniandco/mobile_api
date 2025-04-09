@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * BSS Commerce Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://bsscommerce.com/Bss-Commerce-License.txt
+ *
+ * @category   BSS
+ * @package    Bss_GuestToCustomer
+ * @author     Extension Team
+ * @copyright  Copyright (c) 2017-2018 BSS Commerce Co. ( http://bsscommerce.com )
+ * @license    http://bsscommerce.com/Bss-Commerce-License.txt
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Eav\Model\Attribute\Data\Text">
+        <plugin name="bss_guest_to_customer_validate_text" type="Bss\GuestToCustomer\Plugin\Model\Metadata\Form\ValidateValue"/>
+    </type>
+    <type name="Magento\Eav\Model\Attribute\Data\Date">
+        <plugin name="bss_guest_to_customer_validate_date" type="Bss\GuestToCustomer\Plugin\Model\Metadata\Form\ValidateValue"/>
+    </type>
+    <type name="Magento\Eav\Model\Attribute\Data\Boolean">
+        <plugin name="bss_guest_to_customer_validate_boolean" type="Bss\GuestToCustomer\Plugin\Model\Metadata\Form\ValidateValue"/>
+    </type>
+    <type name="Magento\Eav\Model\Attribute\Data\Textarea">
+        <plugin name="bss_guest_to_customer_validate_textarea" type="Bss\GuestToCustomer\Plugin\Model\Metadata\Form\ValidateValue"/>
+    </type>
+    <type name="Magento\Eav\Model\Attribute\Data\Multiselect">
+        <plugin name="bss_guest_to_customer_validate_multiseclect" type="Bss\GuestToCustomer\Plugin\Model\Metadata\Form\ValidateValue"/>
+    </type>
+    <type name="Magento\Eav\Model\Attribute\Data\Select">
+        <plugin name="bss_guest_to_customer_validate_select" type="Bss\GuestToCustomer\Plugin\Model\Metadata\Form\ValidateValue"/>
+    </type>
+    <type name="\Magento\Customer\Model\EmailNotification">
+        <plugin name="bssGuestToCustomerSendEmail" sortOrder="1" type="Bss\GuestToCustomer\Plugin\Checkout\Email" />
+    </type>
+    <virtualType name="BssGuestGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="BssGuestGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Bss\GuestToCustomer\Model\ResourceModel\Guest\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">BssGuestGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Bss\GuestToCustomer\Model\ResourceModel\Guest\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">bss_guest_to_customer</argument>
+            <argument name="eventPrefix" xsi:type="string">bss_guesttocustomer_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">guesttocustomer_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Bss\GuestToCustomer\Model\ResourceModel\Guest</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="bss_guest_list_data_source" xsi:type="string">Bss\GuestToCustomer\Model\ResourceModel\Guest\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Bss\GuestToCustomer\Controller\Adminhtml\Guest\MassAssignGroup">
+        <arguments>
+            <argument name="successMessage" xsi:type="string">A total of %1 record(s) have been sent.</argument>
+            <argument name="errorMessage" xsi:type="string">An error occurred while sending record(s).</argument>
+        </arguments>
+    </type>
+    <type name="Bss\GuestToCustomer\Ui\Component\MassAction\Group\Options">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="urlPath" xsi:type="string">bss_guest_to_customer/guest/massAssignGroup</item>
+                <item name="paramName" xsi:type="string">group</item>
+                <item name="confirm" xsi:type="array">
+                    <item name="title" xsi:type="string" translatable="true">Assign a Customer Group</item>
+                    <item name="message" xsi:type="string" translatable="true">Are you sure to assign selected customers to new group?</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <!--Get frontend url-->
+    <type name="Bss\GuestToCustomer\Plugin\FrontendUrl">
+        <arguments>
+            <argument name="frontendUrl" xsi:type="object" shared="false">Magento\Framework\Url</argument>
+        </arguments>
+    </type>
+    <!--End get frontend url-->
+</config>
