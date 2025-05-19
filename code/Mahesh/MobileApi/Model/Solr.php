@@ -134,7 +134,9 @@ public function getSolrSearch($queryParams)
         . "q=" . urlencode($query)
         . "&fl=" . urlencode($fl)
         . "&rows=" . intval($rows)
-        . "&wt=json";
+        . "&w
+        
+        t=json";
 
     try {
         $this->curl->setOption(CURLOPT_TIMEOUT, 60);
