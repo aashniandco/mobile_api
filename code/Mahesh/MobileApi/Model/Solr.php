@@ -3,15 +3,150 @@ namespace Aashni\MobileApi\Model;
 
 use Aashni\MobileApi\Api\SolrInterface;
 use Magento\Framework\HTTP\Client\Curl;
+use Magento\Quote\Api\CartItemRepositoryInterface;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Authorization\Model\UserContextInterface;
+use Psr\Log\LoggerInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\ResourceConnection;
+
 
 class Solr implements SolrInterface
 {
     protected $curl;
+    protected $cartItemRepository;
+    protected $quoteRepository;
+    protected $userContext;
+    protected $logger;
+    protected $request;
+    protected $resource;
 
-    public function __construct(Curl $curl)
-    {
+    public function __construct(
+        Curl $curl,
+        CartItemRepositoryInterface $cartItemRepository,
+        CartRepositoryInterface $quoteRepository,
+        UserContextInterface $userContext,
+        LoggerInterface $logger,
+        RequestInterface $request,
+        ResourceConnection $resource
+    ) {
         $this->curl = $curl;
+        $this->cartItemRepository = $cartItemRepository;
+        $this->quoteRepository = $quoteRepository;
+        $this->userContext = $userContext;
+        $this->logger = $logger;
+        $this->request = $request;
+        $this->resource = $resource;
     }
+
+  public function getShippingRate($countryId, $regionId) // Parameters will be injected from URL
+    {
+        // Optional: Log input parameters for debugging
+        $this->logger->info('getShippingRate called with countryId: ' . $countryId . ', regionId: ' . $regionId);
+
+        try {
+            $connection = $this->resource->getConnection();
+            $tableName = $this->resource->getTableName('shipping_tablerate'); // Corrected variable name
+
+            
+            $sql = "SELECT price FROM `{$tableName}`
+                    WHERE dest_country_id = :country_id
+                    AND dest_region_id = :region_id  -- Match specific region first
+                    ORDER BY condition_value ASC     -- Assuming lower condition_value is preferred
+                    LIMIT 1";
+
+            $bind = [
+                'country_id' => $countryId,
+                'region_id' => (int)$regionId // Cast regionId to int
+            ];
+
+            $price = $connection->fetchOne($sql, $bind);
+
+            // If no specific region match, try with region_id = 0 (all regions for the country)
+            if ($price === false && (int)$regionId !== 0) {
+                $this->logger->info('No specific region match for ' . $countryId . '/' . $regionId . '. Trying region_id = 0.');
+                $bind['region_id'] = 0; // Fallback to 'all regions'
+                $price = $connection->fetchOne($sql, $bind);
+            }
+
+            // Further fallback: if condition_value is price based and items are cheap,
+            // or weight based and items are light, ensure you have a base rate.
+            // Your current query tries to find a match for the specific country/region
+            // and then takes the one with the lowest 'condition_value'.
+            // If 'condition_value' represents "up to X weight/price", this is fine.
+
+            if ($price === false) { // If still no price found
+                $this->logger->info('No shipping rate found for countryId: ' . $countryId . ', regionId (even with fallback): ' . $bind['region_id']);
+                 return ['success' => true, 'shipping_price' => null, 'message' => 'No shipping rate found for this destination.'];
+            }
+
+            // Convert price to float if it's a string from DB
+            $shippingPrice = $price !== false ? (float)$price : null;
+
+            return ['success' => true, 'shipping_price' => $shippingPrice];
+
+        } catch (\Exception $e) {
+            $this->logger->critical('Error in getShippingRate: ' . $e->getMessage(), ['exception' => $e]);
+            // In production, you might not want to expose the raw $e->getMessage()
+            return ['success' => false, 'error' => 'An error occurred while fetching the shipping rate.'];
+        }
+    }
+
+
+public function getAllCountryCodes()
+{
+    try {
+        $connection = $this->resource->getConnection();
+        $table = $this->resource->getTableName('directory_country');
+
+        $sql = "SELECT country_id AS country_code FROM $table";
+        $results = $connection->fetchAll($sql);
+
+        return [
+            'success' => true,
+            'countries' => $results
+        ];
+    } catch (\Exception $e) {
+        return [
+            'success' => false,
+            'error' => $e->getMessage()
+        ];
+    }
+}
+
+
+
+    public function deleteCartItem()
+    {
+         $itemId = $this->request->getParam('item_id');
+
+    if (!$itemId) {
+        return ['success' => false, 'message' => 'Missing item_id'];
+    }
+
+    try {
+        $customerId = $this->userContext->getUserId();
+        if (!$customerId) {
+            return ['success' => false, 'message' => 'User not authorized or not logged in'];
+        }
+
+        $quote = $this->quoteRepository->getActiveForCustomer($customerId);
+        $item = $quote->getItemById($itemId);
+
+        if (!$item) {
+            return ['success' => false, 'message' => "Item ID $itemId not found in cart"];
+        }
+
+        $quote->removeItem($itemId)->collectTotals();
+        $this->quoteRepository->save($quote);
+
+        return ['success' => true, 'message' => "Item ID $itemId deleted successfully from cart"];
+    } catch (\Exception $e) {
+        return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+    }
+    }
+
+
 
     public function getSolrData()
     {
@@ -27,6 +162,52 @@ class Solr implements SolrInterface
         }
     }
 
+      public function updateCartItemQty()
+    {
+        $itemId = $this->request->getParam('item_id');
+        $qty = $this->request->getParam('qty');
+
+        if (!$itemId || !$qty) {
+            return [false, "Missing item_id or qty"];
+        }
+
+        try {
+            $customerId = $this->userContext->getUserId();
+            if (!$customerId) {
+                return [false, "User not authorized or not logged in"];
+            }
+
+            $quote = $this->quoteRepository->getActiveForCustomer($customerId);
+            $item = $quote->getItemById($itemId);
+
+            if (!$item) {
+                return [false, "Item ID $itemId not found in cart"];
+            }
+
+            $qty = (int)$qty;
+            if ($qty < 1) {
+                $qty = 1;
+            }
+
+            $item->setQty($qty);
+            $quote->collectTotals();
+            $this->quoteRepository->save($quote);
+
+            $rowTotal = $item->getRowTotal();
+            $subtotal = $quote->getSubtotal();
+
+            return [
+                true,
+                "Quantity updated successfully",
+                'qty' => $qty,
+                'row_total' => $rowTotal,
+                'subtotal' => $subtotal,
+            ];
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+            return [false, 'Error: ' . $e->getMessage()];
+        }
+    } 
 
     public function getDesignerData(string $designerName)
     {
@@ -134,9 +315,7 @@ public function getSolrSearch($queryParams)
         . "q=" . urlencode($query)
         . "&fl=" . urlencode($fl)
         . "&rows=" . intval($rows)
-        . "&w
-        
-        t=json";
+        . "&wt=json";
 
     try {
         $this->curl->setOption(CURLOPT_TIMEOUT, 60);

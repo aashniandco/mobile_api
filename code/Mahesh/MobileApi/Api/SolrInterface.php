@@ -3,6 +3,10 @@ namespace Aashni\MobileApi\Api;
 
 interface SolrInterface
 {
+
+
+
+
     /**
      * Get Solr Data
      *
@@ -25,6 +29,9 @@ interface SolrInterface
      * @return array
      */
     public function getNewInData();
+
+
+    
 
 
      /**
@@ -993,5 +1000,40 @@ public function getThemeData(string $themes, string $categoryId);
 
 
 
-}
+/**
+ * Delete item from cart via POST
+ * @return array
+ */
+public function deleteCartItem();
 
+/**
+* Update quantity of cart item via POST
+* @return array
+*/
+public function updateCartItemQty();
+
+
+
+
+
+
+
+/**
+* Fetch all country codes
+* @return array
+*/
+public function getAllCountryCodes();
+
+
+
+
+/**
+* Fetch shipping rate based on country and region
+* @param string $countryId
+* @param int $regionId
+* @return array
+*/
+public function getShippingRate($countryId, $regionId);
+
+
+}

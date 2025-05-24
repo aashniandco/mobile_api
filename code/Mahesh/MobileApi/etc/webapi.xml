@@ -16,6 +16,46 @@
         </resources>
     </route>
 
+  <!-- Delete item from cart -->
+   <route url="/V1/solr/cart/item/delete" method="POST">
+    <service class="Aashni\MobileApi\Api\SolrInterface" method="deleteCartItem"/>
+    <resources>
+        <resource ref="anonymous"/>
+    </resources>
+</route>
+  <!-- Country code -->
+<route url="/V1/solr/country-codes" method="GET">
+    <service class="Aashni\MobileApi\Api\SolrInterface" method="getAllCountryCodes"/>
+    <resources>
+        <resource ref="anonymous"/>
+    </resources>
+</route>
+
+
+ <!-- Shipping Rate by Country and Region -->
+    <route url="/V1/aashni/shipping-rate/:countryId/:regionId" method="GET"> <!-- Changed URL structure for clarity -->
+        <service class="Aashni\MobileApi\Api\SolrInterface" method="getShippingRate"/>
+        <resources>
+            <resource ref="anonymous"/> <!-- Or 'self' if it requires customer authentication -->
+        </resources>
+    </route>
+
+
+<route url="/V1/solr/cart/item/updateQty" method="POST">
+    <service class="Aashni\MobileApi\Api\SolrInterface" method="updateCartItemQty"/>
+    <resources>
+        <resource ref="anonymous"/>
+    </resources>
+</route>
+
+
+<!-- Custom Shipping Rate API -->
+<route url="/V1/solr/shipping-rate" method="POST">
+    <service class="Aashni\MobileApi\Api\SolrInterface" method="getShippingRate"/>
+    <resources>
+        <resource ref="anonymous"/>
+    </resources>
+</route>
 
 
    <!-- Route to Fetch Data for a Specific Designer -->
