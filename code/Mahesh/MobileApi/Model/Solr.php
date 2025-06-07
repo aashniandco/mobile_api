@@ -39,58 +39,172 @@ class Solr implements SolrInterface
         $this->resource = $resource;
     }
 
-  public function getShippingRate($countryId, $regionId) // Parameters will be injected from URL
+   public function getShippingRate($countryId, $regionId, $weight) // No default for $weight
     {
-        // Optional: Log input parameters for debugging
-        $this->logger->info('getShippingRate called with countryId: ' . $countryId . ', regionId: ' . $regionId);
+        $this->logger->info(sprintf(
+            'getShippingRate API called with countryId: %s, regionId: %s, raw weight input: %s',
+            $countryId,
+            $regionId,
+            // Log the raw weight input for debugging, handle if it's not set for some reason
+            // though Magento's WebAPI framework should ensure it's passed if defined in webapi.xml
+            // and the method signature doesn't make it optional.
+            var_export($weight, true) // var_export gives more detail than just casting
+        ));
+
+        // Validate that $countryId is provided and not empty
+        if (empty($countryId)) {
+            $this->logger->error('Country ID parameter is missing or empty.');
+            return [
+                'success' => false,
+                'shipping_price' => null,
+                'message' => 'Country ID parameter is required.'
+            ];
+        }
+
+        // Validate that $regionId is provided and numeric (even if it's 0)
+        if (!isset($regionId) || !is_numeric($regionId)) {
+             $this->logger->error('Region ID parameter is missing or not numeric.');
+            return [
+                'success' => false,
+                'shipping_price' => null,
+                'message' => 'Region ID parameter is required and must be numeric.'
+            ];
+        }
+
+
+        // Validate that weight is provided and is numeric
+        if (!isset($weight) || !is_numeric($weight)) {
+            $this->logger->error('Weight parameter is missing or not numeric.', ['raw_weight' => $weight]);
+            return [
+                'success' => false,
+                'shipping_price' => null, // Ensure shipping_price is included even on error for consistency
+                'message' => 'Weight parameter is required and must be numeric.'
+            ];
+        }
+
+        // Sanitize weight: ensure it's a non-negative float
+        $cartWeight = max(0.0, (double)$weight);
+        $this->logger->info(sprintf('Sanitized cartWeight: %s', $cartWeight));
 
         try {
             $connection = $this->resource->getConnection();
-            $tableName = $this->resource->getTableName('shipping_tablerate'); // Corrected variable name
+            $tableName = $this->resource->getTableName('shipping_tablerate');
 
-            
-            $sql = "SELECT price FROM `{$tableName}`
-                    WHERE dest_country_id = :country_id
-                    AND dest_region_id = :region_id  -- Match specific region first
-                    ORDER BY condition_value ASC     -- Assuming lower condition_value is preferred
-                    LIMIT 1";
+            // SQL to find the best matching rate
+            // We look for the smallest condition_value (weight tier) that is >= our cart_weight
+            $sqlTemplate = "SELECT price FROM `{$tableName}`
+                            WHERE dest_country_id = :country_id
+                            AND dest_region_id = :region_id
+                            AND condition_name = :condition_name
+                            AND condition_value >= :cart_weight
+                            ORDER BY condition_value ASC
+                            LIMIT 1";
 
             $bind = [
                 'country_id' => $countryId,
-                'region_id' => (int)$regionId // Cast regionId to int
+                'region_id' => (int)$regionId, // Try specific region first
+                'condition_name' => 'package_weight', // Standard Magento condition name for weight
+                'cart_weight' => $cartWeight
             ];
 
-            $price = $connection->fetchOne($sql, $bind);
+            $this->logger->info('Attempting to fetch shipping rate with specific region and weight.', $bind);
+            $price = $connection->fetchOne($sqlTemplate, $bind);
 
             // If no specific region match, try with region_id = 0 (all regions for the country)
+            // but still considering the weight.
             if ($price === false && (int)$regionId !== 0) {
-                $this->logger->info('No specific region match for ' . $countryId . '/' . $regionId . '. Trying region_id = 0.');
+                $this->logger->info(
+                    'No specific region match. Trying with region_id = 0 for the same country and weight.'
+                );
                 $bind['region_id'] = 0; // Fallback to 'all regions'
-                $price = $connection->fetchOne($sql, $bind);
+                $this->logger->info('Attempting to fetch shipping rate with region_id = 0 and weight.', $bind);
+                $price = $connection->fetchOne($sqlTemplate, $bind);
             }
 
-            // Further fallback: if condition_value is price based and items are cheap,
-            // or weight based and items are light, ensure you have a base rate.
-            // Your current query tries to find a match for the specific country/region
-            // and then takes the one with the lowest 'condition_value'.
-            // If 'condition_value' represents "up to X weight/price", this is fine.
-
-            if ($price === false) { // If still no price found
-                $this->logger->info('No shipping rate found for countryId: ' . $countryId . ', regionId (even with fallback): ' . $bind['region_id']);
-                 return ['success' => true, 'shipping_price' => null, 'message' => 'No shipping rate found for this destination.'];
+            if ($price === false) {
+                $this->logger->info(
+                    'No shipping rate found for criteria.',
+                    ['countryId' => $countryId, 'regionId_attempted' => $bind['region_id'], 'cartWeight' => $cartWeight]
+                );
+                return [
+                    'success' => true, // Operation was successful, but no rate found
+                    'shipping_price' => null,
+                    'message' => 'No shipping rate found for this destination and weight.'
+                ];
             }
 
-            // Convert price to float if it's a string from DB
-            $shippingPrice = $price !== false ? (float)$price : null;
+            $shippingPrice = (float)$price;
+            $this->logger->info('Shipping rate found.', ['price' => $shippingPrice]);
 
-            return ['success' => true, 'shipping_price' => $shippingPrice];
+            return [
+                'success' => true,
+                'shipping_price' => $shippingPrice,
+                'message' => 'Shipping rate calculated successfully.' // Optional success message
+            ];
 
         } catch (\Exception $e) {
             $this->logger->critical('Error in getShippingRate: ' . $e->getMessage(), ['exception' => $e]);
-            // In production, you might not want to expose the raw $e->getMessage()
-            return ['success' => false, 'error' => 'An error occurred while fetching the shipping rate.'];
+            return [
+                'success' => false,
+                'shipping_price' => null,
+                'message' => 'An error occurred while fetching the shipping rate. Please try again later.'
+            ];
         }
     }
+
+
+
+public function getCartDetailsByCustomerId($customerId)
+{
+    $this->logger->info("getCartDetailsByCustomerId called with customer_id: " . $customerId);
+
+    try {
+        $connection = $this->resource->getConnection();
+        $quoteTable = $this->resource->getTableName('quote');
+        $customerTable = $this->resource->getTableName('customer_entity');
+        $addressTable = $this->resource->getTableName('quote_address');
+        $itemTable = $this->resource->getTableName('quote_item');
+
+        $sql = "
+            SELECT
+                q.entity_id AS quote_id,
+                q.is_active,
+                ce.email AS customer_email,
+                qa.weight AS total_cart_weight,
+                qi.item_id,
+                qi.product_id,
+                qi.sku,
+                qi.name AS product_name,
+                qi.qty AS item_qty,
+                qi.price AS item_original_price,
+                qi.row_total AS item_row_total_after_discounts,
+                qi.weight AS individual_item_weight,
+                (qi.weight * qi.qty) AS item_row_weight
+            FROM
+                {$quoteTable} AS q
+            JOIN
+                {$customerTable} AS ce ON q.customer_id = ce.entity_id
+            LEFT JOIN
+                {$addressTable} AS qa ON q.entity_id = qa.quote_id AND qa.address_type = 'shipping'
+            JOIN
+                {$itemTable} AS qi ON q.entity_id = qi.quote_id
+            WHERE
+                q.customer_id = :customer_id
+                AND q.is_active = 1
+                AND qi.parent_item_id IS NULL
+        ";
+
+        $bind = ['customer_id' => (int)$customerId];
+        $result = $connection->fetchAll($sql, $bind);
+
+        return $result;
+    } catch (\Exception $e) {
+        $this->logger->error('Error in getCartDetailsByCustomerId: ' . $e->getMessage());
+        throw new \Magento\Framework\Exception\LocalizedException(__('Unable to fetch cart details.'));
+    }
+}
+
+
 
 
 public function getAllCountryCodes()

@@ -1031,9 +1031,19 @@ public function getAllCountryCodes();
 * Fetch shipping rate based on country and region
 * @param string $countryId
 * @param int $regionId
+* @param double $weight 
 * @return array
 */
-public function getShippingRate($countryId, $regionId);
+public function getShippingRate($countryId, $regionId, $weight);
+
+
+/**
+* Get cart details and total cart weight by customer ID.
+*
+* @param int $customerId
+* @return mixed
+*/
+public function getCartDetailsByCustomerId($customerId);
 
 
 }

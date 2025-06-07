@@ -16,6 +16,15 @@
         </resources>
     </route>
 
+  <!-- Cart total weight-->
+<route url="/V1/cart/details/:customerId" method="GET">
+    <service class="Aashni\MobileApi\Api\SolrInterface" method="getCartDetailsByCustomerId"/>
+    <resources>
+        <resource ref="anonymous"/>
+    </resources>
+</route>
+
+
   <!-- Delete item from cart -->
    <route url="/V1/solr/cart/item/delete" method="POST">
     <service class="Aashni\MobileApi\Api\SolrInterface" method="deleteCartItem"/>
