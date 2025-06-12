@@ -10,6 +10,10 @@ use Psr\Log\LoggerInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResourceConnection;
 
+use Magento\Quote\Api\CartManagementInterface;
+use Magento\Quote\Api\PaymentMethodManagementInterface;
+use Magento\Quote\Api\Data\AddressInterfaceFactory;
+
 
 class Solr implements SolrInterface
 {
@@ -20,6 +24,9 @@ class Solr implements SolrInterface
     protected $logger;
     protected $request;
     protected $resource;
+    protected $cartManagement;
+    protected $paymentMethodManagement;
+    protected $addressFactory;
 
     public function __construct(
         Curl $curl,
@@ -28,7 +35,10 @@ class Solr implements SolrInterface
         UserContextInterface $userContext,
         LoggerInterface $logger,
         RequestInterface $request,
-        ResourceConnection $resource
+        ResourceConnection $resource,
+        CartManagementInterface $cartManagement,
+        PaymentMethodManagementInterface $paymentMethodManagement,
+        AddressInterfaceFactory $addressFactory
     ) {
         $this->curl = $curl;
         $this->cartItemRepository = $cartItemRepository;
@@ -37,7 +47,56 @@ class Solr implements SolrInterface
         $this->logger = $logger;
         $this->request = $request;
         $this->resource = $resource;
+
+        $this->cartManagement = $cartManagement;
+        $this->paymentMethodManagement = $paymentMethodManagement;
+        $this->addressFactory = $addressFactory;
     }
+
+  /**
+     * ✅ REPLACE your existing placeOrderForCustomer method with this one.
+     * {@inheritdoc}
+     */
+public function placeOrderForCustomer(string $paymentMethodCode, $billingAddress, string $paymentMethodNonce): int
+{
+    $customerId = $this->userContext->getUserId();
+    if (!$customerId) {
+        throw new \Magento\Framework\Exception\CouldNotSaveException(__('Customer session not found.'));
+    }
+
+    if (!is_array($billingAddress)) {
+         $this->logger->critical('PlaceOrder API Error: billingAddress was not an array.', ['data_received' => gettype($billingAddress)]);
+         throw new \Magento\Framework\Exception\LocalizedException(__('Billing address data is invalid.'));
+    }
+
+    try {
+        // ... (all the code at the top is correct) ...
+        $cartId = $this->cartManagement->getCartForCustomer($customerId)->getId();
+        $quote = $this->quoteRepository->get($cartId);
+        $address = $this->addressFactory->create();
+        if (isset($billingAddress['street']) && is_array($billingAddress['street'])) {
+            $address->setStreet($billingAddress['street']);
+            unset($billingAddress['street']);
+        }
+        $address->setData($billingAddress);
+        $quote->setBillingAddress($address);
+        
+        $payment = $quote->getPayment();
+        $payment->setMethod($paymentMethodCode);
+
+        // ✅ THIS IS THE FINAL, CORRECT LINE BASED ON THE GREP RESULTS.
+        // The key the module is looking for is 'token'.
+        $payment->setAdditionalInformation('token', $paymentMethodNonce);
+
+        $this->quoteRepository->save($quote);
+        $orderId = $this->cartManagement->placeOrder($quote->getId(), $payment);
+        return $orderId;
+
+    } catch (\Exception $e) {
+        $this->logger->critical('PlaceOrder API Error: ' . $e->getMessage(), ['exception' => $e]);
+        throw new \Magento\Framework\Exception\CouldNotSaveException(__('Could not place order: %1', $e->getMessage()));
+    }
+}
 
    public function getShippingRate($countryId, $regionId, $weight) // No default for $weight
     {

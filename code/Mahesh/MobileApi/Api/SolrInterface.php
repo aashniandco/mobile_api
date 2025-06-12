@@ -1046,4 +1046,19 @@ public function getShippingRate($countryId, $regionId, $weight);
 public function getCartDetailsByCustomerId($customerId);
 
 
+
+  /**
+     * Places an order for the currently logged-in customer.
+     *
+     * @param string $paymentMethodCode The code of the selected payment method.
+     * @param mixed $billingAddress The billing address details.
+     * @param string $paymentMethodNonce The payment token from Stripe (e.g., pm_xxxx)
+     * @return int The created Order ID.
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    // ✅ ADD THE NEW PARAMETER TO THE METHOD SIGNATURE
+    public function placeOrderForCustomer(string $paymentMethodCode, $billingAddress, string $paymentMethodNonce): int;
+
 }

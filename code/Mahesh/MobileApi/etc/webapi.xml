@@ -16,6 +16,24 @@
         </resources>
     </route>
 
+
+<!-- ✅ START: THIS IS THE CORRECT AND COMPLETE ROUTE DEFINITION -->
+<route url="/V1/aashni/place-order" method="POST">
+    <service class="Aashni\MobileApi\Api\SolrInterface" method="placeOrderForCustomer"/>
+    <resources>
+        <resource ref="self"/>
+    </resources>
+    <data>
+        <parameter type="string" name="paymentMethodCode"/>
+        <parameter type="mixed" name="billingAddress"/>
+        
+        <!-- ✅ THIS LINE MUST BE ADDED -->
+        <parameter type="string" name="paymentMethodNonce"/>
+
+    </data>
+</route>
+<!-- ✅ END: THIS IS THE CORRECT AND COMPLETE ROUTE DEFINITION -->
+
   <!-- Cart total weight-->
 <route url="/V1/cart/details/:customerId" method="GET">
     <service class="Aashni\MobileApi\Api\SolrInterface" method="getCartDetailsByCustomerId"/>
